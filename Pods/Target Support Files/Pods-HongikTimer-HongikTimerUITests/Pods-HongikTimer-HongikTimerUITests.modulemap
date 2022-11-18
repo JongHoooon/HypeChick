@@ -1,0 +1,6 @@
+framework module Pods_HongikTimer_HongikTimerUITests {
+  umbrella header "Pods-HongikTimer-HongikTimerUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,11 @@
+//
+//  Config.xcconfig
+//  HongikTimer
+//
+//  Created by JongHoon on 2022/09/17.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+KAKAO_NATIVE_APP_KEY = 3283b2205ff3d0990428b06e676f5b7b
