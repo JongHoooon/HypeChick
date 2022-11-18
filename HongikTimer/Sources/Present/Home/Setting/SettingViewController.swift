@@ -40,7 +40,7 @@ extension SettingViewController: UITableViewDataSource {
   func numberOfSections(
     in tableView: UITableView
   ) -> Int {
-    print("DEBUG print seetings sction's count is \(settings.count)")
+//    print("DEBUG print seetings sction's count is \(settings.count)")
     return settings.count
   }
   
@@ -115,9 +115,7 @@ private extension SettingViewController {
     tableView.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.bottom.equalToSuperview()
-    }
-    
-    print("set layout")
+    }    
   }
   
   func configureModels() {

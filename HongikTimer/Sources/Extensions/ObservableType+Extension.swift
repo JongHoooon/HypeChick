@@ -13,4 +13,3 @@ extension Observable {
     return self.compactMap { $0 }
   }
 }
-

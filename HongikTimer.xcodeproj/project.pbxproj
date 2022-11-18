@@ -96,7 +96,11 @@
 		ED3297CC291BDF660081F606 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297CB291BDF660081F606 /* WriteViewController.swift */; };
 		ED3297CF291BE0220081F606 /* WriteViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297CE291BE0220081F606 /* WriteViewReactor.swift */; };
 		ED3297D2291BF93C0081F606 /* NumberSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297D1291BF93C0081F606 /* NumberSelectView.swift */; };
+		ED5F344229276C73002EB5D2 /* Task2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5F344129276C73002EB5D2 /* Task2.swift */; };
 		ED67DBFE2922971E00281313 /* TaskEditViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67DBFD2922971E00281313 /* TaskEditViewReactor.swift */; };
+		ED7391462927D46800A0024E /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391442927D46700A0024E /* UserResponse.swift */; };
+		ED7391472927D46800A0024E /* MembersRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391452927D46800A0024E /* MembersRouter.swift */; };
+		ED7391492927D5A700A0024E /* MemberRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391482927D5A700A0024E /* MemberRequest.swift */; };
 		ED7D72B3291CD7B0006A3887 /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7D72B2291CD7B0006A3887 /* AlertService.swift */; };
 		ED7D72B8291E07CF006A3887 /* EnterViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */; };
 		EDED357D291B5611003F3DEC /* EmailSignUpReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED357C291B5611003F3DEC /* EmailSignUpReactor.swift */; };
@@ -243,7 +247,11 @@
 		ED3297CB291BDF660081F606 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		ED3297CE291BE0220081F606 /* WriteViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewReactor.swift; sourceTree = "<group>"; };
 		ED3297D1291BF93C0081F606 /* NumberSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSelectView.swift; sourceTree = "<group>"; };
+		ED5F344129276C73002EB5D2 /* Task2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task2.swift; sourceTree = "<group>"; };
 		ED67DBFD2922971E00281313 /* TaskEditViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditViewReactor.swift; sourceTree = "<group>"; };
+		ED7391442927D46700A0024E /* UserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
+		ED7391452927D46800A0024E /* MembersRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersRouter.swift; sourceTree = "<group>"; };
+		ED7391482927D5A700A0024E /* MemberRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberRequest.swift; sourceTree = "<group>"; };
 		ED7D72B2291CD7B0006A3887 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertService.swift; path = ../../../../../AlertService.swift; sourceTree = "<group>"; };
 		ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterViewReactor.swift; sourceTree = "<group>"; };
 		EDED357C291B5611003F3DEC /* EmailSignUpReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignUpReactor.swift; sourceTree = "<group>"; };
@@ -503,6 +511,7 @@
 				278DE6B828D71A1200E38A1F /* SettingCellModel.swift */,
 				EDF2F1F7292693C900A59FA2 /* EmailUser.swift */,
 				27A977B228E3501A0076FF80 /* Task.swift */,
+				ED5F344129276C73002EB5D2 /* Task2.swift */,
 				2793C11D28F47AF400FC7D13 /* User.swift */,
 				27C2DFAB28F6A927009356E5 /* AuthResponse.swift */,
 				ED052D4229142EA600E79BB6 /* BoardPost.swift */,
@@ -614,6 +623,22 @@
 			path = WriteView;
 			sourceTree = "<group>";
 		};
+		ED7391422927D46700A0024E /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				ED7391482927D5A700A0024E /* MemberRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		ED7391432927D46700A0024E /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				ED7391442927D46700A0024E /* UserResponse.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
 		ED7D72B6291E07C1006A3887 /* EnterView */ = {
 			isa = PBXGroup;
 			children = (
@@ -640,6 +665,9 @@
 		EDF2F1F22926772100A59FA2 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				ED7391452927D46800A0024E /* MembersRouter.swift */,
+				ED7391422927D46700A0024E /* Request */,
+				ED7391432927D46700A0024E /* Response */,
 				EDF2F1F32926776500A59FA2 /* APIRouter.swift */,
 			);
 			path = API;
@@ -1032,8 +1060,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2750A45628D051D3000EE24D /* SetPurposeViewController.swift in Sources */,
+				ED5F344229276C73002EB5D2 /* Task2.swift in Sources */,
 				EDF2F1FA2926ACE700A59FA2 /* APIService.swift in Sources */,
 				EDF3A8A22912488D00A7C980 /* GroupViewCell.swift in Sources */,
+				ED7391492927D5A700A0024E /* MemberRequest.swift in Sources */,
 				ED13F2F5290E46CA00883D19 /* SettingViewController.swift in Sources */,
 				ED037A7129117E2F00D30F7A /* ItemCell.swift in Sources */,
 				ED037A612910F75000D30F7A /* TabBarViewReactor.swift in Sources */,
@@ -1068,6 +1098,7 @@
 				27615A8528D4B86A0099DB00 /* AppleAuthService.swift in Sources */,
 				2793C13028F58DB300FC7D13 /* TimerViewController.swift in Sources */,
 				EDF3A8A02912454300A7C980 /* GroupViewController.swift in Sources */,
+				ED7391472927D46800A0024E /* MembersRouter.swift in Sources */,
 				ED037A7B2911995C00D30F7A /* ChickViewReactor.swift in Sources */,
 				27A977A328E208020076FF80 /* NotToDoViewController.swift in Sources */,
 				27A977B328E3501A0076FF80 /* Task.swift in Sources */,
@@ -1128,6 +1159,7 @@
 				27615A8928D4DB7D0099DB00 /* AuthNotificationService.swift in Sources */,
 				EDF3A8B6291259FF00A7C980 /* GroupDetailViewController.swift in Sources */,
 				EDF2F1F42926776500A59FA2 /* APIRouter.swift in Sources */,
+				ED7391462927D46800A0024E /* UserResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

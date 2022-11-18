@@ -11,4 +11,14 @@ struct AuthCredentials {
     let email: String
     let username: String
     let password: String
+  
+  
+  func getRegisterRequest() -> RegisterRequest {
+      return RegisterRequest(email: email, username: username, password: password)
+  }
+  
+  func getEmailLoginRequest() -> EmailLoginRequest {
+      return EmailLoginRequest(email: email, password: password)
+  }
+  
 }
