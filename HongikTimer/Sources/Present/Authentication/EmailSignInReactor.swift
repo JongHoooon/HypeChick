@@ -106,12 +106,14 @@ final class EmailSignInReactor: Reactor {
       }
       
     case let .validatePassword(input):
+      state.password = input
       self.isValidPassword(input: input) { message, isValid in
         state.passwordMessage = message
         state.isValidPassword = isValid
       }
       
     case let .validatePasswordCheck(input):
+      state.passwordcheck = input
       self.isValidPasswordCheck(input: input, pwd: state.password ?? "") { message, isValid in
         state.passwordCheckMessage = message
         state.isValidPasswordCheckMessage = isValid

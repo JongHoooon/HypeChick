@@ -114,22 +114,29 @@ extension EmailSignInViewController: View {
     
     // MARK: State
     reactor.state.asObservable().map { $0.emailMessage }
+      .distinctUntilChanged()
       .bind(to: emailTextField.messageLabel.rx.attributedText)
       .disposed(by: disposeBag)
     
     reactor.state.asObservable().map { $0.nickNameMessage }
+      .distinctUntilChanged()
       .bind(to: nicknameTextField.messageLabel.rx.attributedText)
       .disposed(by: disposeBag)
     
     reactor.state.asObservable().map { $0.passwordMessage }
+      .distinctUntilChanged()
       .bind(to: passwordTextField.messageLabel.rx.attributedText)
       .disposed(by: disposeBag)
     
     reactor.state.asObservable().map { $0.passwordCheckMessage }
+      .distinctUntilChanged()
       .bind(to: passwordCheckTextField.messageLabel.rx.attributedText)
       .disposed(by: disposeBag)
     
-//    reactor.state.asObservable().map { $0.pass}
+    reactor.state.asObservable().map { $0.registerButtonIsEnable }
+      .distinctUntilChanged()
+      .bind(to: signUpButton.rx.isEnabled)
+      .disposed(by: disposeBag)
   }
 }
 
