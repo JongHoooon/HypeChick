@@ -26,7 +26,7 @@ enum MembersRouter: URLRequestConvertible {
   
   // MARK: - End Point
   
-  var endPoint: String {
+  var path: String {
     switch self {
     case .emailLogin:   return "v1/login"
     default:            return "v1/members"
@@ -69,14 +69,9 @@ enum MembersRouter: URLRequestConvertible {
     var urlRequest = URLRequest(url: baseURL.appendingPathComponent(endPoint))
     
     urlRequest.method = self.method
-    
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-    
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
-    
-    print("DEBUG parameterss!!!!!!!!!!")
-    print("DEBUG \(parameters!)")
-    print("DEBUG request !!!!!! \(urlRequest.httpBody?.description)")
+  
     
     return urlRequest
   }

@@ -101,10 +101,10 @@
 		ED7391462927D46800A0024E /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391442927D46700A0024E /* UserResponse.swift */; };
 		ED7391472927D46800A0024E /* MembersRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391452927D46800A0024E /* MembersRouter.swift */; };
 		ED7391492927D5A700A0024E /* MemberRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391482927D5A700A0024E /* MemberRequest.swift */; };
-		ED7D72B3291CD7B0006A3887 /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7D72B2291CD7B0006A3887 /* AlertService.swift */; };
+		ED73914B29285D7500A0024E /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED73914A29285D7500A0024E /* APIRouter.swift */; };
+		ED73914D29285DAB00A0024E /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED73914C29285DAB00A0024E /* AlertService.swift */; };
 		ED7D72B8291E07CF006A3887 /* EnterViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */; };
 		EDED357D291B5611003F3DEC /* EmailSignUpReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED357C291B5611003F3DEC /* EmailSignUpReactor.swift */; };
-		EDF2F1F42926776500A59FA2 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1F32926776500A59FA2 /* APIRouter.swift */; };
 		EDF2F1F8292693C900A59FA2 /* EmailUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1F7292693C900A59FA2 /* EmailUser.swift */; };
 		EDF2F1FA2926ACE700A59FA2 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1F92926ACE700A59FA2 /* APIService.swift */; };
 		EDF2F1FC29273C2300A59FA2 /* SNSSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1FB29273C2300A59FA2 /* SNSSignInViewController.swift */; };
@@ -252,10 +252,10 @@
 		ED7391442927D46700A0024E /* UserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
 		ED7391452927D46800A0024E /* MembersRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersRouter.swift; sourceTree = "<group>"; };
 		ED7391482927D5A700A0024E /* MemberRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberRequest.swift; sourceTree = "<group>"; };
-		ED7D72B2291CD7B0006A3887 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertService.swift; path = ../../../../../AlertService.swift; sourceTree = "<group>"; };
+		ED73914A29285D7500A0024E /* APIRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
+		ED73914C29285DAB00A0024E /* AlertService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
 		ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterViewReactor.swift; sourceTree = "<group>"; };
 		EDED357C291B5611003F3DEC /* EmailSignUpReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignUpReactor.swift; sourceTree = "<group>"; };
-		EDF2F1F32926776500A59FA2 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIRouter.swift; path = ../../../../../../APIRouter.swift; sourceTree = "<group>"; };
 		EDF2F1F7292693C900A59FA2 /* EmailUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailUser.swift; sourceTree = "<group>"; };
 		EDF2F1F92926ACE700A59FA2 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		EDF2F1FB29273C2300A59FA2 /* SNSSignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNSSignInViewController.swift; sourceTree = "<group>"; };
@@ -586,7 +586,7 @@
 				2793C11F28F4801600FC7D13 /* UserDefaultService.swift */,
 				ED2402DF2920BE23000DF54C /* TodoService.swift */,
 				278DE6BA28D766D600E38A1F /* DatabaseManager.swift */,
-				ED7D72B2291CD7B0006A3887 /* AlertService.swift */,
+				ED73914C29285DAB00A0024E /* AlertService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -665,10 +665,10 @@
 		EDF2F1F22926772100A59FA2 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				ED73914A29285D7500A0024E /* APIRouter.swift */,
 				ED7391452927D46800A0024E /* MembersRouter.swift */,
 				ED7391422927D46700A0024E /* Request */,
 				ED7391432927D46700A0024E /* Response */,
-				EDF2F1F32926776500A59FA2 /* APIRouter.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1121,6 +1121,7 @@
 				ED037A75291189DD00D30F7A /* WallpaperViewController.swift in Sources */,
 				27B471B628D0A9D900805F79 /* NotificationViewController.swift in Sources */,
 				ED037A5F291027C400D30F7A /* ObservableType+Extension.swift in Sources */,
+				ED73914B29285D7500A0024E /* APIRouter.swift in Sources */,
 				27B471D328D22E6900805F79 /* Constant.swift in Sources */,
 				ED2402E72920DEE3000DF54C /* TaskHeaderCellReactor.swift in Sources */,
 				2793C12B28F52F4300FC7D13 /* UIButton+Extension.swift in Sources */,
@@ -1128,11 +1129,11 @@
 				EDF3A89A29120F7C00A7C980 /* AutoSlideCollectionViewCell.swift in Sources */,
 				27B471C928D1BAC300805F79 /* EmailSignUpViewController.swift in Sources */,
 				ED2402E22920BF00000DF54C /* TodoViewReactor.swift in Sources */,
-				ED7D72B3291CD7B0006A3887 /* AlertService.swift in Sources */,
 				EDF3A89829120F7C00A7C980 /* BoardCollectionHeaderView.swift in Sources */,
 				2750A45428D04C95000EE24D /* PurposeView.swift in Sources */,
 				ED30DE34291E9CFC00E50AA1 /* TodoViewController.swift in Sources */,
 				27A977AB28E331D70076FF80 /* TaskCell.swift in Sources */,
+				ED73914D29285DAB00A0024E /* AlertService.swift in Sources */,
 				EDF2F1FE29273CA800A59FA2 /* SNSSignInViewReactor.swift in Sources */,
 				27B471BD28D0ACF100805F79 /* Notification.swift in Sources */,
 				2793C12428F499DC00FC7D13 /* TaskEditPresentaionController.swift in Sources */,
@@ -1158,7 +1159,6 @@
 				27B471CF28D20DAF00805F79 /* ButtonConfig.swift in Sources */,
 				27615A8928D4DB7D0099DB00 /* AuthNotificationService.swift in Sources */,
 				EDF3A8B6291259FF00A7C980 /* GroupDetailViewController.swift in Sources */,
-				EDF2F1F42926776500A59FA2 /* APIRouter.swift in Sources */,
 				ED7391462927D46800A0024E /* UserResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
