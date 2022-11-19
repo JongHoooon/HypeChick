@@ -18,13 +18,8 @@ final class SNSSignInViewController: BaseViewController, View {
   
   // MARK: - Property
   
-  private lazy var emailTextField = TextFieldView(with: "이메일").then {
-    $0.textField.becomeFirstResponder()
-    $0.textField.delegate = self
-  }
-  
   private lazy var nicknameTextField = TextFieldView(with: "별명").then {
-    $0.textField.delegate = self
+    $0.becomeFirstResponder()
   }
   
   private lazy var signUpButton = UIButton(configuration: labelConfig).then {
@@ -80,11 +75,6 @@ extension SNSSignInViewController {
   func bind(reactor: SNSSignInViewReactor) {
     
     // MARK: Action
-    emailTextField.textField.rx.text
-      .orEmpty
-      .map { Reactor.Action.emailInput($0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
     
     nicknameTextField.textField.rx.text
       .orEmpty
@@ -93,9 +83,6 @@ extension SNSSignInViewController {
       .disposed(by: disposeBag)
        
     // MARK: State
-    reactor.state.asObservable().map { $0.emailMessage }
-      .bind(to: emailTextField.messageLabel.rx.attributedText)
-      .disposed(by: disposeBag)
     
     reactor.state.asObservable().map { $0.nickNameMessage }
       .bind(to: nicknameTextField.messageLabel.rx.attributedText)
@@ -105,17 +92,6 @@ extension SNSSignInViewController {
 }
 
 // MARK: - TextField
-
-extension SNSSignInViewController: UITextFieldDelegate {
-  func textFieldShouldReturn(
-    _ textField: UITextField
-  ) -> Bool {
-    if textField == emailTextField.textField {
-      nicknameTextField.textField.becomeFirstResponder()
-    }
-    return true
-  }
-}
 
 // MARK: - Private
 
@@ -129,16 +105,14 @@ private extension SNSSignInViewController {
     view.backgroundColor = .systemBackground
     
     let stackView = UIStackView(arrangedSubviews: [
-      emailTextField,
       nicknameTextField,
       signUpButton
     ]).then {
       $0.axis = .vertical
       $0.distribution = .equalSpacing
-      $0.spacing = 48.0
+      $0.spacing = 96.0
       
       [
-        emailTextField,
         nicknameTextField
       ].forEach { $0.snp.makeConstraints {
         $0.height.equalTo(textFieldHeight)
@@ -158,10 +132,8 @@ private extension SNSSignInViewController {
   // MARK: - Selector
   
   @objc func tapsignUpButton() {
-    emailTextField.textField.resignFirstResponder()
     nicknameTextField.textField.resignFirstResponder()
     
-    guard let email = emailTextField.textField.text, !email.isEmpty else { return }
     guard let username = nicknameTextField.textField.text, !username.isEmpty else { return }
     
     print("DEBUG sns로 회원가입합니다!!!")

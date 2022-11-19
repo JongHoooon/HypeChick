@@ -185,7 +185,7 @@ private extension EmailSignInReactor {
       )
     } else if nicknameTest.evaluate(with: input) == false {
       message = NSAttributedString(
-        string: "8자 이하 올바른 형식으로 입력해주세요.",
+        string: "특수 문자 없이 8자 이하로 입력해주세요.",
         attributes: [.foregroundColor: UIColor.systemRed]
       )
     } else {
