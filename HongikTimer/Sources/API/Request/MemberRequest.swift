@@ -11,15 +11,13 @@ struct EmailLoginRequest {
     let email: String
     let password: String
     
-    var parameters: [String : Any] {
+    var parameters: [String: Any] {
         return [
-            "email" : email,
-            "password" : password
+            "email": email,
+            "password": password
         ]
     }
 }
-
-
 
 struct RegisterRequest {
     let email: String
@@ -28,9 +26,9 @@ struct RegisterRequest {
     
     var parameters: [String : Any] {
         return [
-            "email" : email,
-            "username" : username,
-            "password" : password
+            "email": email,
+            "username": username,
+            "password": password
         ]
     }
 }

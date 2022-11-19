@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 // MARK: - UserResponse
 struct UserResponse: Codable {
     let id: Int?

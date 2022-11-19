@@ -1,5 +1,5 @@
 //
-//  EmailSignUpReactor.swift
+//  EmailSignInReactor.swift
 //  HongikTimer
 //
 //  Created by JongHoon on 2022/11/09.
@@ -17,7 +17,7 @@ enum ValidationResult {
     case failed(message: String)
 }
 
-final class EmailSignUpReactor: Reactor {
+final class EmailSignInReactor: Reactor {
   
   let provider: ServiceProviderType
   
@@ -33,6 +33,8 @@ final class EmailSignUpReactor: Reactor {
     case validateNickname(String)
     case validatePassword(String)
     case validatePasswordCheck(String)
+    
+    case registerButtonIsEnable
   }
   
   struct State {
@@ -42,6 +44,13 @@ final class EmailSignUpReactor: Reactor {
     var passwordCheckMessage: NSAttributedString?
     var password: String?
     var passwordcheck: String?
+    
+    var isValidEmail: Bool = false
+    var isValidNickName: Bool = false
+    var isValidPassword: Bool = false
+    var isValidPasswordCheckMessage: Bool = false
+    
+    var registerButtonIsEnable: Bool = false
   }
     
   var initialState: State = State()
@@ -52,17 +61,30 @@ final class EmailSignUpReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+      
     case let .emailInput(input):
-      return Observable.just(Mutation.validateEmail(input))
+      return .concat([
+        .just(Mutation.validateEmail(input)),
+        .just(Mutation.registerButtonIsEnable)
+      ])
+      
     case let .nicknameInput(input):
-      return Observable.just(Mutation.validateNickname(input))
+      return .concat([
+        .just(Mutation.validateNickname(input)),
+        .just(Mutation.registerButtonIsEnable)
+      ])
+      
     case let .passwordInput(input):
       return Observable.concat([
-        Observable.just(Mutation.validatePassword(input)),
-        Observable.just(Mutation.validatePasswordCheck(currentState.passwordcheck ?? ""))
+        .just(Mutation.validatePassword(input)),
+        .just(Mutation.validatePasswordCheck(currentState.passwordcheck ?? "")),
+        .just(Mutation.registerButtonIsEnable)
       ])
     case let .passwordCheckInput(input):
-      return Observable.just(Mutation.validatePasswordCheck(input))
+      return .concat([
+        .just(Mutation.validatePasswordCheck(input)),
+        .just(Mutation.registerButtonIsEnable)
+      ])
     }
   }
   
@@ -71,34 +93,58 @@ final class EmailSignUpReactor: Reactor {
     switch mutation {
       
     case let .validateEmail(input):
-      state.emailMessage = self.isValidEmail(input: input)
-      return state
-      
+      self.isValidEmail(input: input) { message, isValid in
+        state.emailMessage = message
+        state.isValidEmail = isValid
+        
+      }
+          
     case let .validateNickname(input):
-      state.nickNameMessage = self.isValidNickname(input: input)
-      return state
+      self.isValidNickname(input: input) { message, isValid in
+        state.nickNameMessage = message
+        state.isValidNickName = isValid
+      }
       
     case let .validatePassword(input):
-      state.passwordMessage = self.isValidPassword(input: input)
-      state.password = input
-      return state
+      self.isValidPassword(input: input) { message, isValid in
+        state.passwordMessage = message
+        state.isValidPassword = isValid
+      }
       
     case let .validatePasswordCheck(input):
-      state.passwordCheckMessage = isValidPasswordCheck(input: input, pwd: state.password ?? "")
-      state.passwordcheck = input
-      return state
+      self.isValidPasswordCheck(input: input, pwd: state.password ?? "") { message, isValid in
+        state.passwordCheckMessage = message
+        state.isValidPasswordCheckMessage = isValid
+      }
+      
+    case .registerButtonIsEnable:
+      if state.isValidEmail == true &&
+          state.isValidNickName == true &&
+          state.isValidPassword == true &&
+          state.isValidPasswordCheckMessage == true {
+        state.registerButtonIsEnable = true
+      } else {
+        state.registerButtonIsEnable = false
+      }
     }
+    
+    return state
   }
 }
 
 // MARK: - Method
 
 /// email 입력값 확인해서 message 출력
-private extension EmailSignUpReactor {
-  func isValidEmail(input: String) -> NSAttributedString {
+private extension EmailSignInReactor {
+  func isValidEmail(
+    input: String,
+    completion: (_ message: NSAttributedString, _ isValid: Bool
+    ) -> Void) {
+    
     let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
     let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
     var message: NSAttributedString
+    var isValid: Bool = false
     
     if input.isEmpty {
       message = NSAttributedString(string: "")
@@ -112,14 +158,21 @@ private extension EmailSignUpReactor {
         string: "사용가능한 email 입니다.",
         attributes: [.foregroundColor: UIColor.systemGray]
       )
+      isValid = true
     }
-    return message
+    
+    completion(message, isValid)
   }
   
-  func isValidNickname(input: String) -> NSAttributedString {
+  func isValidNickname(
+    input: String,
+    completion: (_ message: NSAttributedString, _ isValid: Bool
+    ) -> Void) {
+    
     let nicknameRegEx = "[가-힣A-Za-z0-9]{2,8}"
     let nicknameTest = NSPredicate(format: "SELF MATCHES %@", nicknameRegEx)
     var message: NSAttributedString
+    var isValid: Bool = false
     
     if input.count == 0 {
       message = NSAttributedString(string: "")
@@ -138,12 +191,16 @@ private extension EmailSignUpReactor {
         string: "사용가능한 별명 입니다.",
         attributes: [.foregroundColor: UIColor.systemGray]
       )
+      isValid = true
     }
-    return message
+    
+    completion(message, isValid)
   }
   
-  func isValidPassword(input: String) -> NSAttributedString {
+  func isValidPassword(input: String, completion: (_ message: NSAttributedString, _ isValid: Bool) -> Void) {
     var message: NSAttributedString?
+    var isValid: Bool = false
+    
     if input.count == 0 {
       message = NSAttributedString(string: "")
     } else if input.count > 0 && input.count < 6 {
@@ -156,13 +213,16 @@ private extension EmailSignUpReactor {
         string: "사용가능한 비밀번호입니다.",
         attributes: [.foregroundColor: UIColor.systemGray]
       )
+      isValid = true
     }
-    return message ?? NSAttributedString(string: "")
+    
+    completion(message ?? NSAttributedString(string: ""), isValid)
   }
   
-  func isValidPasswordCheck(input: String, pwd: String) -> NSAttributedString {
+  func isValidPasswordCheck(input: String, pwd: String, completion: (_ message: NSAttributedString, _ isValid: Bool) -> Void) {
     var message: NSAttributedString?
-    
+    var isValid: Bool = false
+
     if input.count == 0 {
       message = NSAttributedString(string: "")
     } else if input != pwd {
@@ -175,7 +235,9 @@ private extension EmailSignUpReactor {
         string: "비밀번호와 일치합니다.",
         attributes: [.foregroundColor: UIColor.systemGray]
       )
+      isValid = true
     }
-    return message ?? NSAttributedString(string: "")
+  
+    completion(message ?? NSAttributedString(string: ""), isValid)
   }
 }

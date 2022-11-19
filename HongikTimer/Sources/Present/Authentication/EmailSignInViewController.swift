@@ -1,5 +1,5 @@
 //
-//  EmailSignUpViewController.swift
+//  EmailSignInViewController.swift
 //  HongikTimer
 //
 //  Created by JongHoon on 2022/09/14.
@@ -14,11 +14,11 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class EmailSignUpViewController: BaseViewController {
+final class EmailSignInViewController: BaseViewController {
   
   // MARK: - Property
   
-  let reactor: EmailSignUpReactor
+  let reactor: EmailSignInReactor
   
   private lazy var emailTextField = TextFieldView(with: "이메일").then {
     $0.textField.becomeFirstResponder()
@@ -59,16 +59,16 @@ final class EmailSignUpViewController: BaseViewController {
     
     let tapBackground = UITapGestureRecognizer()
     tapBackground.rx.event
-        .subscribe(onNext: { [weak self] _ in
-            self?.view.endEditing(true)
-        })
-        .disposed(by: disposeBag)
+      .subscribe(onNext: { [weak self] _ in
+        self?.view.endEditing(true)
+      })
+      .disposed(by: disposeBag)
     view.addGestureRecognizer(tapBackground)
   }
   
   // MARK: - Init
   
-  init(with reactor: EmailSignUpReactor) {
+  init(with reactor: EmailSignInReactor) {
     self.reactor = reactor
   }
   
@@ -80,34 +80,38 @@ final class EmailSignUpViewController: BaseViewController {
 
 // MARK: - bind
 
-extension EmailSignUpViewController: View {
-  func bind(reactor: EmailSignUpReactor) {
+extension EmailSignInViewController: View {
+  func bind(reactor: EmailSignInReactor) {
     
     // MARK: Action
     emailTextField.textField.rx.text
       .orEmpty
+      .skip(1)
       .map { Reactor.Action.emailInput($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     nicknameTextField.textField.rx.text
       .orEmpty
+      .skip(1)
       .map { Reactor.Action.nicknameInput($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     passwordTextField.textField.rx.text
       .orEmpty
+      .skip(1)
       .map { Reactor.Action.passwordInput($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     passwordCheckTextField.textField.rx.text
       .orEmpty
+      .skip(1)
       .map { Reactor.Action.passwordCheckInput($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-       
+    
     // MARK: State
     reactor.state.asObservable().map { $0.emailMessage }
       .bind(to: emailTextField.messageLabel.rx.attributedText)
@@ -124,12 +128,14 @@ extension EmailSignUpViewController: View {
     reactor.state.asObservable().map { $0.passwordCheckMessage }
       .bind(to: passwordCheckTextField.messageLabel.rx.attributedText)
       .disposed(by: disposeBag)
+    
+//    reactor.state.asObservable().map { $0.pass}
   }
 }
 
 // MARK: - TextField
 
-extension EmailSignUpViewController: UITextFieldDelegate {
+extension EmailSignInViewController: UITextFieldDelegate {
   func textFieldShouldReturn(
     _ textField: UITextField
   ) -> Bool {
@@ -148,7 +154,7 @@ extension EmailSignUpViewController: UITextFieldDelegate {
 
 // MARK: - Private
 
-private extension EmailSignUpViewController {
+private extension EmailSignInViewController {
   func setupNavigationBar() {
     navigationController?.navigationBar.topItem?.title = ""
     navigationItem.title = "회원가입"
@@ -210,54 +216,50 @@ private extension EmailSignUpViewController {
     )
     
     self.reactor.provider.authService
-        .registerAndLoginWithEmail(credentials: authCredentials, completion: { [weak self] result in
-            switch result {
-            case .success(let user):
-                print("registerAndLoginWithEmail 성공: \(user)")
-            case .failure(let error):
-                print("registerAndLoginWithEmail 실패: \(error)")
-//                  self?.handleError(error)
-            }
+      .registerAndLoginWithEmail(
+        credentials: authCredentials,
+        completion: { [weak self] result in
+          guard let self = self else { return }
+          
+          switch result {
+          case .success(let emailUser):
+            print("registerAndLoginWithEmail 성공: \(emailUser.userInfo)")
+            self.reactor.provider.userDefaultService.setUser(emailUser)
+            self.view.hideToast()
+            
+            let user = emailUser.userInfo
+            let provider = self.reactor.provider
+            let vc = TabBarViewController(with: TabBarViewReactor(provider, with: user))
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true)
+            
+          case .failure(let error):
+            print("registerAndLoginWithEmail 실패: \(error)")
+            self.handleError(error)
+            self.view.hideToast()
+            self.view.makeToast("회원 가입 실패", position: .top)
+          }
         })
-    
-//    self.reactor.provider.authService.signUpWithEmail(
-//      credentials: authCredentials
-//    ) { [weak self] result, error in
-//      if let error = error {
-//        print("DEBUG 이메일 회원가입 에러 \(error)")
-//        self?.view.hideToast()
-//        return
-//      }
-//
-//      // firebase db에 저장
-//      guard let uid = result?.user.uid else { return }
-//
-//      let values = [
-//        "email": email,
-//        "username": username
-//      ]
-//
-//      refUSERS.child(uid).updateChildValues(values) { error, _ in
-//        if let error = error {
-//          print(error)
-//        }
-//
-//        self?.view.hideToast()
-//
-//        guard let provider = self?.reactor.provider else { return }
-//        let user = self?.reactor.provider.userDefaultService.getUser()?.userInfo
-//        print("DEBUG \(user!)로 회원 가입완료후 화면이동")
-//        let vc = TabBarViewController(with: TabBarViewReactor(provider, with: user!))
-//        vc.modalPresentationStyle = .fullScreen
-//        self?.present(vc, animated: true)
-//      }
-//    } completionAF: { error in
-//      if let error = error {
-//        print("DEBUG AF 이메일 회원가입 에러")
-//        print(error)
-//      }
-//    }
   }
 }
 
-// TODO: 회원가입 에러 처리
+extension EmailSignInViewController {
+  
+  /// 에러 처리
+  /// - Parameter err: APIError
+  fileprivate func handleError(_ err: ApiError) {
+    
+    print("error: \(err.info)")
+    
+    switch err {
+    case ApiError.notAccept:
+      print("not Accep error: ")
+    case ApiError.unknown(let err):
+      print("unknoew error: \(err)")
+    case .badStatus(let code):
+      print("bad status error code: \(code)")
+    }
+  }
+}
+
+// TODO: 회원가입 에러 처리, 버튼 활성화 처리

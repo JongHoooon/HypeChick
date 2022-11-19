@@ -66,7 +66,7 @@ enum MembersRouter: URLRequestConvertible {
   // MARK: - URL Request
   func asURLRequest() throws -> URLRequest {
     
-    var urlRequest = URLRequest(url: baseURL.appendingPathComponent(endPoint))
+    var urlRequest = URLRequest(url: baseURL.appendingPathComponent(path))
     
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")

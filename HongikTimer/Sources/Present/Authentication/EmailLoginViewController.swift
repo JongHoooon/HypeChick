@@ -134,16 +134,15 @@ private extension EmailLoginViewController {
       return
     }
     
-    AuthService.shared.logInWithEmail(
-      email: email,
-      password: password) { [weak self] authResult, error in
-        guard authResult != nil, error == nil else {
-          print("DEBUG tapLoginButton error: \(String(describing: error))")
-          self?.view.makeToast("이메일 / 비밀번호를 확인하세요")
-          return }
-        
-//        AuthNotificationManager.shared.postNotificationSignInSuccess()
-      }
+//    AuthService.shared.logInWithEmail(
+//      email: email,
+//      password: password) { [weak self] authResult, error in
+//        guard authResult != nil, error == nil else {
+//          print("DEBUG tapLoginButton error: \(String(describing: error))")
+//          self?.view.makeToast("이메일 / 비밀번호를 확인하세요")
+//          return }
+//        
+//      }
   }
   
   @objc func loginSuccessHandler() {
