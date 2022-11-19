@@ -155,7 +155,9 @@ private extension SettingViewController {
         case .kakao:
           KakaoAuthService.shared.kakaoLogout()
           print("DEBUG kakao 회원 로그아웃")
-          
+        case .naver:
+          self.naverAuthService.shared?.requestDeleteToken()
+          print("DEBUG naver 회원 로그아웃")
         default:
           print("로그아웃")
         }
@@ -176,6 +178,5 @@ private extension SettingViewController {
     actionSheet.popoverPresentationController?.sourceRect = tableView.bounds
     present(actionSheet, animated: true)
     
-//    naverAuthService.shared?.requestDeleteToken()
   }
 }

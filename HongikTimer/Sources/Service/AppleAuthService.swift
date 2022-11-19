@@ -80,7 +80,14 @@ extension AppleAuthService: ASAuthorizationControllerDelegate {
           return
         }
         
-        print("DEBUG Apple 로그인 uid: \(authResult?.user.uid)")
+        guard let uid = authResult?.user.uid else { return }
+        
+        AuthService.shared.loginWithSNS(uid: uid, kind: .apple) { result in
+          switch result {
+          case .success(let user):
+            print("DEBUG apple 로그인 성공")
+          }
+        }
         
         AuthNotificationManager.shared.postNotificationSignInSuccess()
       }

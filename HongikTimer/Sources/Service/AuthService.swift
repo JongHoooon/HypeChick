@@ -124,13 +124,41 @@ extension AuthService {
         
         switch dataResponse.result {
         case .success(let user):
-          print("DEBUG Email: \(user.userInfo.email), UserName: \(user.userInfo.username) 으로 로그인 완료")
+          print("DEBUG Email: \(user.userInfo.email!), UserName: \(user.userInfo.username!) 으로 로그인 완료")
           UserDefaultService.shared.setUser(user)
           UserDefaultService.shared.setLoginKind(.email)
           
           completion(.success(user))
         case .failure(let error):
           completion(.failure(ApiError.unknown(error)))
+        }
+      }
+  }
+  
+  func loginWithSNS(
+    uid: String,
+    kind: LoginKind,
+    completion: @escaping (Result<User, ApiError>) -> Void
+  ) {
+    let snsLoginReqeust = SNSLoginRequest(uid: uid, kind: kind)
+    let urlRequest = MembersRouter.snsLogin(snsLoginReqeust)
+    
+    AF.request(urlRequest)
+      .responseDecodable(of: User.self) { dataResponse in
+        
+        switch dataResponse.result {
+        case .success(let user):
+          print("DEBUG \(kind) ID: \(user.userInfo.id!) 로그인 완료")
+          UserDefaultService.shared.setUser(user)
+          UserDefaultService.shared.setLoginKind(kind)
+          
+          AuthNotificationManager
+            .shared
+            .postNotificationSignInSuccess()
+          
+        case .failure(let err):
+          completion(.failure(ApiError.unknown(err)))
+          
         }
       }
   }
@@ -156,7 +184,6 @@ extension AuthService {
 //        }
 //      }
 //  }
-  
   
 //  func snsRegister(
 //    uid: String,
