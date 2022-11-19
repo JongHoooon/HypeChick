@@ -10,94 +10,88 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-enum NicknameValidationResult {
-  case ok(message: String)
-  case short(message: String)
-  case wrongForm(messge: String)
+enum ValidationResult {
+  case ok(_ message: String)
+  case short(_ message: String)
+  case wrongForm(_ message: String)
 }
 
 final class SNSSignInViewReactor: Reactor {
   
   enum Action {
     case nicknameInput(_ nickname: String)
+//    case tapSignIn
   }
   
   enum Mutation {
     case validateNickname(String)
+//    case singInSuccess
+//    case singInFail
   }
   
   struct State {
-    var validatedNickname = BehaviorRelay<NicknameValidationResult>(value: .short(message: ""))
+    var validatedNickname = ValidationResult.short("")
+    var username: String?
+    var isSignIn: Bool = false
   }
     
   var initialState: State = State()
   let provider: ServiceProviderType
   let uid: String
-
-  init(provider: ServiceProviderType, uid: String) {
+  let kind: LoginKind
+  let disposeBag = DisposeBag()
+  
+  init(provider: ServiceProviderType, uid: String, kind: LoginKind) {
     self.provider = provider
     self.uid = uid
+    self.kind = kind
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    
     case let .nicknameInput(input):
       return Observable.just(Mutation.validateNickname(input))
+      
+      //    case .tapSignIn:
     }
   }
   
-  func reduce(state: State, mutation: Mutation) -> State {
-    var state = state
-    switch mutation {
+    func reduce(state: State, mutation: Mutation) -> State {
+      var state = state
+      switch mutation {
+        
+      case let .validateNickname(input):
+        
+        self.validateNickname(input)
+          .subscribe(onNext: {
+            state.validatedNickname = $0
+          })
+          .disposed(by: self.disposeBag)
+        state.username = input
+        
+      }
       
-    case let .validateNickname(input):
-      
-      state.nickNameMessage = self.isValidNickname(input: input)
       return state
     }
-  }
 }
 
 // MARK: - Method
 
-/// email 입력값 확인해서 message 출력
 private extension SNSSignInViewReactor {
   
-  func isValidNickname(input: String) -> NSAttributedString {
-    let nicknameRegEx = "[가-힣A-Za-z0-9]{2,8}"
-    let nicknameTest = NSPredicate(format: "SELF MATCHES %@", nicknameRegEx)
-    var message: NSAttributedString
-    
-    if input.count == 0 {
-      message = NSAttributedString(string: "")
-    } else if input.count == 1 {
-      message = NSAttributedString(
-        string: "2자 이상 올바른 형식으로 입력해주세요.",
-        attributes: [.foregroundColor: UIColor.systemRed]
-      )
-    } else if nicknameTest.evaluate(with: input) == false {
-      message = NSAttributedString(
-        string: "특수 문자 없이 8자 이하로 입력해주세요.",
-        attributes: [.foregroundColor: UIColor.systemRed]
-      )
-    } else {
-      message = NSAttributedString(
-        string: "사용가능한 별명 입니다.",
-        attributes: [.foregroundColor: UIColor.systemGray]
-      )
-    }
-    return message
-  }
-  
+  /// email 입력값 확인해서 message 출력
   func validateNickname(_ nickname: String) -> Observable<ValidationResult> {
     let nicknameRegEx = "[가-힣A-Za-z0-9]{2,8}"
     let nicknameTest = NSPredicate(format: "SELF MATCHES %@", nicknameRegEx)
     
-    if nickname.count == 0 {
-      
+    if nickname.isEmpty {
+      return .just(.short(""))
+    } else if nickname.count == 1 {
+      return .just(.short("2자 이상 올바른 형식으로 입력해주세요."))
+    } else if nicknameTest.evaluate(with: nickname) == false {
+      return .just(.wrongForm("특수 문자 없이 8자 이하로 입력해주세요."))
+    } else {
+      return .just(.ok("사용가능한 별명 입니다."))
     }
   }
-  
-  
 }

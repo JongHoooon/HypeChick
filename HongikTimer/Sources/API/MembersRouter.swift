@@ -19,20 +19,26 @@ enum MembersRouter: URLRequestConvertible {
   // MARK: - Cases
   
   /// 회원등록
-  case register(_ request: RegisterRequest)
+  case emailRegister(_ request: RegisterRequest)
   
   /// 이메일 로그인
   case emailLogin(_ request: EmailLoginRequest)
   
+  /// SNS 회원가입
+  case snsRegister(_ request: SNSRegisterRequest)
+  
+  /// SNS 로그인
   case snsLogin(_ request: SNSLoginRequest)
+  
   
   // MARK: - End Point
   
   var path: String {
     switch self {
-    case .snsLogin(let request):      return "v1/socialLogin/\(request.kind.rawValue)"
+    case .emailRegister:              return "v1/members"
     case .emailLogin:                 return "v1/login"
-    default:                          return "v1/members"
+    case .snsRegister(let request):   return "v1/members/\(request.kind)"
+    case .snsLogin(let request):      return "v1/socialLogin/\(request.kind.rawValue)"
     }
   }
   
@@ -47,12 +53,11 @@ enum MembersRouter: URLRequestConvertible {
   // MARK: - Parameters
   
   var parameters: Parameters? {
-    let param = Parameters()
-    
     switch self {
-    case .emailLogin(let request):      return request.parameters
-    case .register(let request):        return request.parameters
-    case .snsLogin(let request):        return request.parameters
+    case .emailRegister(let request):     return request.parameters
+    case .emailLogin(let request):        return request.parameters
+    case .snsRegister(let request):       return request.parameters
+    case .snsLogin(let request):          return request.parameters
     }
   }
   
@@ -64,6 +69,8 @@ enum MembersRouter: URLRequestConvertible {
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
+    
+    print(urlRequest.url)
     
     return urlRequest
   }

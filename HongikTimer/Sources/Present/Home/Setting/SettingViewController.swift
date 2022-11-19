@@ -137,13 +137,36 @@ private extension SettingViewController {
     ).then {
       $0.addAction(UIAlertAction(title: "Cancel", style: .cancel))
       $0.addAction(UIAlertAction(title: "로그아웃", style: .destructive, handler: { [weak self] _ in
+        guard let self = self else { return }
         
         let kind = UserDefaultService.shared.getLoginKind()
+        
+        print(kind)
+        print(kind)
+        print(kind)
+        print(kind)
+        
+        //        try? Auth.auth().signOut()
+        //        naverAuthService.shared?.requestDeleteToken()
+        
         switch kind {
         case .email:
-          UserDefaultService.shared.logoutUser()
+          print("DEBUG email 회원 로그아웃")
+        case .kakao:
+          KakaoAuthService.shared.kakaoLogout()
+          print("DEBUG kakao 회원 로그아웃")
+          
         default:
           print("로그아웃")
+        }
+        UserDefaultService.shared.logoutUser()
+        
+        let vc = RegisterViewController(with: RegisterViewReactor(ServiceProvider()))
+        let nv = UINavigationController(rootViewController: vc)
+        nv.modalPresentationStyle = .fullScreen
+        self.present(nv, animated: true) {
+          self.navigationController?.popToRootViewController(animated: false)
+          self.tabBarController?.selectedIndex = 0
         }
         
       }))
@@ -153,14 +176,6 @@ private extension SettingViewController {
     actionSheet.popoverPresentationController?.sourceRect = tableView.bounds
     present(actionSheet, animated: true)
     
-    naverAuthService.shared?.requestDeleteToken()
-    
-    let vc = RegisterViewController(with: RegisterViewReactor(ServiceProvider()))
-    let nv = UINavigationController(rootViewController: vc)
-    nv.modalPresentationStyle = .fullScreen
-    present(nv, animated: true) { [weak self] in
-      self?.navigationController?.popToRootViewController(animated: false)
-      self?.tabBarController?.selectedIndex = 0
-    }
+//    naverAuthService.shared?.requestDeleteToken()
   }
 }

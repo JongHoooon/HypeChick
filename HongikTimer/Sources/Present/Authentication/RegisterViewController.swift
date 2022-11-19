@@ -129,9 +129,7 @@ final class RegisterViewController: BaseViewController {
         with: self,
         completion: #selector(snsSignInHandler)
       )
-    //        try? Auth.auth().signOut()
-    //        KakaoAuthService.shared.kakaoLogout()
-    //        naverAuthService.shared?.requestDeleteToken()
+
   }
   
   // MARK: - Init
@@ -154,8 +152,6 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
     print("DEBUG 네이버 로그인 성공")
     
-    self.naverLoginGetInfo()
-    
 //    AuthNotificationManager.shared.postNotificationSignInSuccess()
 //    AuthNotificationManager.shared.postNotificationSnsSignInNeed()
     
@@ -177,8 +173,10 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
     print("DEBUG 에러 = \(error.localizedDescription)")
   }
   
-  func naverLoginGetInfo() {
-      
+  func getNaverUID() {
+    
+    var uid: String
+    
     let loginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
     guard let isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() else { return }
@@ -208,10 +206,10 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
       guard let result = response.value as? [String: Any] else { return }
       guard let object = result["response"] as? [String: Any] else { return }
       guard let id = object["id"] as? String else { return }
-      
-      print("DEBUG naver login id: \(id)")
     }
   }
+  
+  
 }
 
 // MARK: - Method
@@ -325,13 +323,15 @@ extension RegisterViewController {
   
   @objc func snsSignInHandler(notification: Notification) {
 
-    guard let uid = notification.userInfo?["uid"] as? String else {
+    guard let uid = notification.userInfo?["uid"] as? String,
+          let kind = notification.userInfo?["kind"] as? LoginKind
+    else {
       print("DEBUG uid가 전달되지 않았습니다.")
       return
     }
-
+    
     let vc = SNSSignInViewController(
-      with: SNSSignInViewReactor(provider: self.reactor.provider, uid: uid)
+      with: SNSSignInViewReactor(provider: self.reactor.provider, uid: uid, kind: kind)
     )
     navigationController?.pushViewController(vc, animated: true)
   }

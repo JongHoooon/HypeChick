@@ -99,7 +99,7 @@ final class WriteViewReactor: Reactor {
         .create(
           currentState.title,
           maxMemberCount: currentState.selectNumber,
-          chief: self.userInfo.username,
+          chief: self.userInfo.username ?? "",
           startDay: Date(),
           content: currentState.content ?? ""
         )

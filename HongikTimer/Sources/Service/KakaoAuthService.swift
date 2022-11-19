@@ -30,15 +30,31 @@ struct KakaoAuthService {
               print(error)
             } else {
               let uid = String(user?.id ?? 0)
-              print("DEBUG kakao User Id : \(uid)")  // User Id : Optional(2433247323)
+              print("DEBUG kakao User Id : \(uid)")
               
-              //              let kakaoLogInRequest = SNSLoginRequest(uid: \(user?.id ?? 0), kind: .kakao)
+              APIClient.request(
+                User.self,
+                router: MembersRouter.snsLogin(SNSLoginRequest(uid: uid,
+                                                               kind: .kakao)
+                )) { result in
+                  switch result {
+                  case .success(let user):
+                    print("DEBUG kakao \(user.userInfo.id) 로그인 완료")
+                    UserDefaultService.shared.setUser(user)
+                    UserDefaultService.shared.setLoginKind(.kakao)
+                    
+                    AuthNotificationManager
+                      .shared
+                      .postNotificationSignInSuccess()
+                    
+                  case .failure(let err):
+                    APIClient.handleError(err)
+                    print("DEBUG 존재하지 않는 회원입니다. SNS회원 가입으로 이동")
+                    AuthNotificationManager.shared.postNotificationSnsSignInNeed(uid: uid, kind: .kakao)
+                  }
+                }
             }
           }
-          
-          //          AuthNotificationManager
-          //            .shared
-          //            .postNotificationSignInSuccess()
         }
         // do something
         //          let token = oauthToken
@@ -66,23 +82,23 @@ struct KakaoAuthService {
                 )) { result in
                   switch result {
                   case .success(let user):
-                    print("성공")
-                    print(user)
+                    print("DEBUG kakao \(user.userInfo.id) 로그인 완료")
+                    UserDefaultService.shared.setUser(user)
+                    UserDefaultService.shared.setLoginKind(.kakao)
+                    
+                    AuthNotificationManager
+                      .shared
+                      .postNotificationSignInSuccess()
+                    
                   case .failure(let err):
                     APIClient.handleError(err)
                     print("DEBUG 존재하지 않는 회원입니다. SNS회원 가입으로 이동")
-                    AuthNotificationManager.shared.postNotificationSnsSignInNeed(uid: uid)
+                    AuthNotificationManager.shared.postNotificationSnsSignInNeed(uid: uid, kind: .kakao)
                   }
                 }
             }
           }
-          
-          //          AuthNotificationManager
-          //            .shared
-          //            .postNotificationSignInSuccess()
         }
-        // do something
-        //          let token = oauthToken
       }
     }
   }

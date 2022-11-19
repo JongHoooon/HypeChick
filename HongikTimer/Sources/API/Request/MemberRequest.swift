@@ -43,3 +43,16 @@ struct SNSLoginRequest {
     ]
   }
 }
+
+struct SNSRegisterRequest {
+  let uid: String
+  let username: String
+  let kind: LoginKind
+  
+  var parameters: [String: Any] {
+    return [
+      "uid": uid,
+      "username": username
+    ]
+  }
+}

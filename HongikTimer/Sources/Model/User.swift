@@ -8,9 +8,9 @@
 import Foundation
 
 struct UserInfo: Codable {
-    var id: Int
-    var username: String
-    var email: String
+    var id: Int?
+    var username: String?
+    var email: String?
     
     init() {
         self.id = 1

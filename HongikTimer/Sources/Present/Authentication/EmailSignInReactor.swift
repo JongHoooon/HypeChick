@@ -10,13 +10,6 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-enum ValidationResult {
-    case ok(message: String)
-    case empty
-    case validating
-    case failed(message: String)
-}
-
 final class EmailSignInReactor: Reactor {
   
   let provider: ServiceProviderType

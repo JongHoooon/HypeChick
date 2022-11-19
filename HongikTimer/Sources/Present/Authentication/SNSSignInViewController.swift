@@ -22,7 +22,7 @@ final class SNSSignInViewController: BaseViewController, View {
     $0.becomeFirstResponder()
   }
   
-  private lazy var signUpButton = UIButton(configuration: labelConfig).then {
+  private lazy var signInButton = UIButton(configuration: labelConfig).then {
     $0.setTitle("회원가입", for: .normal)
     $0.setTitleColor(.systemBackground, for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .bold)
@@ -46,13 +46,6 @@ final class SNSSignInViewController: BaseViewController, View {
         })
         .disposed(by: disposeBag)
     view.addGestureRecognizer(tapBackground)
-    
-    AuthNotificationManager
-      .shared
-      .addObserverSignInSuccess(
-        with: self,
-        completion: #selector(loginSuccessHandler)
-      )
   }
   
   // MARK: - Init
@@ -81,17 +74,23 @@ extension SNSSignInViewController {
       .map { Reactor.Action.nicknameInput($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-       
+    
+//    signInButton.rx.tap
+//      .map { Reactor.Action.tapSignIn }
+//      .bind(to: reactor.action)
+//      .disposed(by: self.disposeBag)
+    
     // MARK: State
     
-    reactor.state.asObservable().map { $0.nickNameMessage }
-      .bind(to: nicknameTextField.messageLabel.rx.attributedText)
-      .disposed(by: disposeBag)
+    reactor.state.asObservable().map { $0.validatedNickname }
+      .bind(to: nicknameTextField.messageLabel.rx.inputValidate)
+      .disposed(by: self.disposeBag)
     
+    reactor.state.asObservable().map { $0.validatedNickname }
+      .bind(to: signInButton.rx.buttonValidate)
+      .disposed(by: self.disposeBag)
   }
 }
-
-// MARK: - TextField
 
 // MARK: - Private
 
@@ -106,7 +105,7 @@ private extension SNSSignInViewController {
     
     let stackView = UIStackView(arrangedSubviews: [
       nicknameTextField,
-      signUpButton
+      signInButton
     ]).then {
       $0.axis = .vertical
       $0.distribution = .equalSpacing
@@ -124,7 +123,7 @@ private extension SNSSignInViewController {
     ].forEach { view.addSubview($0) }
     
     stackView.snp.makeConstraints {
-      $0.top.equalToSuperview().inset(100.0)
+      $0.top.equalToSuperview().inset(148.0)
       $0.leading.trailing.equalToSuperview().inset(authDefaultInset)
     }
   }
@@ -132,21 +131,77 @@ private extension SNSSignInViewController {
   // MARK: - Selector
   
   @objc func tapsignUpButton() {
-    nicknameTextField.textField.resignFirstResponder()
     
-    guard let username = nicknameTextField.textField.text, !username.isEmpty else { return }
-    
-    print("DEBUG sns로 회원가입합니다!!!")
+    APIClient.request(
+      UserInfo.self,
+      router: MembersRouter.snsRegister(SNSRegisterRequest(uid: reactor?.uid ?? "",
+                                                           username: reactor?.currentState.username ?? "",
+                                                           kind: reactor?.kind ?? .email))
+    ) { [weak self] result in
+      guard let self = self else { return }
       
+      switch result {
+      case .success(let userInfo):
+        
+        // 회원가입 완료후 로그인
+        APIClient.request(
+          User.self,
+          router: MembersRouter.snsLogin(SNSLoginRequest(uid: userInfo.email ?? "",
+                                                         kind: self.reactor?.kind ?? .email)
+          )) { result in
+         
+            switch result {
+              
+            case .success(let user):
+              print("DEBUG \(self.reactor?.kind) \(user.userInfo.id) 로그인 완료")
+              self.reactor?.provider.userDefaultService.setUser(user)
+              self.reactor?.provider.userDefaultService.setLoginKind(self.reactor?.kind ?? .email)
+              
+              guard let provider = self.reactor?.provider else { return }
+              let vc = TabBarViewController(with: TabBarViewReactor(provider, with: user.userInfo))
+              
+              vc.modalPresentationStyle = .fullScreen
+              self.present(vc, animated: true)
+              self.navigationController?.popToRootViewController(animated: false)
+              
+            case .failure(let err):
+              APIClient.handleError(err)
+              print("회원가입 후 로그인 실패")
+            }
+          }
+      case .failure(let error):
+        APIClient.handleError(.unknown(error))
+        print("DEBUG SNS 회원가입 실패")
+      }
+    }
   }
-  
-  @objc func loginSuccessHandler() {
-    #warning("더미 유저") // 성공후 userdefaul에서 불러오기
-    guard let provider = self.reactor?.provider else { return }
-    let vc = TabBarViewController(with: TabBarViewReactor(provider, with: UserInfo()))
-    
-    vc.modalPresentationStyle = .fullScreen
-    present(vc, animated: true)
-    navigationController?.popToRootViewController(animated: false)
+}
+
+extension Reactive where Base: UILabel {
+  var inputValidate: Binder<ValidationResult> {
+    return Binder(self.base) { label, validate in
+      switch validate {
+      case .ok(let message):
+        label.text = message
+        label.textColor = .systemGray
+      case .wrongForm(let message):
+        label.text = message
+        label.textColor = .systemRed
+      case .short(let message):
+        label.text = message
+        label.textColor = .systemRed
+      }
+    }
+  }
+}
+
+extension Reactive where Base: UIButton {
+  var buttonValidate: Binder<ValidationResult> {
+    return Binder(self.base) { button, validate in
+      switch validate {
+      case .ok:   button.isEnabled = true
+      default:    button.isEnabled = false
+      }
+    }
   }
 }

@@ -78,7 +78,7 @@ extension AuthService {
   ) {
     
     let registerRequest = credentials.getRegisterRequest()
-    let urlRequest = MembersRouter.register(registerRequest)
+    let urlRequest = MembersRouter.emailRegister(registerRequest)
     
     AF.request(urlRequest)
       .responseDecodable(of: UserResponse.self) { dataResponse in
@@ -135,7 +135,6 @@ extension AuthService {
       }
   }
   
-  
 //  func loginWithSNS(
 //    uid: String,
 //    kind: LoginKind,
@@ -158,5 +157,11 @@ extension AuthService {
 //      }
 //  }
   
+  
+//  func snsRegister(
+//    uid: String,
+//    username: String,
+//    kind:
+//  )
   
 }
