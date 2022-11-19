@@ -141,16 +141,16 @@ private extension EmailLoginViewController {
 //          print("DEBUG tapLoginButton error: \(String(describing: error))")
 //          self?.view.makeToast("이메일 / 비밀번호를 확인하세요")
 //          return }
-//        
+//
 //      }
   }
   
   @objc func loginSuccessHandler() {
     
 #warning("더미 유저")
-    let user: User = ServiceProvider().userDefaultService.getUser()?.userInfo ?? User()
+    let userInfo: UserInfo = ServiceProvider().userDefaultService.getUser()?.userInfo ?? UserInfo()
     
-    let vc = TabBarViewController(with: TabBarViewReactor(ServiceProvider(), with: user))
+    let vc = TabBarViewController(with: TabBarViewReactor(ServiceProvider(), with: userInfo))
     vc.modalPresentationStyle = .fullScreen
     present(vc, animated: true)
     navigationController?.popToRootViewController(animated: false)

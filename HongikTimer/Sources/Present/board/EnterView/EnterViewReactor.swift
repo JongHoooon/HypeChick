@@ -24,15 +24,15 @@ final class EnterViewReactor: Reactor {
   }
   
   let provider: ServiceProviderType
-  var user: User
+  var userInfo: UserInfo
   var initialState: State
   
   init(
     _ provider: ServiceProviderType,
-    user: User
+    userInfo: UserInfo
   ) {
     self.provider = provider
-    self.user = user
+    self.userInfo = userInfo
     self.initialState = State()
   }
   

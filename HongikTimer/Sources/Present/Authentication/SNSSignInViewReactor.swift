@@ -12,7 +12,6 @@ import RxCocoa
 
 final class SNSSignInViewReactor: Reactor {
   
-  
   enum Action {
     case emailInput(_ email: String)
     case nicknameInput(_ nickname: String)
@@ -38,9 +37,11 @@ final class SNSSignInViewReactor: Reactor {
     
   var initialState: State = State()
   let provider: ServiceProviderType
+  let uid: String
 
-  init(provider: ServiceProviderType) {
+  init(provider: ServiceProviderType, uid: String) {
     self.provider = provider
+    self.uid = uid
   }
   
   func mutate(action: Action) -> Observable<Mutation> {

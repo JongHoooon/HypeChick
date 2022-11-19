@@ -24,13 +24,13 @@ final class TaskCellReactor: Reactor, BaseReactorType {
     var isEnabled: Bool
   }
   
-  let user: User
+  let userInfo: UserInfo
   let provider: ServiceProviderType
   let initialState: State
   let checkedCellIdRelay: BehaviorRelay<String>
   
-  init(_ provider: ServiceProviderType, user: User, task: Task, isEnabled: Bool = false, checkRelay: BehaviorRelay<String>) {
-    self.user = user
+  init(_ provider: ServiceProviderType, userInfo: UserInfo, task: Task, isEnabled: Bool = false, checkRelay: BehaviorRelay<String>) {
+    self.userInfo = userInfo
     self.provider = provider
     self.initialState = State(task: task, isEnabled: isEnabled)
     self.checkedCellIdRelay = checkRelay

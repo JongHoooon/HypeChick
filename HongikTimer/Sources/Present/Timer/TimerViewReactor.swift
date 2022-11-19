@@ -12,7 +12,7 @@ import RxSwift
 
 final class TimerViewReactor: Reactor {
   
-  var user: User
+  var userInfo: UserInfo
   var provider: ServiceProviderType
   
   enum Action {
@@ -29,8 +29,8 @@ final class TimerViewReactor: Reactor {
   
   let initialState = State(timeLableText: "00:00")
   
-  init(_ provider: ServiceProviderType, with user: User) {
-    self.user = user
+  init(_ provider: ServiceProviderType, with userInfo: UserInfo) {
+    self.userInfo = userInfo
     self.provider = provider
   }
   

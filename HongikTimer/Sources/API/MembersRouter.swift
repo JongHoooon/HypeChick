@@ -13,7 +13,7 @@ enum MembersRouter: URLRequestConvertible {
   
   // MARK: - Property
   var baseURL: URL {
-      return URL(string: API.BASE_URL)!
+    return URL(string: APIClient.BASE_URL)!
   }
   
   // MARK: - Cases
@@ -24,12 +24,15 @@ enum MembersRouter: URLRequestConvertible {
   /// 이메일 로그인
   case emailLogin(_ request: EmailLoginRequest)
   
+  case snsLogin(_ request: SNSLoginRequest)
+  
   // MARK: - End Point
   
   var path: String {
     switch self {
-    case .emailLogin:   return "v1/login"
-    default:            return "v1/members"
+    case .snsLogin(let request):      return "v1/socialLogin/\(request.kind.rawValue)"
+    case .emailLogin:                 return "v1/login"
+    default:                          return "v1/members"
     }
   }
   
@@ -44,22 +47,12 @@ enum MembersRouter: URLRequestConvertible {
   // MARK: - Parameters
   
   var parameters: Parameters? {
-      switch self {
-      case let .emailLogin(request):
-          return request.parameters
-      case let .register(request):
-          return request.parameters
-      }
-  }
-  
-  // MARK: - Headers
-  
-  var headers: HTTPHeaders {
+    let param = Parameters()
+    
     switch self {
-    default:
-      return [
-        "Accept": "application/json"
-      ]
+    case .emailLogin(let request):      return request.parameters
+    case .register(let request):        return request.parameters
+    case .snsLogin(let request):        return request.parameters
     }
   }
   
@@ -71,7 +64,6 @@ enum MembersRouter: URLRequestConvertible {
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
-  
     
     return urlRequest
   }

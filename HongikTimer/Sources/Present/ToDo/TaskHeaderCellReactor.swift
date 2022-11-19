@@ -26,14 +26,14 @@ final class TaskHeaderCellReactor: Reactor, BaseReactorType {
   // MARK: - Property
   
   let provider: ServiceProviderType
-  let user: User
+  let userInfo: UserInfo
   let initialState = State()
   
   // MARK: - Init
   
-  init(_ provider: ServiceProviderType, user: User) {
+  init(_ provider: ServiceProviderType, userInfo: UserInfo) {
     self.provider = provider
-    self.user = user
+    self.userInfo = userInfo
   }
   
   func mutate(action: Action) -> Observable<Mutation> {

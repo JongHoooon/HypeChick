@@ -11,44 +11,44 @@ import UIKit
 
 final class NotificationViewController: UICollectionViewController {
     
-    var notifications: [Notification] = [
-            Notification(
+    var notifications: [Notifi] = [
+            Notifi(
                 icon: .person,
                 title: "iOS 스터디",
                 description: "iOS 스터디 모집합니다~",
                 date: "09/31 10:34"
             ),
-            Notification(
+            Notifi(
                 icon: .pencil,
                 title: "Java 스터디",
                 description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~",
                 date: "10/02 15:33"
             ),
-            Notification(
+            Notifi(
                 icon: .person,
                 title: "iOS 스터디",
                 description: "iOS 스터디 모집합니다~",
                 date: "09/31 10:34"
             ),
-            Notification(
+            Notifi(
                 icon: .pencil,
                 title: "Java 스터디",
                 description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~",
                 date: "10/02 15:33"
             ),
-            Notification(
+            Notifi(
                 icon: .person,
                 title: "iOS 스터디",
                 description: "iOS 스터디 모집합니다~",
                 date: "09/31 10:34"
             ),
-            Notification(
+            Notifi(
                 icon: .pencil,
                 title: "Java 스터디",
                 description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~",
                 date: "10/02 15:33"
             ),
-            Notification(
+            Notifi(
                 icon: .person,
                 title: "iOS 스터디",
                 description: "iOS 스터디 모집합니다~",

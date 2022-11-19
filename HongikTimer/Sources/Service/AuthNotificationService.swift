@@ -36,10 +36,11 @@ struct AuthNotificationManager {
     )
   }
   
-  func postNotificationSnsSignInNeed() {
+  func postNotificationSnsSignInNeed(uid: String) {
     NotificationCenter.default.post(
       name: AuthentState.snsSignInNeed.notificationName,
-      object: nil
+      object: nil,
+      userInfo: ["uid": uid]
     )
   }
   

@@ -157,7 +157,7 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
     self.naverLoginGetInfo()
     
 //    AuthNotificationManager.shared.postNotificationSignInSuccess()
-    AuthNotificationManager.shared.postNotificationSnsSignInNeed()
+//    AuthNotificationManager.shared.postNotificationSnsSignInNeed()
     
   }
   
@@ -315,17 +315,23 @@ extension RegisterViewController {
   }
   
   @objc func loginSuccessHandler() {
-    #warning("더미 유저") // 성공후 userdefaul에서 불러오기
-    let vc = TabBarViewController(with: TabBarViewReactor(reactor.provider, with: User()))
+    guard let userInfo = self.reactor.provider.userDefaultService.getUser()?.userInfo else { return }
+    let vc = TabBarViewController(with: TabBarViewReactor(reactor.provider, with: userInfo))
     
     vc.modalPresentationStyle = .fullScreen
     present(vc, animated: true)
     navigationController?.popToRootViewController(animated: false)
   }
   
-  @objc func snsSignInHandler() {
+  @objc func snsSignInHandler(notification: Notification) {
+
+    guard let uid = notification.userInfo?["uid"] as? String else {
+      print("DEBUG uid가 전달되지 않았습니다.")
+      return
+    }
+
     let vc = SNSSignInViewController(
-      with: SNSSignInViewReactor(provider: self.reactor.provider)
+      with: SNSSignInViewReactor(provider: self.reactor.provider, uid: uid)
     )
     navigationController?.pushViewController(vc, animated: true)
   }

@@ -17,6 +17,7 @@ struct UserDefaultService {
     
     // 로그인
     case user
+    case kind
     
     // Home 화면
     case chickImage
@@ -29,7 +30,6 @@ struct UserDefaultService {
     // boar 화면
     case boardPost
     
-    
     var key: String {
       self.rawValue
     }
@@ -38,26 +38,38 @@ struct UserDefaultService {
   // MARK: - Auth
   
   /// 로그인 or 회원가입시 현재 유저 저장
-  func setUser(_ user: EmailUser) {
+  func setUser(_ user: User) {
     standard.setValue(
       try? JSONEncoder().encode(user),
       forKey: UserDefaultKeys.user.key)
   }
   
   /// 현재 유저 get
-  func getUser() -> EmailUser? {
+  func getUser() -> User? {
     guard let data = standard.data(forKey: UserDefaultKeys.user.key) else { return nil }
     
     return (
-      try? JSONDecoder().decode(EmailUser.self, from: data)
+      try? JSONDecoder().decode(User.self, from: data)
     )
+  }
+  
+  /// email, kakao, naver, apple, google 중 어떤 방법으로 로그인했는지 저장
+  func setLoginKind(_ kind: LoginKind) {
+    standard.setValue(kind.rawValue, forKey: UserDefaultKeys.kind.key)
+  }
+  
+  /// 저장한 로그인 방법 return
+  func getLoginKind() -> LoginKind {
+    guard let kind = standard.string(forKey: UserDefaultKeys.kind.key) else { return .email }
+    return LoginKind(rawValue: kind) ?? .email
   }
   
   /// 로그아웃시 저장된 유저값 삭제
   func logoutUser() {
+    let user = self.getUser()?.userInfo
     standard.removeObject(forKey: UserDefaultKeys.user.key)
-    
-    print("DEBUG User Defau유저 정보 삭제")
+    print("DEBUG id: \(user?.id ?? 0) , username: \(user?.username ?? "") 로그아웃")
+    print("DEBUG User Default 정보 삭제")
   }
   
   // MARK: - Home 화면 관련

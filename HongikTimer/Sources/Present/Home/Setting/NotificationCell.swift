@@ -11,7 +11,7 @@ import UIKit
 
 final class NotificationCell: UICollectionViewCell {
         
-    var notification: Notification? {
+    var notification: Notifi? {
         didSet { setupView() }
     }
     

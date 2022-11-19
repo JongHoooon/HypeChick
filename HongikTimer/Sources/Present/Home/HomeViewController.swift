@@ -206,7 +206,7 @@ private extension HomeViewController {
   }
   
   @objc func tapItemButton() {
-    let vc = ItemViewController(ItemViewReactor(reactor.provider, with: reactor.user))
+    let vc = ItemViewController(ItemViewReactor(reactor.provider, with: reactor.userInfo))
     navigationController?.pushViewController(vc, animated: true)
   }
 }

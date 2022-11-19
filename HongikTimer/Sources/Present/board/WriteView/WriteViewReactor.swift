@@ -64,12 +64,12 @@ final class WriteViewReactor: Reactor {
   }
   
   let provider: ServiceProviderType
-  let user: User
+  let userInfo: UserInfo
   let initialState: State
   
-  init(_ provider: ServiceProviderType, user: User) {
+  init(_ provider: ServiceProviderType, userInfo: UserInfo) {
     self.provider = provider
-    self.user = user
+    self.userInfo = userInfo
     self.initialState = State()
   }
   
@@ -99,7 +99,7 @@ final class WriteViewReactor: Reactor {
         .create(
           currentState.title,
           maxMemberCount: currentState.selectNumber,
-          chief: self.user.username,
+          chief: self.userInfo.username,
           startDay: Date(),
           content: currentState.content ?? ""
         )

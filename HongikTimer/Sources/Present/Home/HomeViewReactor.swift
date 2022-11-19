@@ -11,7 +11,7 @@ import RxSwift
 
 final class HomeViewReactor: Reactor, BaseReactorType {
 
-  let user: User
+  let userInfo: UserInfo
   let provider: ServiceProviderType
   
   enum Action {
@@ -35,8 +35,8 @@ final class HomeViewReactor: Reactor, BaseReactorType {
     studyTime: "00:00:00"
   )
   
-  init(_ provider: ServiceProviderType, with user: User) {
-    self.user = user
+  init(_ provider: ServiceProviderType, with userInfo: UserInfo) {
+    self.userInfo = userInfo
     self.provider = provider
     
   }

@@ -169,7 +169,7 @@ extension ItemViewController: UICollectionViewDelegateFlowLayout {
     if indexPath.item == 0 {
       let vc = WallpaperViewController(WallpaperViewReactor(
         reactor.provider,
-        with: reactor.user
+        with: reactor.userInfo
       ))
       vc.dismissCompletion = { [weak self] in
         self?.refresh()
@@ -181,7 +181,7 @@ extension ItemViewController: UICollectionViewDelegateFlowLayout {
     } else {
       let vc = ChickViewController(ChickViewReactor(
         reactor.provider,
-        with: reactor.user
+        with: reactor.userInfo
       ))
       vc.dismissCompletion = { [weak self] in
         self?.refresh()

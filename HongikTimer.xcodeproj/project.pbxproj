@@ -48,7 +48,7 @@
 		27B471B628D0A9D900805F79 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471B528D0A9D900805F79 /* NotificationViewController.swift */; };
 		27B471B828D0ABAA00805F79 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471B728D0ABAA00805F79 /* ItemViewController.swift */; };
 		27B471BA28D0ACC700805F79 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471B928D0ACC700805F79 /* NotificationCell.swift */; };
-		27B471BD28D0ACF100805F79 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471BC28D0ACF100805F79 /* Notification.swift */; };
+		27B471BD28D0ACF100805F79 /* Notifi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471BC28D0ACF100805F79 /* Notifi.swift */; };
 		27B471C028D1968500805F79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27B471BF28D1968500805F79 /* GoogleService-Info.plist */; };
 		27B471C228D19ADA00805F79 /* EmailLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471C128D19ADA00805F79 /* EmailLoginViewController.swift */; };
 		27B471C528D19B2400805F79 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471C428D19B2400805F79 /* UIColor+Extension.swift */; };
@@ -59,7 +59,6 @@
 		27B471D328D22E6900805F79 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471D228D22E6900805F79 /* Constant.swift */; };
 		27B471D528D236D900805F79 /* AuthCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471D428D236D900805F79 /* AuthCredentials.swift */; };
 		27B471D828D2CA2700805F79 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B471D728D2CA2700805F79 /* AuthService.swift */; };
-		27C2DFAC28F6A927009356E5 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C2DFAB28F6A927009356E5 /* AuthResponse.swift */; };
 		BBDC9DA579FF34EB084959EE /* Pods_HongikTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E53A09D2737E6978520E32E /* Pods_HongikTimer.framework */; };
 		C6FE9DF36F062C13AC44CB3F /* Pods_HongikTimerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F76E547649D65B5F515B8DE4 /* Pods_HongikTimerTests.framework */; };
 		ED037A5F291027C400D30F7A /* ObservableType+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED037A5E291027C400D30F7A /* ObservableType+Extension.swift */; };
@@ -82,6 +81,7 @@
 		ED052D3F29142D2000E79BB6 /* BoardViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED052D3E29142D2000E79BB6 /* BoardViewReactor.swift */; };
 		ED052D4129142E4100E79BB6 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED052D4029142E4100E79BB6 /* helpers.swift */; };
 		ED052D4329142EA600E79BB6 /* BoardPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED052D4229142EA600E79BB6 /* BoardPost.swift */; };
+		ED1191762928E2BF00E589D5 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1191752928E2BF00E589D5 /* APIClient.swift */; };
 		ED13F2F5290E46CA00883D19 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED13F2F4290E46CA00883D19 /* SettingViewController.swift */; };
 		ED2402E02920BE23000DF54C /* TodoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2402DF2920BE23000DF54C /* TodoService.swift */; };
 		ED2402E22920BF00000DF54C /* TodoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2402E12920BF00000DF54C /* TodoViewReactor.swift */; };
@@ -193,7 +193,7 @@
 		27B471B528D0A9D900805F79 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		27B471B728D0ABAA00805F79 /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		27B471B928D0ACC700805F79 /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
-		27B471BC28D0ACF100805F79 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		27B471BC28D0ACF100805F79 /* Notifi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifi.swift; sourceTree = "<group>"; };
 		27B471BF28D1968500805F79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		27B471C128D19ADA00805F79 /* EmailLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
 		27B471C428D19B2400805F79 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -205,7 +205,6 @@
 		27B471D428D236D900805F79 /* AuthCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCredentials.swift; sourceTree = "<group>"; };
 		27B471D728D2CA2700805F79 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		27B471D928D2DF4A00805F79 /* HongikTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HongikTimer.entitlements; sourceTree = "<group>"; };
-		27C2DFAB28F6A927009356E5 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		57C6F192BD0CB9B8275D4676 /* Pods-HongikTimerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HongikTimerTests.release.xcconfig"; path = "Target Support Files/Pods-HongikTimerTests/Pods-HongikTimerTests.release.xcconfig"; sourceTree = "<group>"; };
 		58038C9761BB30679E5DE303 /* Pods-HongikTimerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HongikTimerTests.debug.xcconfig"; path = "Target Support Files/Pods-HongikTimerTests/Pods-HongikTimerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		583263E1154E6955416586F3 /* Pods-HongikTimer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HongikTimer.release.xcconfig"; path = "Target Support Files/Pods-HongikTimer/Pods-HongikTimer.release.xcconfig"; sourceTree = "<group>"; };
@@ -233,6 +232,7 @@
 		ED052D3E29142D2000E79BB6 /* BoardViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewReactor.swift; sourceTree = "<group>"; };
 		ED052D4029142E4100E79BB6 /* helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
 		ED052D4229142EA600E79BB6 /* BoardPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardPost.swift; sourceTree = "<group>"; };
+		ED1191752928E2BF00E589D5 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		ED13F2F4290E46CA00883D19 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		ED2402DF2920BE23000DF54C /* TodoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoService.swift; sourceTree = "<group>"; };
 		ED2402E12920BF00000DF54C /* TodoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoViewReactor.swift; sourceTree = "<group>"; };
@@ -505,7 +505,7 @@
 		27B471BB28D0ACDC00805F79 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				27B471BC28D0ACF100805F79 /* Notification.swift */,
+				27B471BC28D0ACF100805F79 /* Notifi.swift */,
 				ED037A7029117E2F00D30F7A /* ItemCell.swift */,
 				27B471D428D236D900805F79 /* AuthCredentials.swift */,
 				278DE6B828D71A1200E38A1F /* SettingCellModel.swift */,
@@ -513,7 +513,6 @@
 				27A977B228E3501A0076FF80 /* Task.swift */,
 				ED5F344129276C73002EB5D2 /* Task2.swift */,
 				2793C11D28F47AF400FC7D13 /* User.swift */,
-				27C2DFAB28F6A927009356E5 /* AuthResponse.swift */,
 				ED052D4229142EA600E79BB6 /* BoardPost.swift */,
 				ED2402E92920ED03000DF54C /* TestGroup.swift */,
 			);
@@ -667,6 +666,7 @@
 			children = (
 				ED73914A29285D7500A0024E /* APIRouter.swift */,
 				ED7391452927D46800A0024E /* MembersRouter.swift */,
+				ED1191752928E2BF00E589D5 /* APIClient.swift */,
 				ED7391422927D46700A0024E /* Request */,
 				ED7391432927D46700A0024E /* Response */,
 			);
@@ -1079,6 +1079,7 @@
 				ED052D3F29142D2000E79BB6 /* BoardViewReactor.swift in Sources */,
 				2750A45228D0386A000EE24D /* HomeViewController.swift in Sources */,
 				27615A8328D450B80099DB00 /* SeparatorView.swift in Sources */,
+				ED1191762928E2BF00E589D5 /* APIClient.swift in Sources */,
 				2750A40928D02BE9000EE24D /* TabBarViewController.swift in Sources */,
 				EDF3A8B829125E9300A7C980 /* GroupDetailCell.swift in Sources */,
 				2793C12628F49F9100FC7D13 /* UIView+Extension.swift in Sources */,
@@ -1125,7 +1126,6 @@
 				27B471D328D22E6900805F79 /* Constant.swift in Sources */,
 				ED2402E72920DEE3000DF54C /* TaskHeaderCellReactor.swift in Sources */,
 				2793C12B28F52F4300FC7D13 /* UIButton+Extension.swift in Sources */,
-				27C2DFAC28F6A927009356E5 /* AuthResponse.swift in Sources */,
 				EDF3A89A29120F7C00A7C980 /* AutoSlideCollectionViewCell.swift in Sources */,
 				27B471C928D1BAC300805F79 /* EmailSignInViewController.swift in Sources */,
 				ED2402E22920BF00000DF54C /* TodoViewReactor.swift in Sources */,
@@ -1135,7 +1135,7 @@
 				27A977AB28E331D70076FF80 /* TaskCell.swift in Sources */,
 				ED73914D29285DAB00A0024E /* AlertService.swift in Sources */,
 				EDF2F1FE29273CA800A59FA2 /* SNSSignInViewReactor.swift in Sources */,
-				27B471BD28D0ACF100805F79 /* Notification.swift in Sources */,
+				27B471BD28D0ACF100805F79 /* Notifi.swift in Sources */,
 				2793C12428F499DC00FC7D13 /* TaskEditPresentaionController.swift in Sources */,
 				27B471CB28D2070700805F79 /* TextFieldView.swift in Sources */,
 				EDF3A89629120F7C00A7C980 /* CategoryView.swift in Sources */,

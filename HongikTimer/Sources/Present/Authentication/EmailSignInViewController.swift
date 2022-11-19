@@ -229,44 +229,23 @@ private extension EmailSignInViewController {
           guard let self = self else { return }
           
           switch result {
-          case .success(let emailUser):
-            print("registerAndLoginWithEmail 성공: \(emailUser.userInfo)")
-            self.reactor.provider.userDefaultService.setUser(emailUser)
+          case .success(let user):
+            print("registerAndLoginWithEmail 성공: \(user.userInfo)")
+            self.reactor.provider.userDefaultService.setUser(user)
             self.view.hideToast()
             
-            let user = emailUser.userInfo
+            let userInfo = user.userInfo
             let provider = self.reactor.provider
-            let vc = TabBarViewController(with: TabBarViewReactor(provider, with: user))
+            let vc = TabBarViewController(with: TabBarViewReactor(provider, with: userInfo))
             vc.modalPresentationStyle = .fullScreen
             self.present(vc, animated: true)
             
           case .failure(let error):
             print("registerAndLoginWithEmail 실패: \(error)")
-            self.handleError(error)
+            APIClient.handleError(error)
             self.view.hideToast()
             self.view.makeToast("회원 가입 실패", position: .top)
           }
         })
   }
 }
-
-extension EmailSignInViewController {
-  
-  /// 에러 처리
-  /// - Parameter err: APIError
-  fileprivate func handleError(_ err: ApiError) {
-    
-    print("error: \(err.info)")
-    
-    switch err {
-    case ApiError.notAccept:
-      print("not Accep error: ")
-    case ApiError.unknown(let err):
-      print("unknoew error: \(err)")
-    case .badStatus(let code):
-      print("bad status error code: \(code)")
-    }
-  }
-}
-
-// TODO: 회원가입 에러 처리, 버튼 활성화 처리

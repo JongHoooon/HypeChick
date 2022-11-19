@@ -9,7 +9,7 @@ import ReactorKit
 
 final class ChickViewReactor: Reactor, BaseReactorType {
   
-  var user: User
+  var userInfo: UserInfo
   var provider: ServiceProviderType
   
   enum Action {
@@ -26,8 +26,8 @@ final class ChickViewReactor: Reactor, BaseReactorType {
   
   let initialState: State = State()
   
-  init(_ provider: ServiceProviderType, with user: User) {
-    self.user = user
+  init(_ provider: ServiceProviderType, with userInfo: UserInfo) {
+    self.userInfo = userInfo
     self.provider = provider
   }
 }

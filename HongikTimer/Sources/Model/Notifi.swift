@@ -1,5 +1,5 @@
 //
-//  Notification.swift
+//  Notifi.swift
 //  HongikTimer
 //
 //  Created by JongHoon on 2022/09/13.
@@ -12,7 +12,7 @@ enum NotificationIcon {
     case person
 }
 
-struct Notification {
+struct Notifi {
     private let icon: NotificationIcon
     let title: String
     let description: String

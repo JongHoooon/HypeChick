@@ -1,5 +1,5 @@
 //
-//  EmailUser.swift
+//  User.swift
 //  HongikTimer
 //
 //  Created by JongHoon on 2022/11/18.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct EmailUser: Codable {
+struct User: Codable {
     let result: String
     let expiresIn: Int
     let token, message: String
-    let userInfo: User
+    let userInfo: UserInfo
 
     enum CodingKeys: String, CodingKey {
         case result
@@ -26,6 +26,6 @@ struct EmailUser: Codable {
     self.expiresIn = 0
     self.token = "토큰입니다"
     self.message = "실패"
-    self.userInfo = User()
+    self.userInfo = UserInfo()
   }
 }

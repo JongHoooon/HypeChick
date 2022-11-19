@@ -29,13 +29,13 @@ final class BoardViewReactor: Reactor, BaseReactorType {
   // MARK: - Property
   
   let provider: ServiceProviderType
-  let user: User
+  let userInfo: UserInfo
   let initialState: State
   
   // MARK: - Initialize
   
-  init(_ provider: ServiceProviderType, with user: User) {
-    self.user = user
+  init(_ provider: ServiceProviderType, with userInfo: UserInfo) {
+    self.userInfo = userInfo
     self.provider = provider
     self.initialState = State(sections: [])
   }
@@ -76,10 +76,10 @@ extension BoardViewReactor {
   }
   
   func reactorForWriteView() -> WriteViewReactor {
-    return WriteViewReactor(self.provider, user: self.user)
+    return WriteViewReactor(self.provider, userInfo: self.userInfo)
   }
   
   func reactorForEnterView() -> EnterViewReactor {
-    return EnterViewReactor(self.provider, user: self.user)
+    return EnterViewReactor(self.provider, userInfo: self.userInfo)
   }
 }

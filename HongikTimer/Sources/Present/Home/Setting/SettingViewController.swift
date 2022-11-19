@@ -137,27 +137,15 @@ private extension SettingViewController {
     ).then {
       $0.addAction(UIAlertAction(title: "Cancel", style: .cancel))
       $0.addAction(UIAlertAction(title: "로그아웃", style: .destructive, handler: { [weak self] _ in
-        AuthService.shared.logOutWithFirebase { success in
-          DispatchQueue.main.async {
-            if success {
-              
-              print("DEBUG 로그아웃 시도")
-              
-              try? Auth.auth().signOut()
-              ServiceProvider().userDefaultService.logoutUser()
-              
-              let vc = RegisterViewController(with: RegisterViewReactor(ServiceProvider()))
-              let nv = UINavigationController(rootViewController: vc)
-              nv.modalPresentationStyle = .fullScreen
-              self?.present(nv, animated: true) { [weak self] in
-                self?.navigationController?.popToRootViewController(animated: false)
-                self?.tabBarController?.selectedIndex = 0
-              }
-            } else {
-              fatalError("Could not log out user")
-            }
-          }
+        
+        let kind = UserDefaultService.shared.getLoginKind()
+        switch kind {
+        case .email:
+          UserDefaultService.shared.logoutUser()
+        default:
+          print("로그아웃")
         }
+        
       }))
     }
     

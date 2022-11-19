@@ -68,7 +68,7 @@ final class TodoViewReactor: Reactor, BaseReactorType {
   }
   
   let provider: ServiceProviderType
-  let user: User
+  let userInfo: UserInfo
   let initialState: State
   let todoRelay = BehaviorRelay<String>(value: "")
   let checkedCellIdRelay = BehaviorRelay<String>(value: "")
@@ -80,8 +80,8 @@ final class TodoViewReactor: Reactor, BaseReactorType {
   
   // MARK: - Initialize
   
-  init(_ provider: ServiceProviderType, user: User) {
-    self.user = user
+  init(_ provider: ServiceProviderType, userInfo: UserInfo) {
+    self.userInfo = userInfo
     self.provider = provider
     self.initialState = State(sections: [], tasks: [])
   }
@@ -162,7 +162,7 @@ final class TodoViewReactor: Reactor, BaseReactorType {
             let task = Task(contents: self.todoRelay.value, day: self.currentState.selectedDay)
             let reactor = TaskCellReactor(
               self.provider,
-              user: self.user,
+              userInfo: self.userInfo,
               task: task,
               checkRelay: self.checkedCellIdRelay
             )
@@ -195,7 +195,7 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       
       let reactor = TaskCellReactor(
         self.provider,
-        user: user,
+        userInfo: userInfo,
         task: task,
         checkRelay: self.checkedCellIdRelay
       )
@@ -207,7 +207,7 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       task.isChecked?.toggle()
       let reactor = TaskCellReactor(
         self.provider,
-        user: self.user,
+        userInfo: self.userInfo,
         task: task,
         checkRelay: self.checkedCellIdRelay
       )
@@ -230,11 +230,11 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       state.tasks = tasks
       let sectionItems = currentTasks.map { TaskCellReactor(
         self.provider,
-        user: self.user,
+        userInfo: self.userInfo,
         task: $0,
         checkRelay: self.checkedCellIdRelay
       )}
-      let sectionModel = TaskHeaderCellReactor(self.provider, user: self.user)
+      let sectionModel = TaskHeaderCellReactor(self.provider, userInfo: self.userInfo)
       let section = TaskListSection(model: sectionModel, items: sectionItems)
       state.sections = [section]
       
@@ -245,11 +245,11 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       let currentTasks = tasks.filter { $0.date == dateFormatter.string(from: date)}
       let sectionItems = currentTasks.map { TaskCellReactor(
         self.provider,
-        user: self.user,
+        userInfo: self.userInfo,
         task: $0,
         checkRelay: self.checkedCellIdRelay
       )}
-      let sectionModel = TaskHeaderCellReactor(self.provider, user: self.user)
+      let sectionModel = TaskHeaderCellReactor(self.provider, userInfo: self.userInfo)
       let section = TaskListSection(model: sectionModel, items: sectionItems)
       state.sections = [section]
     
@@ -306,7 +306,7 @@ extension TodoViewReactor {
     
     return TaskEditViewReactor(
       provider: self.provider,
-      user: self.user, task: task!, mode: mode)
+      userInfo: self.userInfo, task: task!, mode: mode)
   }
   
   private func isToday(day: Date) -> Bool {

@@ -10,11 +10,11 @@ import UIKit
 final class TabBarViewReactor {
    
   let provider: ServiceProviderType
-  var user: User
+  var userInfo: UserInfo
   
-  init(_ provider: ServiceProviderType, with user: User) {
+  init(_ provider: ServiceProviderType, with userInfo: UserInfo) {
     self.provider = provider
-    self.user = user
+    self.userInfo = userInfo
   }
   
   private let homeTabBarItem = UITabBarItem(
@@ -45,20 +45,20 @@ final class TabBarViewReactor {
   
   private lazy var homeViewConroller = UINavigationController(
     rootViewController: HomeViewController(
-      HomeViewReactor(self.provider, with: self.user)
+      HomeViewReactor(self.provider, with: self.userInfo)
     )).then {
       $0.tabBarItem = homeTabBarItem
     }
   
   private lazy var todoViewController = UINavigationController(rootViewController: TodoViewController(
-    TodoViewReactor(self.provider, user: self.user)
+    TodoViewReactor(self.provider, userInfo: self.userInfo)
   )).then {
     $0.tabBarItem = todoTabBarItem
   }
   
   private lazy var timerViewController = UINavigationController(
     rootViewController: TimerViewController(
-      TimerViewReactor(self.provider, with: self.user)
+      TimerViewReactor(self.provider, with: self.userInfo)
     )).then {
     $0.tabBarItem = timerTabBarItem
   }
@@ -67,7 +67,7 @@ final class TabBarViewReactor {
     $0.tabBarItem = groupTabBarItem
   }
   private lazy var boardViewController = UINavigationController(rootViewController: BoardViewController(
-    BoardViewReactor(self.provider, with: self.user)
+    BoardViewReactor(self.provider, with: self.userInfo)
   )).then {
     $0.tabBarItem = boardTabBarItem
   }

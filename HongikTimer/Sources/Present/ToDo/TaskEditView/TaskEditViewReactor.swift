@@ -33,7 +33,7 @@ final class TaskEditViewReactor: Reactor, BaseReactorType {
     var changeButtonTitle: String
   }
   
-  let user: User
+  let userInfo: UserInfo
   let provider: ServiceProviderType
   let initialState: State
   var todoRelay = BehaviorRelay<String>(value: "")
@@ -42,7 +42,7 @@ final class TaskEditViewReactor: Reactor, BaseReactorType {
   
   // MARK: - Init
   
-  init(provider: ServiceProviderType, user: User, task: Task, mode: TaskEditMode) {
+  init(provider: ServiceProviderType, userInfo: UserInfo, task: Task, mode: TaskEditMode) {
     var changeButtonTitle: String {
       switch mode {
       case .today:
@@ -53,7 +53,7 @@ final class TaskEditViewReactor: Reactor, BaseReactorType {
     }
     
     self.provider = provider
-    self.user = user
+    self.userInfo = userInfo
     self.taskEditMode = mode
     self.initialState = State(
       task: task,

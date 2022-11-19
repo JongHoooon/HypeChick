@@ -171,7 +171,7 @@ private extension SNSSignInViewController {
   @objc func loginSuccessHandler() {
     #warning("더미 유저") // 성공후 userdefaul에서 불러오기
     guard let provider = self.reactor?.provider else { return }
-    let vc = TabBarViewController(with: TabBarViewReactor(provider, with: User()))
+    let vc = TabBarViewController(with: TabBarViewReactor(provider, with: UserInfo()))
     
     vc.modalPresentationStyle = .fullScreen
     present(vc, animated: true)
