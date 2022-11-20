@@ -23,8 +23,6 @@ final class SettingViewController: UIViewController {
   
   private lazy var settings = [[SettingCellModel]]()
   
-  // MARK: - Lifecycle
-  
   private lazy var naverAuthService = NaverAuthService(delegate: self)
   
   // MARK: - Lifecycle
@@ -146,9 +144,6 @@ private extension SettingViewController {
         print(kind)
         print(kind)
         print(kind)
-        
-        //        try? Auth.auth().signOut()
-        //        naverAuthService.shared?.requestDeleteToken()
         
         switch kind {
         case .email:

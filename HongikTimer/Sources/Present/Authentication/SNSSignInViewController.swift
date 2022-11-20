@@ -13,10 +13,13 @@ import CloudKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import NaverThirdPartyLogin
 
 final class SNSSignInViewController: BaseViewController, View {
   
   // MARK: - Property
+  
+  private lazy var naverAuthService = NaverAuthService(delegate: self)
   
   private lazy var nicknameTextField = TextFieldView(with: "별명").then {
     $0.becomeFirstResponder()
@@ -92,17 +95,46 @@ extension SNSSignInViewController {
   }
 }
 
+// MARK: - NaverThirdPartyLoginConnectionDelegate
+
+extension SNSSignInViewController: NaverThirdPartyLoginConnectionDelegate {
+  func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+    
+  }
+  
+  func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+    
+  }
+  
+  func oauth20ConnectionDidFinishDeleteToken() {
+    
+  }
+  
+  func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+    
+  }
+  
+  
+}
+
 // MARK: - Private
 
 private extension SNSSignInViewController {
   func setupNavigationBar() {
-    navigationController?.navigationBar.topItem?.title = ""
+
+    let backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(tapBackButton))
+    self.navigationItem.leftBarButtonItem = backBarButtonItem
+
+//    navigationController?.navigationBar.topItem?.title = ""
     navigationItem.title = "회원가입"
   }
   
   func configureLayout() {
     view.backgroundColor = .systemBackground
-    
+     
     let stackView = UIStackView(arrangedSubviews: [
       nicknameTextField,
       signInButton
@@ -174,6 +206,22 @@ private extension SNSSignInViewController {
         print("DEBUG SNS 회원가입 실패")
       }
     }
+  }
+  
+  /// back button 클릭시 sns인증 상태 초기화
+  @objc func tapBackButton() {
+    switch reactor?.kind {
+    case .kakao:
+      KakaoAuthService.shared.kakaoLogout()
+      print("DEBUG kakao 인증 초기화")
+    case .naver:
+      self.naverAuthService.shared?.requestDeleteToken()
+      print("DEBUG naver 인증 초기화")
+    default:
+      try? Auth.auth().signOut()
+      print("DEBUG apple or google 인증 초기화")
+    }
+    self.navigationController?.popViewController(animated: true)
   }
 }
 
