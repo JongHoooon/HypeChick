@@ -9,7 +9,11 @@ import SnapKit
 import Then
 import UIKit
 import ReactorKit
+import Alamofire
 import RxViewController
+import RxAlamofire
+import RxSwift
+import RxCocoa
 
 final class HomeViewController: BaseViewController {
   
@@ -48,6 +52,9 @@ final class HomeViewController: BaseViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    
+//    UserDefaultService.shared.logoutUser()
     
     setNavigationbar()
     setupLayout()
@@ -164,22 +171,22 @@ private extension HomeViewController {
     chickImageView.image = reactor.provider.userDefaultService.getChickImage()
     wallpaperImageView.image = reactor.provider.userDefaultService.getWallImage()
     
-    self.reactor.provider.apiService.getTodayTime { [weak self] second in
-      guard let self = self else { return }
-      let time = second
-      let hour = time / 3600
-      let miniute = (time % 3600) / 60
-      let second = (time % 3600) % 60
-    
-      self.timeLabel.text = String(
-        format: "%02d:%02d:%02d",
-        hour,
-        miniute,
-        second
-      )
-    }
-    
-    
+    let urlRequest = TimerRouter.getTodayTime
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .map { dataResponse -> Int in
+
+        guard let data = dataResponse.data else {
+          print("DEBUG 시간 불러오기 실패")
+          return 0 }
+        guard let timerResponse = try? JSONDecoder().decode(TimerResponse.self, from: data) else { return 0 }
+        guard let time = timerResponse.time else { return 0 }
+
+        return time
+      }
+      .bind(to: self.timeLabel.rx.intToTimerFormat)
+      .disposed(by: self.disposeBag)
   }
   
   // MARK: - Selector

@@ -186,22 +186,3 @@ extension WriteViewController {
     }
   }
 }
-
-extension Reactive where Base: UILabel {
-  var selectedNumber: Binder<Int?> {
-    return Binder(self.base) { label, number in
-      switch number {
-      case 1:
-        label.text = "최대 1명"
-      case 2:
-        label.text = "최대 2명"
-      case 3:
-        label.text = "최대 3명"
-      case 4:
-        label.text = "최대 4명"
-      default:
-        label.text = "최대 인원수를 선택해 주세요."
-      }
-    }
-  }
-}

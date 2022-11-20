@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Auth
+
 struct EmailLoginRequest {
     let email: String
     let password: String
@@ -56,3 +58,40 @@ struct SNSRegisterRequest {
     ]
   }
 }
+
+// MARK: - Todo
+
+struct TodoPostRequest {
+  let contents: String
+  let date: String
+  
+  var parameters: [String: Any] {
+    return [
+      "contents": contents,
+      "date": date
+    ]
+  }
+}
+
+struct TodoContentsEditRequest {
+  let contents: String
+  let taskId: String
+  
+  var parameters: [String: Any] {
+    return [
+      "contents": contents
+    ]
+  }
+}
+
+struct TodoDeleteRequest {
+  let taskId: Int
+}
+
+struct TodoCheckRequest {
+  let taskId: Int
+}
+
+// MARK: - Group
+
+//struct

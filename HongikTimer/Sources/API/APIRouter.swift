@@ -25,19 +25,13 @@ enum APIRouter: URLRequestConvertible {
   case emailLogin(email: String, password: String)
   
   // todo
-  case getTasks
-  case postTask(contents: String, date: String)
-  case updateTodo(contents: String, taskId: Int)
-  case deleteTodo(taskId: Int)
-  case checkTodo(taskId: Int)
+
   
   // timer
   
   
   // board, group
-  case getClubs
-  case createClub(memberID: Int, clubName: String, numberOfMember: Int, clubInfo: String)
-  case singInClub(clubId: Int)
+
   
   
   // MARK: - End Point
@@ -52,23 +46,13 @@ enum APIRouter: URLRequestConvertible {
       return "v1/login"
     
     // todo
-    case .getTasks, .postTask:
-      return "tasks/\(userId)"
-    case let .updateTodo(_, taskId), let .deleteTodo(taskId):
-      return "tasks/\(userId)/\(taskId)"
-    case let .checkTodo(taskId):
-      return "tasks/check/\(taskId)"
+
     
     // timer
    
      
     // board, group
-    case .getClubs:
-      return "clubs"
-    case .createClub:
-      return "clubs"
-    case let .singInClub(clubId):
-      return "clubs/\(clubId)/\(userId)"
+
     
     }
   }
@@ -82,29 +66,16 @@ enum APIRouter: URLRequestConvertible {
       return .post
     case .emailLogin:
       return .post
-    case .deleteTodo:
-      return .delete
-    case .checkTodo:
-      return .get
+
       
     // todo
-    case .getTasks:
-      return .get
-    case .postTask:
-      return .post
-    case .updateTodo:
-      return .put
+
     
     // timer
    
     
     // board, group
-    case .getClubs:
-      return .get
-    case .createClub:
-      return .post
-    case .singInClub:
-      return .get
+
     }
   }
   
@@ -126,33 +97,15 @@ enum APIRouter: URLRequestConvertible {
       params["password"] = password
       
     // todo
-    case .getTasks:
-      return nil
-      
-    case let .postTask(contents, date):
-      params["contents"] = contents
-      params["date"] = date
-    case let .updateTodo(contents, _):
-      params["contents"] = contents
-    case .deleteTodo:
-      return nil
-    case .checkTodo:
-      return nil
+
       
     // timer
    
       
     // board, group
-    case .getClubs:
-      return nil
+
       
-    case let .createClub(memberID, clubName, numberOfMember, clubInfo):
-      params["memberID"] = memberID
-      params["clubName"] = clubName
-      params["numberOfMember"] = numberOfMember
-      params["clubInfo"] = clubInfo
-    case .singInClub:
-      return nil
+
     }
     return params
   }

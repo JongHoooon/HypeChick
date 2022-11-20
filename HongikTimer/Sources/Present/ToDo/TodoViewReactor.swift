@@ -94,6 +94,12 @@ final class TodoViewReactor: Reactor, BaseReactorType {
           return .setTasks(tasks)
         }
       
+//      return self.provider.apiService.getTasks()
+//        .map { todos in
+//          let tasks = todos.map { Task(todo: $0) }
+//          return .setTasks(tasks)
+//        }
+      
     case let .selectedDay(date):
       return .just(.setSelectedDayList(date))
       

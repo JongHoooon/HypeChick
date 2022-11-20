@@ -224,32 +224,3 @@ private extension SNSSignInViewController {
     self.navigationController?.popViewController(animated: true)
   }
 }
-
-extension Reactive where Base: UILabel {
-  var inputValidate: Binder<ValidationResult> {
-    return Binder(self.base) { label, validate in
-      switch validate {
-      case .ok(let message):
-        label.text = message
-        label.textColor = .systemGray
-      case .wrongForm(let message):
-        label.text = message
-        label.textColor = .systemRed
-      case .short(let message):
-        label.text = message
-        label.textColor = .systemRed
-      }
-    }
-  }
-}
-
-extension Reactive where Base: UIButton {
-  var buttonValidate: Binder<ValidationResult> {
-    return Binder(self.base) { button, validate in
-      switch validate {
-      case .ok:   button.isEnabled = true
-      default:    button.isEnabled = false
-      }
-    }
-  }
-}

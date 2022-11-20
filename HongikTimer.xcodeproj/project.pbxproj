@@ -30,7 +30,7 @@
 		278DE6B728D6240000E38A1F /* NaverAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278DE6B628D6240000E38A1F /* NaverAuthService.swift */; };
 		278DE6B928D71A1200E38A1F /* SettingCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278DE6B828D71A1200E38A1F /* SettingCellModel.swift */; };
 		278DE6BB28D766D600E38A1F /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278DE6BA28D766D600E38A1F /* DatabaseManager.swift */; };
-		2793C11E28F47AF400FC7D13 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2793C11D28F47AF400FC7D13 /* User.swift */; };
+		2793C11E28F47AF400FC7D13 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2793C11D28F47AF400FC7D13 /* UserInfo.swift */; };
 		2793C12028F4801600FC7D13 /* UserDefaultService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2793C11F28F4801600FC7D13 /* UserDefaultService.swift */; };
 		2793C12428F499DC00FC7D13 /* TaskEditPresentaionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2793C12328F499DC00FC7D13 /* TaskEditPresentaionController.swift */; };
 		2793C12628F49F9100FC7D13 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2793C12528F49F9100FC7D13 /* UIView+Extension.swift */; };
@@ -84,6 +84,7 @@
 		ED1191762928E2BF00E589D5 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1191752928E2BF00E589D5 /* APIClient.swift */; };
 		ED11917829294C4800E589D5 /* EmailLoginViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED11917729294C4800E589D5 /* EmailLoginViewReactor.swift */; };
 		ED11917A29295AE400E589D5 /* TimerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED11917929295AE400E589D5 /* TimerRouter.swift */; };
+		ED11917C292A267200E589D5 /* TodoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED11917B292A267200E589D5 /* TodoRouter.swift */; };
 		ED13F2F5290E46CA00883D19 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED13F2F4290E46CA00883D19 /* SettingViewController.swift */; };
 		ED2402E02920BE23000DF54C /* TodoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2402DF2920BE23000DF54C /* TodoService.swift */; };
 		ED2402E22920BF00000DF54C /* TodoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2402E12920BF00000DF54C /* TodoViewReactor.swift */; };
@@ -98,6 +99,7 @@
 		ED3297CC291BDF660081F606 /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297CB291BDF660081F606 /* WriteViewController.swift */; };
 		ED3297CF291BE0220081F606 /* WriteViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297CE291BE0220081F606 /* WriteViewReactor.swift */; };
 		ED3297D2291BF93C0081F606 /* NumberSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297D1291BF93C0081F606 /* NumberSelectView.swift */; };
+		ED46F682292A586000CD5D19 /* GroupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46F681292A586000CD5D19 /* GroupRouter.swift */; };
 		ED5F344229276C73002EB5D2 /* Task2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5F344129276C73002EB5D2 /* Task2.swift */; };
 		ED67DBFE2922971E00281313 /* TaskEditViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67DBFD2922971E00281313 /* TaskEditViewReactor.swift */; };
 		ED7391462927D46800A0024E /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391442927D46700A0024E /* UserResponse.swift */; };
@@ -107,7 +109,7 @@
 		ED73914D29285DAB00A0024E /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED73914C29285DAB00A0024E /* AlertService.swift */; };
 		ED7D72B8291E07CF006A3887 /* EnterViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */; };
 		EDED357D291B5611003F3DEC /* EmailSignInReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED357C291B5611003F3DEC /* EmailSignInReactor.swift */; };
-		EDF2F1F8292693C900A59FA2 /* EmailUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1F7292693C900A59FA2 /* EmailUser.swift */; };
+		EDF2F1F8292693C900A59FA2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1F7292693C900A59FA2 /* User.swift */; };
 		EDF2F1FA2926ACE700A59FA2 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1F92926ACE700A59FA2 /* APIService.swift */; };
 		EDF2F1FC29273C2300A59FA2 /* SNSSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1FB29273C2300A59FA2 /* SNSSignInViewController.swift */; };
 		EDF2F1FE29273CA800A59FA2 /* SNSSignInViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF2F1FD29273CA800A59FA2 /* SNSSignInViewReactor.swift */; };
@@ -178,7 +180,7 @@
 		278DE6B628D6240000E38A1F /* NaverAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverAuthService.swift; sourceTree = "<group>"; };
 		278DE6B828D71A1200E38A1F /* SettingCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCellModel.swift; sourceTree = "<group>"; };
 		278DE6BA28D766D600E38A1F /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		2793C11D28F47AF400FC7D13 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2793C11D28F47AF400FC7D13 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		2793C11F28F4801600FC7D13 /* UserDefaultService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultService.swift; sourceTree = "<group>"; };
 		2793C12328F499DC00FC7D13 /* TaskEditPresentaionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditPresentaionController.swift; sourceTree = "<group>"; };
 		2793C12528F49F9100FC7D13 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 		ED1191752928E2BF00E589D5 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		ED11917729294C4800E589D5 /* EmailLoginViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewReactor.swift; sourceTree = "<group>"; };
 		ED11917929295AE400E589D5 /* TimerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerRouter.swift; sourceTree = "<group>"; };
+		ED11917B292A267200E589D5 /* TodoRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRouter.swift; sourceTree = "<group>"; };
 		ED13F2F4290E46CA00883D19 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		ED2402DF2920BE23000DF54C /* TodoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoService.swift; sourceTree = "<group>"; };
 		ED2402E12920BF00000DF54C /* TodoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoViewReactor.swift; sourceTree = "<group>"; };
@@ -251,6 +254,7 @@
 		ED3297CB291BDF660081F606 /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
 		ED3297CE291BE0220081F606 /* WriteViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewReactor.swift; sourceTree = "<group>"; };
 		ED3297D1291BF93C0081F606 /* NumberSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSelectView.swift; sourceTree = "<group>"; };
+		ED46F681292A586000CD5D19 /* GroupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRouter.swift; sourceTree = "<group>"; };
 		ED5F344129276C73002EB5D2 /* Task2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task2.swift; sourceTree = "<group>"; };
 		ED67DBFD2922971E00281313 /* TaskEditViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditViewReactor.swift; sourceTree = "<group>"; };
 		ED7391442927D46700A0024E /* UserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
@@ -260,7 +264,7 @@
 		ED73914C29285DAB00A0024E /* AlertService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
 		ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterViewReactor.swift; sourceTree = "<group>"; };
 		EDED357C291B5611003F3DEC /* EmailSignInReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignInReactor.swift; sourceTree = "<group>"; };
-		EDF2F1F7292693C900A59FA2 /* EmailUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailUser.swift; sourceTree = "<group>"; };
+		EDF2F1F7292693C900A59FA2 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EDF2F1F92926ACE700A59FA2 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		EDF2F1FB29273C2300A59FA2 /* SNSSignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNSSignInViewController.swift; sourceTree = "<group>"; };
 		EDF2F1FD29273CA800A59FA2 /* SNSSignInViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNSSignInViewReactor.swift; sourceTree = "<group>"; };
@@ -513,10 +517,10 @@
 				ED037A7029117E2F00D30F7A /* ItemCell.swift */,
 				27B471D428D236D900805F79 /* AuthCredentials.swift */,
 				278DE6B828D71A1200E38A1F /* SettingCellModel.swift */,
-				EDF2F1F7292693C900A59FA2 /* EmailUser.swift */,
+				EDF2F1F7292693C900A59FA2 /* User.swift */,
+				2793C11D28F47AF400FC7D13 /* UserInfo.swift */,
 				27A977B228E3501A0076FF80 /* Task.swift */,
 				ED5F344129276C73002EB5D2 /* Task2.swift */,
-				2793C11D28F47AF400FC7D13 /* User.swift */,
 				ED052D4229142EA600E79BB6 /* BoardPost.swift */,
 				ED2402E92920ED03000DF54C /* TestGroup.swift */,
 			);
@@ -670,6 +674,8 @@
 			isa = PBXGroup;
 			children = (
 				ED73914A29285D7500A0024E /* APIRouter.swift */,
+				ED46F681292A586000CD5D19 /* GroupRouter.swift */,
+				ED11917B292A267200E589D5 /* TodoRouter.swift */,
 				ED7391452927D46800A0024E /* MembersRouter.swift */,
 				ED11917929295AE400E589D5 /* TimerRouter.swift */,
 				ED1191752928E2BF00E589D5 /* APIClient.swift */,
@@ -1081,7 +1087,7 @@
 				ED0507F6291003560016455B /* BaseViewController.swift in Sources */,
 				ED11917829294C4800E589D5 /* EmailLoginViewReactor.swift in Sources */,
 				ED3297CC291BDF660081F606 /* WriteViewController.swift in Sources */,
-				EDF2F1F8292693C900A59FA2 /* EmailUser.swift in Sources */,
+				EDF2F1F8292693C900A59FA2 /* User.swift in Sources */,
 				ED037A792911994D00D30F7A /* ChickViewController.swift in Sources */,
 				ED052D3F29142D2000E79BB6 /* BoardViewReactor.swift in Sources */,
 				ED11917A29295AE400E589D5 /* TimerRouter.swift in Sources */,
@@ -1089,6 +1095,7 @@
 				27615A8328D450B80099DB00 /* SeparatorView.swift in Sources */,
 				ED1191762928E2BF00E589D5 /* APIClient.swift in Sources */,
 				2750A40928D02BE9000EE24D /* TabBarViewController.swift in Sources */,
+				ED46F682292A586000CD5D19 /* GroupRouter.swift in Sources */,
 				EDF3A8B829125E9300A7C980 /* GroupDetailCell.swift in Sources */,
 				2793C12628F49F9100FC7D13 /* UIView+Extension.swift in Sources */,
 				2793C12828F4A2B000FC7D13 /* TaskEditViewController.swift in Sources */,
@@ -1099,8 +1106,9 @@
 				278DE6BB28D766D600E38A1F /* DatabaseManager.swift in Sources */,
 				ED0507F0290FFE190016455B /* ServiceProvider.swift in Sources */,
 				ED2402E42920C0F9000DF54C /* TaskCellReactor.swift in Sources */,
+				ED11917C292A267200E589D5 /* TodoRouter.swift in Sources */,
 				ED037A672911524100D30F7A /* Reactive+Extension.swift in Sources */,
-				2793C11E28F47AF400FC7D13 /* User.swift in Sources */,
+				2793C11E28F47AF400FC7D13 /* UserInfo.swift in Sources */,
 				ED037A6329112A8F00D30F7A /* HomeViewReactor.swift in Sources */,
 				ED037A7729118CD000D30F7A /* WallpaperViewReactor.swift in Sources */,
 				ED2402EE29215FBC000DF54C /* Array+SectionModel.swift in Sources */,

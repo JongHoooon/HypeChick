@@ -10,12 +10,18 @@ import Foundation
 struct Task: Codable, Identifiable {
   
   var id = UUID().uuidString
-  
-//  var taskId: Int?
-  // TODO: sever랑 통신
+  var taskID: Int?
   var contents: String?
   var isChecked: Bool?
   let date: String
+  
+  /// todo로 response 받은거 task로 변형
+  init(todo: Todo) {
+    self.contents = todo.contents
+    self.date = todo.date ?? ""
+    self.taskID = todo.taskID
+    self.isChecked = todo.isChecked
+  }
   
   /// 더미 생성용
   init(default: Bool) {

@@ -74,14 +74,14 @@ extension AuthService {
   ///   - compltetion: completion handler
   func registerWithEmail(
     credentials: AuthCredentials,
-    completion: @escaping (Result<MyUser, ApiError>) -> Void
+    completion: @escaping (Result<UserInfo, ApiError>) -> Void
   ) {
     
     let registerRequest = credentials.getRegisterRequest()
     let urlRequest = MembersRouter.emailRegister(registerRequest)
     
     AF.request(urlRequest)
-      .responseDecodable(of: UserResponse.self) { dataResponse in
+      .responseDecodable(of: UserInfo.self) { dataResponse in
         guard let statusCode = dataResponse.response?.statusCode else { return }
         
         if !(200...299).contains(statusCode) {
@@ -89,10 +89,9 @@ extension AuthService {
         }
         
         switch dataResponse.result {
-        case .success(let user):
-          print("DEBUG Email: \(user)")
-          let myUser = MyUser(data: user)
-          completion(.success(myUser))
+        case .success(let userInfo):
+          print("DEBUG Email: \(userInfo)")
+          completion(.success(userInfo))
           
         case .failure(let error):
           print("DEBUG 회원가입 실패 error: \(error)")

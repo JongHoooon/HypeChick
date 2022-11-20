@@ -6,70 +6,77 @@
 //
 
 import Foundation
-
-
 import UIKit
 
 import RxCocoa
 import RxSwift
 
-public extension Reactive where Base: UIViewController {
-  var viewDidLoad: ControlEvent<Void> {
-    let source = self.methodInvoked(#selector(Base.viewDidLoad)).map { _ in }
-    return ControlEvent(events: source)
+/// SNSSignInViewController에서 버튼 활성화 판단할 때 사용
+extension Reactive where Base: UIButton {
+  var buttonValidate: Binder<ValidationResult> {
+    return Binder(self.base) { button, validate in
+      switch validate {
+      case .ok:   button.isEnabled = true
+      default:    button.isEnabled = false
+      }
+    }
   }
-  
-  var viewWillAppear: ControlEvent<Bool> {
-    let source = self.methodInvoked(#selector(Base.viewWillAppear)).map { $0.first as? Bool ?? false }
-    return ControlEvent(events: source)
+}
+
+/// SNSSignInViewController에서 validation에 따라 message label text 설정
+extension Reactive where Base: UILabel {
+  var inputValidate: Binder<ValidationResult> {
+    return Binder(self.base) { label, validate in
+      switch validate {
+      case .ok(let message):
+        label.text = message
+        label.textColor = .systemGray
+      case .wrongForm(let message):
+        label.text = message
+        label.textColor = .systemRed
+      case .short(let message):
+        label.text = message
+        label.textColor = .systemRed
+      }
+    }
   }
-  var viewDidAppear: ControlEvent<Bool> {
-    let source = self.methodInvoked(#selector(Base.viewDidAppear)).map { $0.first as? Bool ?? false }
-    return ControlEvent(events: source)
+}
+
+extension Reactive where Base: UILabel {
+  var intToTimerFormat: Binder<Int> {
+    return Binder(self.base) { label, sec in
+      
+      let time = sec
+      let hour = time / 3600
+      let miniute = (time % 3600) / 60
+      let second = (time % 3600) % 60
+      
+      label.text = String(
+        format: "%02d:%02d:%02d",
+        hour,
+        miniute,
+        second
+      )
+    }
   }
-  
-  var viewWillDisappear: ControlEvent<Bool> {
-    let source = self.methodInvoked(#selector(Base.viewWillDisappear)).map { $0.first as? Bool ?? false }
-    return ControlEvent(events: source)
-  }
-  var viewDidDisappear: ControlEvent<Bool> {
-    let source = self.methodInvoked(#selector(Base.viewDidDisappear)).map { $0.first as? Bool ?? false }
-    return ControlEvent(events: source)
-  }
-  
-  var viewWillLayoutSubviews: ControlEvent<Void> {
-    let source = self.methodInvoked(#selector(Base.viewWillLayoutSubviews)).map { _ in }
-    return ControlEvent(events: source)
-  }
-  var viewDidLayoutSubviews: ControlEvent<Void> {
-    let source = self.methodInvoked(#selector(Base.viewDidLayoutSubviews)).map { _ in }
-    return ControlEvent(events: source)
-  }
-  
-  var willMoveToParentViewController: ControlEvent<UIViewController?> {
-    let source = self.methodInvoked(#selector(Base.willMove)).map { $0.first as? UIViewController }
-    return ControlEvent(events: source)
-  }
-  var didMoveToParentViewController: ControlEvent<UIViewController?> {
-    let source = self.methodInvoked(#selector(Base.didMove)).map { $0.first as? UIViewController }
-    return ControlEvent(events: source)
-  }
-  
-  var didReceiveMemoryWarning: ControlEvent<Void> {
-    let source = self.methodInvoked(#selector(Base.didReceiveMemoryWarning)).map { _ in }
-    return ControlEvent(events: source)
-  }
-  
-  /// Rx observable, triggered when the ViewController appearance state changes (true if the View is being displayed, false otherwise)
-  var isVisible: Observable<Bool> {
-    let viewDidAppearObservable = self.base.rx.viewDidAppear.map { _ in true }
-    let viewWillDisappearObservable = self.base.rx.viewWillDisappear.map { _ in false }
-    return Observable<Bool>.merge(viewDidAppearObservable, viewWillDisappearObservable)
-  }
-  
-  /// Rx observable, triggered when the ViewController is being dismissed
-  var isDismissing: ControlEvent<Bool> {
-    let source = self.sentMessage(#selector(Base.dismiss)).map { $0.first as? Bool ?? false }
-    return ControlEvent(events: source)
+}
+
+/// WriteViewController에서 선택한 숫자에 따라 member label text 설정
+extension Reactive where Base: UILabel {
+  var selectedNumber: Binder<Int?> {
+    return Binder(self.base) { label, number in
+      switch number {
+      case 1:
+        label.text = "최대 1명"
+      case 2:
+        label.text = "최대 2명"
+      case 3:
+        label.text = "최대 3명"
+      case 4:
+        label.text = "최대 4명"
+      default:
+        label.text = "최대 인원수를 선택해 주세요."
+      }
+    }
   }
 }

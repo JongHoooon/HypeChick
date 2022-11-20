@@ -1,5 +1,5 @@
 //
-//  TimerRouter.swift
+//  GroupRouter.swift
 //  HongikTimer
 //
 //  Created by JongHoon on 2022/11/20.
@@ -8,23 +8,34 @@
 import Foundation
 import Alamofire
 
-enum TimerRouter: URLRequestConvertible {
+enum GroupRouter: URLRequestConvertible {
   
   // MARK: - Property
   var baseURL: URL {
     return URL(string: APIClient.BASE_URL)!
   }
   
+  var userId: Int {
+    guard let userId = APIClient.userId else { return 0 }
+    return userId
+  }
+  
   // MARK: - Cases
-  case postTime(second: Int)
-  case getTodayTime
+  
+  case getClubs
+  case createClub(memberID: Int, clubName: String, numberOfMember: Int, clubInfo: String)
+  case singInClub(clubId: Int)
   
   // MARK: - End Point
   
   var path: String {
     switch self {
-    case .postTime, .getTodayTime:
-      return "timer/\(APIClient.userId!)"
+    case .getClubs:
+      return "clubs"
+    case .createClub:
+      return "clubs"
+    case let .singInClub(clubId):
+      return "clubs/\(clubId)/\(userId)"
     }
   }
   
@@ -32,9 +43,11 @@ enum TimerRouter: URLRequestConvertible {
   
   var method: HTTPMethod {
     switch self {
-    case .postTime:
+    case .getClubs:
+      return .get
+    case .createClub:
       return .post
-    case .getTodayTime:
+    case .singInClub:
       return .get
     }
   }
@@ -42,14 +55,9 @@ enum TimerRouter: URLRequestConvertible {
   // MARK: - Parameters
   
   var parameters: Parameters? {
-    var params = Parameters()
     switch self {
-    case let .postTime(second):
-      params["time"] = second
-    case .getTodayTime:
-      return nil
+    default: return nil
     }
-    return params
   }
   
   // MARK: - URL Request
@@ -59,9 +67,9 @@ enum TimerRouter: URLRequestConvertible {
     
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-    urlRequest.setValue("\(APIClient.token ?? "")", forHTTPHeaderField: "X-AUTH")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
     
     return urlRequest
   }
 }
+
