@@ -28,3 +28,11 @@ struct BaseResponse<T: Codable>: Codable {
     let message: String?
     let code: String?
 }
+
+
+// MARK: - Timer
+
+struct TimerResponse: Codable {
+  let id: Int?
+  let time: Int?
+}

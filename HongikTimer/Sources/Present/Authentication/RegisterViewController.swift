@@ -131,7 +131,6 @@ final class RegisterViewController: BaseViewController {
         with: self,
         completion: #selector(snsSignInHandler)
       )
-
   }
   
   // MARK: - Init
@@ -318,7 +317,7 @@ extension RegisterViewController {
   
   @objc func tapMoveToLoginButton() {
     let vc = UINavigationController(
-      rootViewController: EmailLoginViewController()
+      rootViewController: EmailLoginViewController(EamilLoginViewReactor(provider: self.reactor.provider))
     )
     vc.modalPresentationStyle = .fullScreen
     present(vc, animated: true)
@@ -343,8 +342,9 @@ extension RegisterViewController {
     }
     
     let vc = SNSSignInViewController(
-      with: SNSSignInViewReactor(provider: self.reactor.provider, uid: uid, kind: kind)
-    )
+      with: SNSSignInViewReactor(provider: self.reactor.provider,
+                                 uid: uid,
+                                 kind: kind))
     navigationController?.pushViewController(vc, animated: true)
   }
 }

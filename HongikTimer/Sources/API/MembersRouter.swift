@@ -31,7 +31,7 @@ enum MembersRouter: URLRequestConvertible {
   case snsLogin(_ request: SNSLoginRequest)
   
   
-  // MARK: - End Point
+  // MARK: - Path
   
   var path: String {
     switch self {
@@ -69,9 +69,7 @@ enum MembersRouter: URLRequestConvertible {
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
-    
-    print(urlRequest.url)
-    
+        
     return urlRequest
   }
 }

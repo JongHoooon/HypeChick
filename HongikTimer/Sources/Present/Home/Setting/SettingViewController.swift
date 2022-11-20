@@ -11,6 +11,7 @@ import Then
 import NaverThirdPartyLogin
 import KakaoSDKAuth
 import UIKit
+import FirebaseAuth
 
 final class SettingViewController: UIViewController {
   
@@ -159,7 +160,8 @@ private extension SettingViewController {
           self.naverAuthService.shared?.requestDeleteToken()
           print("DEBUG naver 회원 로그아웃")
         default:
-          print("로그아웃")
+          try? Auth.auth().signOut()
+          print("DEBUG apple or google 로그아웃")
         }
         UserDefaultService.shared.logoutUser()
         

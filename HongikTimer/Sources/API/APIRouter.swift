@@ -32,8 +32,7 @@ enum APIRouter: URLRequestConvertible {
   case checkTodo(taskId: Int)
   
   // timer
-  case postTime(second: Int)
-  case getTodayTime
+  
   
   // board, group
   case getClubs
@@ -61,8 +60,7 @@ enum APIRouter: URLRequestConvertible {
       return "tasks/check/\(taskId)"
     
     // timer
-    case .postTime, .getTodayTime:
-      return "timer/\(userId)"
+   
      
     // board, group
     case .getClubs:
@@ -98,10 +96,7 @@ enum APIRouter: URLRequestConvertible {
       return .put
     
     // timer
-    case .postTime:
-      return .post
-    case .getTodayTime:
-      return .get
+   
     
     // board, group
     case .getClubs:
@@ -145,10 +140,7 @@ enum APIRouter: URLRequestConvertible {
       return nil
       
     // timer
-    case let .postTime(second):
-      params["second"] = second
-    case .getTodayTime:
-      return nil
+   
       
     // board, group
     case .getClubs:

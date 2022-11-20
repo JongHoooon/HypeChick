@@ -208,8 +208,7 @@ private extension TimerViewController {
         
         if self.currnetSeconds <= 0 {
           
-          self.reactor.provider.userDefaultService.setStudyTime(Int(self.duration))
-          print("DEBUG \(self.duration) 만큼 시간 저장")
+//          self.reactor.provider.userDefaultService.setStudyTime(Int(self.duration))
           
           self.reactor.provider.apiService.saveTime(second: self.duration)
           self.stopTimer()

@@ -10,6 +10,9 @@ import Foundation
 
 class APIClient {
   
+  static let userId = UserDefaultService.shared.getUser()?.userInfo.id!
+  static let token = UserDefaultService.shared.getUser()?.token
+  
   static let BASE_URL: String = "http://localhost:8080/api"
   
   static func request<T: Decodable, U: URLRequestConvertible>(

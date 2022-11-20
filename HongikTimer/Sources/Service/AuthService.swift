@@ -10,23 +10,23 @@ import UIKit
 import Alamofire
 
 enum ApiError: Error {
-    case badStatus(_ code: Int)
-    case notAccept
-    case unknown(_ error: Error?)
-    
-    var info: String {
-        switch self {
-        case .badStatus(let code):  return "상태 코드 : \(code)"
-        case .notAccept: return "400 에러 입니다"
-        case .unknown(let err):     return "알 수 없는 에러입니다 \(String(describing: err?.localizedDescription))"
-        }
+  case badStatus(_ code: Int)
+  case notAccept
+  case unknown(_ error: Error?)
+  
+  var info: String {
+    switch self {
+    case .badStatus(let code):  return "상태 코드 : \(code)"
+    case .notAccept: return "400 에러 입니다"
+    case .unknown(let err):     return "알 수 없는 에러입니다 \(String(describing: err?.localizedDescription))"
     }
+  }
 }
 
 final class AuthService: NSObject {
   
   static let shared = AuthService()
-    
+  
   func logOutWithFirebase(completion: (Bool) -> Void) {
     do {
       try Auth.auth().signOut()
@@ -43,7 +43,7 @@ final class AuthService: NSObject {
 
 // MARK: - Email
 extension AuthService {
-
+  
   ///  이메일 회원 등록 후 로그인
   /// - Parameters:
   ///   - credentials: id, username, password 전달
@@ -162,33 +162,4 @@ extension AuthService {
         }
       }
   }
-  
-//  func loginWithSNS(
-//    uid: String,
-//    kind: LoginKind,
-//    completion: @escaping (Result<User, ApiError>) -> Void
-//  ) {
-//    let snsLoginRequest = SNSLoginRequest(uid: uid, kind: kind)
-//    let urlRequest = MembersRouter.snsLogin(snsLoginRequest)
-//
-//    AF.request(urlRequest)
-//      .responseDecodable(of: User.self) { dataResponse in
-//        guard let statusCode = dataResponse.response?.statusCode else { return }
-//
-//        if !(200...299).contains(statusCode) {
-//          return completion(.failure(ApiError.badStatus(statusCode)))
-//        }
-//
-//        switch dataResponse.result {
-//
-//        }
-//      }
-//  }
-  
-//  func snsRegister(
-//    uid: String,
-//    username: String,
-//    kind:
-//  )
-  
 }

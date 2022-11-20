@@ -82,6 +82,8 @@
 		ED052D4129142E4100E79BB6 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED052D4029142E4100E79BB6 /* helpers.swift */; };
 		ED052D4329142EA600E79BB6 /* BoardPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED052D4229142EA600E79BB6 /* BoardPost.swift */; };
 		ED1191762928E2BF00E589D5 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1191752928E2BF00E589D5 /* APIClient.swift */; };
+		ED11917829294C4800E589D5 /* EmailLoginViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED11917729294C4800E589D5 /* EmailLoginViewReactor.swift */; };
+		ED11917A29295AE400E589D5 /* TimerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED11917929295AE400E589D5 /* TimerRouter.swift */; };
 		ED13F2F5290E46CA00883D19 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED13F2F4290E46CA00883D19 /* SettingViewController.swift */; };
 		ED2402E02920BE23000DF54C /* TodoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2402DF2920BE23000DF54C /* TodoService.swift */; };
 		ED2402E22920BF00000DF54C /* TodoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2402E12920BF00000DF54C /* TodoViewReactor.swift */; };
@@ -233,6 +235,8 @@
 		ED052D4029142E4100E79BB6 /* helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
 		ED052D4229142EA600E79BB6 /* BoardPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardPost.swift; sourceTree = "<group>"; };
 		ED1191752928E2BF00E589D5 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		ED11917729294C4800E589D5 /* EmailLoginViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewReactor.swift; sourceTree = "<group>"; };
+		ED11917929295AE400E589D5 /* TimerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerRouter.swift; sourceTree = "<group>"; };
 		ED13F2F4290E46CA00883D19 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		ED2402DF2920BE23000DF54C /* TodoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoService.swift; sourceTree = "<group>"; };
 		ED2402E12920BF00000DF54C /* TodoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoViewReactor.swift; sourceTree = "<group>"; };
@@ -529,6 +533,7 @@
 				27B471C828D1BAC300805F79 /* EmailSignInViewController.swift */,
 				EDED357C291B5611003F3DEC /* EmailSignInReactor.swift */,
 				27B471C128D19ADA00805F79 /* EmailLoginViewController.swift */,
+				ED11917729294C4800E589D5 /* EmailLoginViewReactor.swift */,
 				27B471CC28D2081900805F79 /* SubViews */,
 			);
 			path = Authentication;
@@ -666,6 +671,7 @@
 			children = (
 				ED73914A29285D7500A0024E /* APIRouter.swift */,
 				ED7391452927D46800A0024E /* MembersRouter.swift */,
+				ED11917929295AE400E589D5 /* TimerRouter.swift */,
 				ED1191752928E2BF00E589D5 /* APIClient.swift */,
 				ED7391422927D46700A0024E /* Request */,
 				ED7391432927D46700A0024E /* Response */,
@@ -1073,10 +1079,12 @@
 				EDF3A89D291220D100A7C980 /* EnterViewController.swift in Sources */,
 				2755964928D5CE4500E103F6 /* KakaoAuthService.swift in Sources */,
 				ED0507F6291003560016455B /* BaseViewController.swift in Sources */,
+				ED11917829294C4800E589D5 /* EmailLoginViewReactor.swift in Sources */,
 				ED3297CC291BDF660081F606 /* WriteViewController.swift in Sources */,
 				EDF2F1F8292693C900A59FA2 /* EmailUser.swift in Sources */,
 				ED037A792911994D00D30F7A /* ChickViewController.swift in Sources */,
 				ED052D3F29142D2000E79BB6 /* BoardViewReactor.swift in Sources */,
+				ED11917A29295AE400E589D5 /* TimerRouter.swift in Sources */,
 				2750A45228D0386A000EE24D /* HomeViewController.swift in Sources */,
 				27615A8328D450B80099DB00 /* SeparatorView.swift in Sources */,
 				ED1191762928E2BF00E589D5 /* APIClient.swift in Sources */,

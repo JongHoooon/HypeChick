@@ -9,8 +9,9 @@ import SnapKit
 import Toast_Swift
 import Then
 import UIKit
+import ReactorKit
 
-final class EmailLoginViewController: UIViewController {
+final class EmailLoginViewController: BaseViewController, View {
   
   private var labelConfig = ButtonConfig(buttonConfig: .label).getConfig()
   
@@ -23,7 +24,6 @@ final class EmailLoginViewController: UIViewController {
     $0.textField.returnKeyType = .done
     $0.textField.isSecureTextEntry = true
     $0.textField.delegate = self
-    
   }
   
   private lazy var loginButton = UIButton(configuration: labelConfig).then {
@@ -51,12 +51,48 @@ final class EmailLoginViewController: UIViewController {
   override func viewDidLoad() {
     setupNavigationBar()
     setupLayout()
+  }
+  
+  // MARK: - Init
+  init(_ reactor: EamilLoginViewReactor) {
+    super.init()
     
-    AuthNotificationManager.shared
-      .addObserverSignInSuccess(
-        with: self,
-        completion: #selector(loginSuccessHandler)
-      )
+    self.reactor = reactor
+  }
+  
+  required convenience init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  func bind(reactor: EamilLoginViewReactor) {
+    
+    // action
+    emailTextField.textField.rx.text
+      .orEmpty
+      .map(Reactor.Action.emailInput)
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    passwordTextField.textField.rx.text
+      .orEmpty
+      .map(Reactor.Action.passwordInput)
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    // state
+    let email = reactor.state.asObservable().map { $0.email }
+    let password = reactor.state.asObservable().map { $0.password }
+    
+    Observable.combineLatest(email, password)
+      .flatMap { email, password -> Observable<Bool> in
+        if !email.isEmpty && !password.isEmpty {
+          return Observable.just(true)
+        } else {
+          return Observable.just(false)
+        }
+      }
+      .bind(to: self.loginButton.rx.isEnabled)
+      .disposed(by: self.disposeBag)
   }
 }
 
@@ -123,38 +159,34 @@ private extension EmailLoginViewController {
   }
   
   @objc func tapLoginButton() {
+    
+    self.view.makeToastActivity(.center)
+    
     emailTextField.textField.resignFirstResponder()
     passwordTextField.textField.resignFirstResponder()
     
-    guard let email = emailTextField.textField.text,
-          !email.isEmpty,
-          let password = passwordTextField.textField.text,
-          !password.isEmpty else {
-      view.makeToast("이메일 / 비밀번호를 확인하세요", position: .top)
-      return
-    }
-    
-//    AuthService.shared.logInWithEmail(
-//      email: email,
-//      password: password) { [weak self] authResult, error in
-//        guard authResult != nil, error == nil else {
-//          print("DEBUG tapLoginButton error: \(String(describing: error))")
-//          self?.view.makeToast("이메일 / 비밀번호를 확인하세요")
-//          return }
-//
-//      }
-  }
-  
-  @objc func loginSuccessHandler() {
-    
-#warning("더미 유저")
-    let userInfo: UserInfo = ServiceProvider().userDefaultService.getUser()?.userInfo ?? UserInfo()
-    
-    let vc = TabBarViewController(with: TabBarViewReactor(ServiceProvider(), with: userInfo))
-    vc.modalPresentationStyle = .fullScreen
-    present(vc, animated: true)
-    navigationController?.popToRootViewController(animated: false)
+    self.reactor?.provider.authService.loginWithEamil(
+      email: reactor?.currentState.email ?? "",
+      password: reactor?.currentState.password ?? "",
+      completion: { [weak self] result in
+        guard let self = self else { return }
+        
+        switch result {
+        case .success(let user):
+          
+          self.view.hideToastActivity()
+          let userInfo = user.userInfo
+          let provider = self.reactor?.provider
+          let vc = TabBarViewController(with: TabBarViewReactor(provider!, with: userInfo))
+          vc.modalPresentationStyle = .fullScreen
+          self.present(vc, animated: true)
+          
+        case .failure(let error):
+          self.view.hideToastActivity()
+          APIClient.handleError(error)
+          
+          self.view.makeToast("아이디 / 비밀번호를 확인해주세요.", position: .top)
+        }
+    })
   }
 }
-
-// TODO: 인디케이터 추가

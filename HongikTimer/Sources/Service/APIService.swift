@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import RxSwift
 
 class APIService {
 
@@ -47,6 +48,58 @@ class APIService {
   
   // MARK: - Timer
   
+//  func getTodayTime(completion: @escaping (Int) -> Void) {
+//
+//    let urlRequest = TimerRouter.getTodayTime
+//
+//    AF.request(urlRequest)
+//      .responseDecodable(of: TimerResponse.self) { dataResponse in
+//
+//        switch dataResponse.result {
+//        case .success(let time):
+//          print("DEBUG \(time.time) 만큼 공부했습니다.")
+//          completion(time.time ?? 0)
+//        case .failure(let error):
+//          APIClient.handleError(.unknown(error))
+//        }
+//      }
+//  }
+  
+//  func getTodayTime() -> Observable<Int> {
+//
+//    let urlRequest = TimerRouter.getTodayTime
+//
+//    AF.request(urlRequest)
+//      .responseDecodable(of: TimerResponse.self) { dataResponse in
+//
+//        switch dataResponse.result {
+//        case .success(let timerResponse):
+//          guard let time = timerResponse.time else { return }
+//
+//
+//
+//        case .failure(let error):
+//          APIClient.handleError(.unknown(error))
+//        }
+//      }
+//  }
+  
+  
+  func saveTime(second: Int) {
+    let urlRequest = TimerRouter.postTime(second: second)
+    
+    AF.request(urlRequest)
+      .responseDecodable(of: TimerResponse.self) { dataResponse in
+        switch dataResponse.result {
+        case .success(let time):
+          print("DEBUG \(time)초 만큼 저장")
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+        }
+      }
+  }
+  
+  /*
   func saveTime(second: Int) {
     AF.request(APIRouter.postTime(second: second)).responseJSON { response in
       
@@ -58,7 +111,9 @@ class APIService {
       print("DEBUG \(time)초 만큼 저장")
     }
   }
-  
+   */
+   
+  /*
   func getTodayTime(completion: @escaping (Int) -> Void) {
     
     AF.request(APIRouter.getTodayTime)
@@ -72,4 +127,6 @@ class APIService {
         completion(time)
       }
   }
+   
+   */
 }
