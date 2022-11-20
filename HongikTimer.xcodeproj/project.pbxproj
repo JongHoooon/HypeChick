@@ -100,6 +100,7 @@
 		ED3297CF291BE0220081F606 /* WriteViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297CE291BE0220081F606 /* WriteViewReactor.swift */; };
 		ED3297D2291BF93C0081F606 /* NumberSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3297D1291BF93C0081F606 /* NumberSelectView.swift */; };
 		ED46F682292A586000CD5D19 /* GroupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46F681292A586000CD5D19 /* GroupRouter.swift */; };
+		ED46F684292A815400CD5D19 /* SetPurposeViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED46F683292A815400CD5D19 /* SetPurposeViewReactor.swift */; };
 		ED5F344229276C73002EB5D2 /* Task2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5F344129276C73002EB5D2 /* Task2.swift */; };
 		ED67DBFE2922971E00281313 /* TaskEditViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED67DBFD2922971E00281313 /* TaskEditViewReactor.swift */; };
 		ED7391462927D46800A0024E /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391442927D46700A0024E /* UserResponse.swift */; };
@@ -255,6 +256,7 @@
 		ED3297CE291BE0220081F606 /* WriteViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewReactor.swift; sourceTree = "<group>"; };
 		ED3297D1291BF93C0081F606 /* NumberSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSelectView.swift; sourceTree = "<group>"; };
 		ED46F681292A586000CD5D19 /* GroupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRouter.swift; sourceTree = "<group>"; };
+		ED46F683292A815400CD5D19 /* SetPurposeViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPurposeViewReactor.swift; sourceTree = "<group>"; };
 		ED5F344129276C73002EB5D2 /* Task2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task2.swift; sourceTree = "<group>"; };
 		ED67DBFD2922971E00281313 /* TaskEditViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditViewReactor.swift; sourceTree = "<group>"; };
 		ED7391442927D46700A0024E /* UserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				2750A45528D051D3000EE24D /* SetPurposeViewController.swift */,
+				ED46F683292A815400CD5D19 /* SetPurposeViewReactor.swift */,
 			);
 			path = SetPurpose;
 			sourceTree = "<group>";
@@ -1096,6 +1099,7 @@
 				ED1191762928E2BF00E589D5 /* APIClient.swift in Sources */,
 				2750A40928D02BE9000EE24D /* TabBarViewController.swift in Sources */,
 				ED46F682292A586000CD5D19 /* GroupRouter.swift in Sources */,
+				ED46F684292A815400CD5D19 /* SetPurposeViewReactor.swift in Sources */,
 				EDF3A8B829125E9300A7C980 /* GroupDetailCell.swift in Sources */,
 				2793C12628F49F9100FC7D13 /* UIView+Extension.swift in Sources */,
 				2793C12828F4A2B000FC7D13 /* TaskEditViewController.swift in Sources */,

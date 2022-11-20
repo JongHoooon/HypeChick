@@ -34,7 +34,6 @@ final class HomeViewController: BaseViewController {
   }
   
   private lazy var timeLabel = UILabel().then {
-//    $0.font = .systemFont(ofSize: 52.0, weight: .bold)
     $0.text = "00:00:00"
     $0.font = UIFont(name: "NotoSansCJKkr-Medium", size: 52.0)
   }
@@ -87,16 +86,33 @@ extension HomeViewController: View {
   func bind(reactor: HomeViewReactor) {
     
     // MARK: Action
+    
+    self.rx.viewDidLoad
+      .map { Reactor.Action.viewDidLoad }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
 
     // MARK: State
     
-    reactor.state.asObservable().map { $0.chickImage }
-      .bind(to: chickImageView.rx.image)
+    reactor.state.asObservable().map { $0.purposeText }
+      .subscribe(onNext: { [weak self] text in
+        guard let self = self else { return }
+        
+        if text?.isEmpty == true {
+          self.purposeView.purposeLabel.text = "탭하여 목표를 입려하세요!"
+        } else {
+          self.purposeView.purposeLabel.text = text
+        }
+      })
       .disposed(by: self.disposeBag)
     
-    reactor.state.asObservable().map { $0.studyTime }
-      .bind(to: timeLabel.rx.text)
-      .disposed(by: self.disposeBag)
+//    reactor.state.asObservable().map { $0.chickImage }
+//      .bind(to: chickImageView.rx.image)
+//      .disposed(by: self.disposeBag)
+//
+//    reactor.state.asObservable().map { $0.studyTime }
+//      .bind(to: timeLabel.rx.text)
+//      .disposed(by: self.disposeBag)
   }
 }
 

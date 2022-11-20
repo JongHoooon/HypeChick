@@ -65,23 +65,6 @@ final class SetPurposeViewController: UIViewController {
 
 // MARK: - TextField
 
-extension SetPurposeViewController: UITextFieldDelegate {
-    func textField(
-        _ textField: UITextField,
-        shouldChangeCharactersIn range: NSRange,
-        replacementString string: String
-    ) -> Bool {
-        
-        let currentText = textField.text ?? ""
-        guard let stringRange = Range(range, in: currentText) else { return false}
-        
-        let changedText = currentText.replacingCharacters(in: stringRange, with: string)
-        countLabel.text = "\(changedText.count) / 20"
-        
-        return changedText.count <= 19
-    }
-}
-
 // MARK: - Private
 
 private extension SetPurposeViewController {
