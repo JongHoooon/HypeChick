@@ -35,11 +35,7 @@ class APIService {
             
             print("DEBUG \(todos) get 완료")
             
-            if todos.isEmpty {
-              observer.onNext([Todo(), Todo(), Todo()])
-            } else {
-              observer.onNext(todos)
-            }
+            observer.onNext(todos)
             
           case .failure(let error):
             observer.onError(error)
@@ -102,5 +98,46 @@ class APIService {
         }
         .subscribe()
         .disposed(by: self.disposebag)
+  }
+  
+  func deleteTodo(taskId: Int) {
+      let todoDeleteRequest = TodoDeleteRequest(taskId: taskId)
+      let urlRequest = TodoRouter.deleteTodo(todoDeleteRequest)
+
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .map { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            print("DEBUG todo contents 삭제 완료")
+
+          case .failure(let error):
+            APIClient.handleError(.unknown(error))
+            
+          }
+        }
+        .subscribe()
+        .disposed(by: self.disposebag)
+  }
+  
+  func checkTodo(taskId: Int) {
+    let todoCheckRequest = TodoCheckRequest(taskId: taskId)
+    let urlRequest = TodoRouter.checkTodo(todoCheckRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .map { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG todo check toggle 완료")
+
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+        }
+      }
+      .subscribe()
+      .disposed(by: self.disposebag)
   }
 }

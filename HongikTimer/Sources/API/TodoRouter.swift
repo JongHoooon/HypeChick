@@ -44,7 +44,7 @@ enum TodoRouter: URLRequestConvertible {
     case .getTasks, .postTask:        return "tasks/\(userId)"
     case .updateTodo(let request):    return "tasks/\(userId)/\(request.taskId)"
     case .deleteTodo(let request):    return "tasks/\(userId)/\(request.taskId)"
-    case .checkTodo(let taskId):      return "tasks/check/\(taskId)"
+    case .checkTodo(let request):     return "tasks/check/\(request.taskId)"
     }
   }
   

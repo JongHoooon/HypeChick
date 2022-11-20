@@ -188,6 +188,11 @@ final class TodoViewReactor: Reactor, BaseReactorType {
         forTaskID: state.selectedId,
         from: state
       ) else { return .empty() }
+      
+      let task = currentState.tasks.filter { $0.id == currentState.selectedId }
+      guard let taskID = task.first?.taskID else { return .empty() }
+      self.provider.apiService.deleteTodo(taskId: taskID)
+      
       return .just(.deleteSectionItem(indexPath))
       
     case .edit:
@@ -221,6 +226,8 @@ final class TodoViewReactor: Reactor, BaseReactorType {
         task: task,
         checkRelay: self.checkedCellIdRelay
       )
+      guard let taskID = task.taskID else { return .empty() }
+      self.provider.apiService.checkTodo(taskId: taskID)
       return .just(.updateCheckedSectionItem(indexPath, reactor))
     }
   }
