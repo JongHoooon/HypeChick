@@ -123,7 +123,7 @@ extension AuthService {
         
         switch dataResponse.result {
         case .success(let user):
-          print("DEBUG Email: \(user.userInfo.email!), UserName: \(user.userInfo.username!) 으로 로그인 완료")
+          print("DEBUG Email User 로그인: \(user.userInfo)")
           UserDefaultService.shared.setUser(user)
           UserDefaultService.shared.setLoginKind(.email)
           

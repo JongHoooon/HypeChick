@@ -62,6 +62,9 @@ enum TimerRouter: URLRequestConvertible {
     urlRequest.setValue("\(APIClient.token ?? "")", forHTTPHeaderField: "X-AUTH")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
     
+    print(APIClient.token)
+    print(APIClient.userId)
+    
     return urlRequest
   }
 }

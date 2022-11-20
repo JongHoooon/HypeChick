@@ -185,7 +185,7 @@ private extension SNSSignInViewController {
             switch result {
               
             case .success(let user):
-              print("DEBUG \(self.reactor?.kind) \(user.userInfo.id) 로그인 완료")
+              print("DEBUG \(self.reactor?.kind) User 로그인 \(user.userInfo)")
               self.reactor?.provider.userDefaultService.setUser(user)
               self.reactor?.provider.userDefaultService.setLoginKind(self.reactor?.kind ?? .email)
               

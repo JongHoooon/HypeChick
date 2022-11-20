@@ -89,16 +89,11 @@ final class TodoViewReactor: Reactor, BaseReactorType {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .load:
-      return self.provider.todoService.fetchTask()
-        .map { tasks in
+      return self.provider.apiService.getTasks()
+        .map { todos in
+          let tasks = todos.map { Task(todo: $0) }
           return .setTasks(tasks)
         }
-      
-//      return self.provider.apiService.getTasks()
-//        .map { todos in
-//          let tasks = todos.map { Task(todo: $0) }
-//          return .setTasks(tasks)
-//        }
       
     case let .selectedDay(date):
       return .just(.setSelectedDayList(date))
@@ -165,15 +160,20 @@ final class TodoViewReactor: Reactor, BaseReactorType {
           case .submit:
             let count = self.currentState.sections[0].items.count
             let indexPath = IndexPath(item: count, section: 0)
-            let task = Task(contents: self.todoRelay.value, day: self.currentState.selectedDay)
-            let reactor = TaskCellReactor(
-              self.provider,
-              userInfo: self.userInfo,
-              task: task,
-              checkRelay: self.checkedCellIdRelay
+            
+            return self.provider.apiService.createTodo(
+              contents: self.todoRelay.value,
+              date: self.currentState.selectedDay
             )
-            return self.provider.todoService.create(contents: self.todoRelay.value)
-              .map { _ in .insertSectionItem(indexPath, reactor, task) }
+            .map { task in
+              let reactor = TaskCellReactor(
+                self.provider,
+                userInfo: self.userInfo,
+                task: task,
+                checkRelay: self.checkedCellIdRelay
+              )
+              
+              return .insertSectionItem(indexPath, reactor, task)}
           }
         }
     }
@@ -205,6 +205,10 @@ final class TodoViewReactor: Reactor, BaseReactorType {
         task: task,
         checkRelay: self.checkedCellIdRelay
       )
+      
+      guard let taskID = task.taskID else { return .empty() }
+      self.provider.apiService.editTodo(contents: self.todoRelay.value, taskId: taskID)
+      
       return .just(.updateSectionItem(indexPath, reactor))
       
     case .check:
@@ -265,6 +269,7 @@ final class TodoViewReactor: Reactor, BaseReactorType {
     case let .deleteSectionItem(indexPath):
       state.sections.remove(at: indexPath)
       state.tasks = state.tasks.filter { $0.id != state.selectedId }
+      
     case let .updateSectionItem(indexPath, sectionItem):
       state.sections[indexPath] = sectionItem
       

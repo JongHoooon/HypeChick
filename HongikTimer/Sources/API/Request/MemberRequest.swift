@@ -71,11 +71,21 @@ struct TodoPostRequest {
       "date": date
     ]
   }
+  
+  init(contents: String, date: Date) {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    dateFormatter.locale = Locale(identifier: "ko_kr")
+    dateFormatter.timeZone = TimeZone(identifier: "KST")
+    
+    self.contents = contents
+    self.date = dateFormatter.string(from: date)
+  }
 }
 
 struct TodoContentsEditRequest {
   let contents: String
-  let taskId: String
+  let taskId: Int
   
   var parameters: [String: Any] {
     return [
