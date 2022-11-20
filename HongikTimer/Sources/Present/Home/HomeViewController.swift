@@ -207,7 +207,9 @@ private extension HomeViewController {
   // MARK: - Selector
   
   @objc func tapPurposeView() {
-    let vc = SetPurposeViewController()
+    let vc = SetPurposeViewController(
+      reactor: SetPurposeViewReactor(provider: reactor.provider,
+                                     userInfo: reactor.userInfo))
     vc.textCompletion = { purpose in
       self.purpose = purpose
     }

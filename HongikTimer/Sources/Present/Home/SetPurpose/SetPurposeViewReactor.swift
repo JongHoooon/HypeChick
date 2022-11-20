@@ -10,8 +10,8 @@ import ReactorKit
 import RxCocoa
 import RxSwift
 
-final class SetPurposeViewReactor: Reactor {
-  
+final class SetPurposeViewReactor: Reactor, BaseReactorType {
+ 
   enum Action {
     case countText(text: String)
   }
@@ -21,20 +21,34 @@ final class SetPurposeViewReactor: Reactor {
   }
   
   struct State {
-    
+    var count: Int = 0
   }
   
   let initialState = State()
   
-  init() {
-    
+  var userInfo: UserInfo
+  var provider: ServiceProviderType
+  
+  init(provider: ServiceProviderType, userInfo: UserInfo) {
+    self.provider = provider
+    self.userInfo = userInfo
   }
   
-  //  func mutate(action: Action) -> Observable<Mutation> {
-  //    <#code#>
-  //  }
-  //
-  //  func reduce(state: State, mutation: Mutation) -> State {
-  //    <#code#>
-  //  }
+    func mutate(action: Action) -> Observable<Mutation> {
+      switch action {
+      case .countText(let text):
+        let count = text.count
+        return .just(.countText(count: count))
+      }
+    }
+  
+  func reduce(state: State, mutation: Mutation) -> State {
+    var state = state
+    
+    switch mutation {
+    case .countText(let count):
+      state.count = count
+    }
+    return state
+  }
 }
