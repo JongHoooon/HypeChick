@@ -25,7 +25,7 @@ class APIService {
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
-        .map { dataResponse in
+        .subscribe(onNext: { dataResponse in
           
           switch dataResponse.result {
           case .success:
@@ -42,8 +42,7 @@ class APIService {
             APIClient.handleError(.unknown(error))
           }
           observer.onCompleted()
-        }
-        .subscribe()
+        })
         .disposed(by: self.disposebag)
       
       return Disposables.create()
@@ -58,7 +57,7 @@ class APIService {
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
-        .map { dataResponse in
+        .subscribe(onNext: { dataResponse in
           switch dataResponse.result {
           case .success:
             guard let data = dataResponse.data else { return }
@@ -71,8 +70,7 @@ class APIService {
             observer.onError(error)
           }
           observer.onCompleted()
-        }
-        .subscribe()
+        })
         .disposed(by: self.disposebag)
       
       return Disposables.create()
@@ -86,7 +84,7 @@ class APIService {
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
-        .map { dataResponse in
+        .subscribe(onNext: { dataResponse in
           switch dataResponse.result {
           case .success:
             print("DEBUG todo contents 수정 완료")
@@ -95,8 +93,7 @@ class APIService {
             APIClient.handleError(.unknown(error))
             
           }
-        }
-        .subscribe()
+        })
         .disposed(by: self.disposebag)
   }
   
@@ -107,7 +104,7 @@ class APIService {
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
-        .map { dataResponse in
+        .subscribe(onNext: { dataResponse in
           switch dataResponse.result {
           case .success:
             print("DEBUG todo contents 삭제 완료")
@@ -116,8 +113,7 @@ class APIService {
             APIClient.handleError(.unknown(error))
             
           }
-        }
-        .subscribe()
+        })
         .disposed(by: self.disposebag)
   }
   
@@ -128,7 +124,7 @@ class APIService {
     request(urlRequest)
       .validate(statusCode: 200..<300)
       .responseJSON()
-      .map { dataResponse in
+      .subscribe(onNext: { dataResponse in
         switch dataResponse.result {
         case .success:
           print("DEBUG todo check toggle 완료")
@@ -136,8 +132,7 @@ class APIService {
         case .failure(let error):
           APIClient.handleError(.unknown(error))
         }
-      }
-      .subscribe()
+      })
       .disposed(by: self.disposebag)
   }
   
@@ -152,20 +147,20 @@ class APIService {
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
-        .map { dataResponse in
+        .subscribe(onNext: { dataResponse in
 
           switch dataResponse.result {
           case .success:
             guard let data = dataResponse.data else { return }
-            guard let clubs = try? JSONDecoder().decode([Club].self, from: data) else { return }
+            guard let clubsResponse = try? JSONDecoder().decode(ClubsResponse.self, from: data) else { return }
+            guard let clubs = clubsResponse.data else { return }
             observer.onNext(.success(clubs))
             
           case .failure(let error):
             observer.onNext(.failure(ApiError.unknown(error)))
           }
           observer.onCompleted()
-        }
-        .subscribe()
+        })
         .disposed(by: self.disposebag)
       
       return Disposables.create()
@@ -173,20 +168,25 @@ class APIService {
   }
   
   func createClub(id: Int, clubName: String, numOfMember: Int, clubInfo: String) {
-    
+
     let createClubRequest = CreateClubRequest(memberID: id,
                                               clubName: clubName,
                                               numOfMember: numOfMember,
                                               clubInfo: clubInfo)
     let urlRequest = GroupRouter.createClub(createClubRequest)
-    
+
     request(urlRequest)
       .validate(statusCode: 200..<300)
-      .responseData()
-      .subscribe(onNext: {
-        
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success(let data):
+          print("DEBUG 그룹 생성 성공!")
+          print(data)
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+        }
       })
-    
-    
+      .disposed(by: self.disposebag)
   }
 }

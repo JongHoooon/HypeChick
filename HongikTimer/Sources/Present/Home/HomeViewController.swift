@@ -52,13 +52,15 @@ final class HomeViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    
     setNavigationbar()
     setupLayout()
     bind(reactor: self.reactor)
     
-    UserDefaults.standard.removeObject(forKey: "task")
-    UserDefaults.standard.removeObject(forKey: "boardPost")
+//    UserDefaultService.shared.logoutUser()
+//    KakaoAuthService.shared.kakaoLogout()
+//    self.naverAuthService.shared?.requestDeleteToken()
+//    try? Auth.auth().signOut()
+
   }
   
   override func viewWillAppear(_ animated: Bool) {

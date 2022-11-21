@@ -41,12 +41,24 @@ final class BoardViewReactor: Reactor, BaseReactorType {
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
-    var newMutation: Observable<Mutation>
     switch action {
     case .refresh:
-      newMutation = getRefreshMutation()
+      print("refresh")
+      
+      return self.provider.apiService.getClubs()
+        .map { result in
+          switch result {
+          case .success(let clubs):
+            let sectionItems = clubs.map { BoardViewCellReactor.init(club: $0, provider: self.provider) }
+            let section = BoardListSection(model: Void(), items: sectionItems)
+            return .setSetcions([section])
+            
+          case .failure:
+            print("실패")
+            return .setSetcions([])
+          }
+        }
     }
-    return newMutation
   }
   
   func reduce(state: State, mutation: Mutation) -> State {
@@ -54,7 +66,11 @@ final class BoardViewReactor: Reactor, BaseReactorType {
     
     switch mutation {
     case let .setSetcions(sections):
+      
+      print("set section")
       state.sections = sections
+      
+      print(state.sections)
       
       return state
     }
@@ -64,30 +80,27 @@ final class BoardViewReactor: Reactor, BaseReactorType {
 // MARK: - Method
 
 extension BoardViewReactor {
-  private func getRefreshMutation() -> Observable<Mutation> {
-    
-//    let boardPosts = self.provider.boardService.fetchBoardPosts()
-//
-//    return boardPosts.map { boardPosts in
-//      let sectionItems = boardPosts.map(BoardViewCellReactor.init)
-//      let section = BoardListSection(model: Void(), items: sectionItems)
-//      return .setSetcions([section])
-//    }
-    
-    return self.provider.apiService.getClubs()
-      .map { result in
-        
-        switch result {
-        case .success(let clubs):
-          let sectionItems = clubs.map { BoardViewCellReactor.init(club: $0,
-                                                                   provider: self.provider) }
-          let section = BoardListSection(model: Void(), items: sectionItems)
-          return .setSetcions([section])
-        case .failure:
-          return .setSetcions([])
-        }
-      }
-  }
+  
+  //  private func getRefreshMutation() -> Observable<Mutation> {
+  //
+  //    return self.provider.apiService.getClubs()
+  //      .map { result in
+  //
+  //        switch result {
+  //        case .success(let clubs):
+  //          let sectionItems = clubs.map {
+  //
+  //            print($0)
+  //
+  //            return BoardViewCellReactor.init(club: $0, provider: self.provider) }
+  //
+  //          let section = BoardListSection(model: Void(), items: sectionItems)
+  //          return .setSetcions([section])
+  //        case .failure:
+  //          return .setSetcions([])
+  //        }
+  //      }
+  //  }
   
   func reactorForWriteView() -> WriteViewReactor {
     return WriteViewReactor(self.provider, userInfo: self.userInfo)
@@ -97,3 +110,4 @@ extension BoardViewReactor {
     return EnterViewReactor(self.provider, userInfo: self.userInfo)
   }
 }
+

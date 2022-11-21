@@ -47,6 +47,7 @@ struct ClubsResponse: Codable {
 struct Club: Codable {
   let id: Int?
   let leaderName, clubName, clubInfo: String?
+  let leaderId: Int?
   let numOfMember, joinedMemberNum, totalStudyTime: Int?
   let createDate: String?
 }

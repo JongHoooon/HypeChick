@@ -120,6 +120,8 @@ struct UserDefaultService {
   }
   
   // MARK: - board 관련
+  
+  /*
 #warning("db로 이동해야됨")
   func setBoardPost(_ boardPosts: [BoardPost]) {
     standard.setValue(
@@ -135,6 +137,10 @@ struct UserDefaultService {
       try? JSONDecoder().decode([BoardPost].self, from: data)
     )
   }
+   
+   */
+  
+  /*
   
   // MARK: - Todo 관련
   
@@ -151,4 +157,5 @@ struct UserDefaultService {
       try? JSONDecoder().decode([Task].self, from: data)
     )
   }
+   */
 }

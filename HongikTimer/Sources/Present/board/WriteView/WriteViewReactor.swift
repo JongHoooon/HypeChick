@@ -104,6 +104,11 @@ final class WriteViewReactor: Reactor {
 //          content: currentState.content ?? ""
 //        )
 //        .map { _ in .dismiss }
+      self.provider.apiService.createClub(id: userInfo.id!,
+                                          clubName: currentState.title,
+                                          numOfMember: currentState.selectNumber,
+                                          clubInfo: currentState.content ?? "")
+      return .just(.dismiss)
       
     }
     

@@ -12,6 +12,7 @@ import NaverThirdPartyLogin
 import KakaoSDKAuth
 import UIKit
 import FirebaseAuth
+import Toast_Swift
 
 final class SettingViewController: UIViewController {
   
@@ -138,6 +139,8 @@ private extension SettingViewController {
       $0.addAction(UIAlertAction(title: "로그아웃", style: .destructive, handler: { [weak self] _ in
         guard let self = self else { return }
         
+        self.view.makeToastActivity(.center)
+        
         let kind = UserDefaultService.shared.getLoginKind()
         
         print(kind)
@@ -173,7 +176,9 @@ private extension SettingViewController {
     
     actionSheet.popoverPresentationController?.sourceView = tableView
     actionSheet.popoverPresentationController?.sourceRect = tableView.bounds
-    present(actionSheet, animated: true)
+    present(actionSheet, animated: true) {
+      self.view.hideToastActivity()
+    }
     
   }
 }
