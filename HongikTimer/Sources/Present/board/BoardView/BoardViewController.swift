@@ -132,11 +132,11 @@ class BoardViewController: BaseViewController, View {
     
     self.boardCollectionView.rx.modelSelected(BoardListSection.Item.self)
       .subscribe(onNext: { [weak self] boardPostReactor in
-        let boardPost = boardPostReactor.currentState
+        let club = boardPostReactor.currentState.club
         
         guard let self = self else { return }
         guard let reactor = self.reactor?.reactorForEnterView() else { return }
-        reactor.initialState.boardPost = boardPost
+        reactor.initialState.club = club
         let viewcontroller = EnterViewController(reactor: reactor)
         
         self.navigationController?.pushViewController(viewcontroller, animated: true)

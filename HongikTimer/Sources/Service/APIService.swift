@@ -140,4 +140,53 @@ class APIService {
       .subscribe()
       .disposed(by: self.disposebag)
   }
+  
+  // MARK: - Group
+  
+  /// 전체 그룹 조회 - 게시판에 표시
+  func getClubs() -> Observable<Result<[Club], ApiError>> {
+
+    return Observable<Result<[Club], ApiError>>.create { observer in
+      let urlRequest = GroupRouter.getClubs
+
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .map { dataResponse in
+
+          switch dataResponse.result {
+          case .success:
+            guard let data = dataResponse.data else { return }
+            guard let clubs = try? JSONDecoder().decode([Club].self, from: data) else { return }
+            observer.onNext(.success(clubs))
+            
+          case .failure(let error):
+            observer.onNext(.failure(ApiError.unknown(error)))
+          }
+          observer.onCompleted()
+        }
+        .subscribe()
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
+  
+  func createClub(id: Int, clubName: String, numOfMember: Int, clubInfo: String) {
+    
+    let createClubRequest = CreateClubRequest(memberID: id,
+                                              clubName: clubName,
+                                              numOfMember: numOfMember,
+                                              clubInfo: clubInfo)
+    let urlRequest = GroupRouter.createClub(createClubRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseData()
+      .subscribe(onNext: {
+        
+      })
+    
+    
+  }
 }

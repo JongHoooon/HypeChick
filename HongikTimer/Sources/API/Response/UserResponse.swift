@@ -13,22 +13,6 @@ struct BaseResponse<T: Codable>: Codable {
   let code: String?
 }
 
-// MARK: - UserResponse
-//struct UserResponse: Codable {
-//  let id: Int?
-//  let username, email: String?
-//}
-//
-//struct MyUser: Codable {
-//  let id: Int
-//  let username, email: String
-//  init(data: UserResponse) {
-//    self.id = data.id ?? 0
-//    self.username = data.username ?? ""
-//    self.email = data.email ?? ""
-//  }
-//}
-
 // MARK: - Timer
 
 struct TimerResponse: Codable {
@@ -51,12 +35,56 @@ struct Todo: Codable {
     case contents, date
     case isChecked
   }
+}
+
+// MARK: - Group
+
+// getClubs
+struct ClubsResponse: Codable {
+  let data: [Club]?
+}
+
+struct Club: Codable {
+  let id: Int?
+  let leaderName, clubName, clubInfo: String?
+  let numOfMember, joinedMemberNum, totalStudyTime: Int?
+  let createDate: String?
+}
+
+// getClub
+struct GetClubResponse: Codable {
+  let id: Int?
+  let leaderId: Int?
+  let leaderName, clubName, clubInfo: String?
+  let numOfMember, joinedMemberNum, totalStudyTime: Int?
+  let createDate: String?
+  let members: Members?
+}
+
+struct Members: Codable {
+  let data: [Member]?
+}
+
+struct Member: Codable {
+  let memberID: Int?
+  let username: String?
+  let studyTime: Int?
   
-  /// 더미 생성용
-  init() {
-    self.taskID = 999
-    self.contents = "더미"
-    self.date = "2022-11-20"
-    self.isChecked = false
+  enum CodingKeys: String, CodingKey {
+    case memberID = "memberId"
+    case username, studyTime
+  }
+}
+
+// create club
+struct CreateClubResponse: Codable {
+  let clubID: Int?
+  let leaderName, clubName: String?
+  let numOfMember: Int?
+  let clubInfo, createDate: String?
+  
+  enum CodingKeys: String, CodingKey {
+    case clubID = "clubId"
+    case leaderName, clubName, numOfMember, clubInfo, createDate
   }
 }

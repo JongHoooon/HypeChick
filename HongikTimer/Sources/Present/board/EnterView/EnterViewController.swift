@@ -77,18 +77,28 @@ final class EnterViewController: BaseViewController, View {
   // MARK: - Binding
   func bind(reactor: EnterViewReactor) {
     
-    guard let boardPost = self.reactor?.currentState.boardPost else { return }
-    self.titleLabel.text = boardPost.title
-    self.memberLabel.attributedText = makeLabel("인원",
-                                                content: "\(boardPost.memberCount)/\(boardPost.maxMemberCount)명")
-    self.chiefLabel.attributedText = makeLabel("그룹장",
-                                               content: boardPost.chief)
-    self.startDayLabel.attributedText = makeLabel("시작일",
-                                                  content: boardPost.startDay)
-    self.totalTimeLabel.attributedText = makeLabel("총 시간",
-                                                   content: "\(boardPost.totalTime%3600)시간")
-    self.contentLabel.text = boardPost.content
+    reactor.state.asObservable().map { $0.club }
+      .subscribe(onNext: { [weak self] club in
+        guard let self = self,
+              let club = club else { return }
+        
+        
+        self.titleLabel.text = club.clubName ?? "club name"
+        
+        self.memberLabel.attributedText = makeLabel("인원",
+                                                    content: "\(club.joinedMemberNum!)/\(club.numOfMember!)명" )
+        
+        self.chiefLabel.attributedText = makeLabel("그룹장", content: club.leaderName ?? "user")
+        self.startDayLabel.attributedText = makeLabel("시작일", content: club.createDate ?? "시작일")
+        self.totalTimeLabel.attributedText = makeLabel("총 시간", content: secToString(sec: club.totalStudyTime))
+        self.contentLabel.text = club.clubInfo ?? ""
+        
+        
+      })
+      .disposed(by: self.disposeBag)
   }
+  
+  
   
 }
 

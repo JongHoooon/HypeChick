@@ -15,7 +15,8 @@ enum APIRouter: URLRequestConvertible {
   static let user = UserDefaultService.shared.getUser()
   
   var baseURL: URL {
-    return URL(string: "http://localhost:8080/api")!
+//    return URL(string: "http://localhost:8080/api")!
+    return URL(string: "http://ec2-15-164-9-1.ap-northeast-2.compute.amazonaws.com:8080/api")!
   }
   
   // MARK: - Cases

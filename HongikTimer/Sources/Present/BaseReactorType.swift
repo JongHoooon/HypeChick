@@ -8,6 +8,5 @@
 import Foundation
 
 protocol BaseReactorType {
-  var userInfo: UserInfo { get }
   var provider: ServiceProviderType { get }
 }

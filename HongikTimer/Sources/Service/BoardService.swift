@@ -9,16 +9,18 @@ import RxSwift
 
 /// Board Service 관련 이벤트
 enum BoardEvent {
-  case create(BoardPost)
+  case create(Club)
 }
+
+/*
 
 protocol BoardServicType {
   
   var event: PublishSubject<BoardEvent> { get }
-  func fetchBoardPosts() -> Observable<[BoardPost]>
+  func fetchBoardPosts() -> Observable<[Club]>
   
   @discardableResult
-  func saveBoardPosts(_ boarPosts: [BoardPost]) -> Observable<Void>
+  func saveBoardPosts(_ boarPosts: [Club]) -> Observable<Void>
   
   func create(
     _ title: String,
@@ -26,7 +28,7 @@ protocol BoardServicType {
     chief: String,
     startDay: Date,
     content: String
-  ) -> Observable<BoardPost>
+  ) -> Observable<Club>
 }
 
 final class BoardService: BoardServicType {
@@ -34,12 +36,12 @@ final class BoardService: BoardServicType {
   let userDefaultservice = UserDefaultService.shared
   let event = PublishSubject<BoardEvent>()
 
-  func fetchBoardPosts() -> Observable<[BoardPost]> {
+  func fetchBoardPosts() -> Observable<[Club]> {
     if let savedBoardPosts = userDefaultservice.getBoardPosts() {
       return .just(savedBoardPosts)
     }
     
-    let defaultPosts: [BoardPost] = [
+    let defaultPosts: [Club] = [
       BoardPost(title: "코딩테스트 알고리즘 스터디",
                 memberCount: 2,
                 maxMemberCount: 4,
@@ -100,4 +102,8 @@ final class BoardService: BoardServicType {
         self.event.onNext(.create(boardPost))
       })
   }
+  
+  
 }
+
+*/

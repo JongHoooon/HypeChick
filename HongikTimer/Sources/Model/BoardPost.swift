@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct BoardPost: Codable, Identifiable, Equatable {
-  var id = UUID().uuidString
+/*
+struct BoardPost: Codable, Equatable {
+  var id: Int
   var title: String
   var memberCount: Int = 1
   var maxMemberCount: Int
@@ -18,6 +19,7 @@ struct BoardPost: Codable, Identifiable, Equatable {
   var content: String
   
   init() {
+    self.id = 999999
     self.title = "파이썬 코테 스터디"
     self.maxMemberCount = 4
     self.memberCount = 1
@@ -44,3 +46,4 @@ struct BoardPost: Codable, Identifiable, Equatable {
     self.content = content
   }
 }
+*/

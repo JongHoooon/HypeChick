@@ -11,7 +11,7 @@ struct User: Codable {
     let result: String
     let expiresIn: Int
     let token, message: String
-    let userInfo: UserInfo
+    var userInfo: UserInfo
 
     enum CodingKeys: String, CodingKey {
         case result

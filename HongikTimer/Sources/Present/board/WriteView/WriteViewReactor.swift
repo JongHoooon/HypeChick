@@ -95,15 +95,16 @@ final class WriteViewReactor: Reactor {
       
       guard self.currentState.canSubmit else { return .empty() }
       
-      newMutation = self.provider.boardService
-        .create(
-          currentState.title,
-          maxMemberCount: currentState.selectNumber,
-          chief: self.userInfo.username ?? "",
-          startDay: Date(),
-          content: currentState.content ?? ""
-        )
-        .map { _ in .dismiss }
+//      newMutation = self.provider.boardService
+//        .create(
+//          currentState.title,
+//          maxMemberCount: currentState.selectNumber,
+//          chief: self.userInfo.username ?? "",
+//          startDay: Date(),
+//          content: currentState.content ?? ""
+//        )
+//        .map { _ in .dismiss }
+      
     }
     
     return newMutation

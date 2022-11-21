@@ -13,7 +13,8 @@ class APIClient {
   static let userId = UserDefaultService.shared.getUser()?.userInfo.id
   static let token = UserDefaultService.shared.getUser()?.token
   
-  static let BASE_URL: String = "http://localhost:8080/api"
+//  static let BASE_URL: String = "http://localhost:8080/api"
+  static let BASE_URL: String = "http://ec2-15-164-9-1.ap-northeast-2.compute.amazonaws.com:8080/api"
   
   static func request<T: Decodable, U: URLRequestConvertible>(
     _ object: T.Type,

@@ -55,14 +55,26 @@ final class BoardViewCell: UICollectionViewCell, View {
   // MARK: - Binding
   
   func bind(reactor: BoardViewCellReactor) {
-    self.titleLabel.text = reactor.currentState.title
-    self.memberLabel.attributedText = makeLabel(
-      "인원",
-      content: "\(reactor.currentState.memberCount)/\(reactor.currentState.maxMemberCount)명" )
-    self.chiefLabel.attributedText = makeLabel("그룹장", content: reactor.currentState.chief)
-    self.startDayLabel.attributedText = makeLabel("시작일", content: reactor.currentState.startDay)
-    self.totalTimeLabel.attributedText = makeLabel("총 시간", content: "\(reactor.currentState.totalTime%3600)시간")
-    self.contentLabel.text = reactor.currentState.content
+    
+    // state
+    
+    reactor.state.asObservable().map { $0.club }
+      .subscribe(onNext: { [weak self] club in
+        guard let self = self else { return }
+        
+        self.titleLabel.text = club.clubName ?? "club name"
+        
+        self.memberLabel.attributedText = makeLabel("인원",
+                                                    content: "\(club.joinedMemberNum!)/\(club.numOfMember!)명" )
+        
+        self.chiefLabel.attributedText = makeLabel("그룹장", content: club.leaderName ?? "user")
+        self.startDayLabel.attributedText = makeLabel("시작일", content: club.createDate ?? "시작일")
+        self.totalTimeLabel.attributedText = makeLabel("총 시간", content: secToString(sec: club.totalStudyTime))
+        self.contentLabel.text = club.clubInfo ?? ""
+        
+        
+      })
+      .disposed(by: self.disposeBag)
   }
 }
 

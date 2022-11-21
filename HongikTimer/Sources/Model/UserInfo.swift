@@ -9,14 +9,14 @@ import Foundation
 
 struct UserInfo: Codable {
   let id: Int?
-  let username: String?
+  var username: String?
   let email: String?
   let socialType: String?
-  let totalStudyTime: Int?
-  let todayStudyTime: Int?
-  let level: String?
-  let clubID: Int?
-  let goal: String?
+  var totalStudyTime: Int?
+  var todayStudyTime: Int?
+  var level: String?
+  var clubID: Int?
+  var goal: String?
   
   enum CodingKeys: String, CodingKey {
     case id, username, email, socialType, totalStudyTime, todayStudyTime, level

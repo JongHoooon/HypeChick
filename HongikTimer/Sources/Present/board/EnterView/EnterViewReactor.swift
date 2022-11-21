@@ -20,11 +20,13 @@ final class EnterViewReactor: Reactor {
   }
   
   struct State {
-    var boardPost: BoardPost? = nil
+    var club: Club? = nil
   }
   
   let provider: ServiceProviderType
-  var userInfo: UserInfo
+  lazy var userInfo: UserInfo? = {
+    return self.provider.userDefaultService.getUser()?.userInfo
+  }()
   var initialState: State
   
   init(
@@ -32,7 +34,6 @@ final class EnterViewReactor: Reactor {
     userInfo: UserInfo
   ) {
     self.provider = provider
-    self.userInfo = userInfo
     self.initialState = State()
   }
   

@@ -104,4 +104,44 @@ struct TodoCheckRequest {
 
 // MARK: - Group
 
-//struct
+struct ClubGetRequest {
+  let clubID: Int
+}
+
+struct CreateClubRequest {
+  let memberID: Int
+  let clubName: String
+  let numOfMember: Int
+  let clubInfo: String
+  
+  var parameters: [String: Any] {
+    return [
+      "memberId": memberID,
+      "clubName": clubName,
+      "numOfMember": numOfMember,
+      "clubInfo": clubInfo
+    ]
+  }
+}
+
+struct DeleteClubRequest {
+  let clubID: Int
+}
+
+struct EditClubInfoRequest {
+  let clubName: String
+  let clubInfo: String
+  let clubID: Int
+  
+  var parameters: [String: Any] {
+    return [
+      "clubName": clubName,
+      "clubInfo": clubInfo
+    ]
+  }
+}
+
+struct SignInClubRequest {
+  let clubID: Int
+  let memberID: Int
+}

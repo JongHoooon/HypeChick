@@ -131,6 +131,12 @@ final class RegisterViewController: BaseViewController {
         with: self,
         completion: #selector(snsSignInHandler)
       )
+    
+    UserDefaultService.shared.logoutUser()
+    KakaoAuthService.shared.kakaoLogout()
+    self.naverAuthService.shared?.requestDeleteToken()
+    try? Auth.auth().signOut()
+    
   }
   
   // MARK: - Init
@@ -151,12 +157,8 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
   
   // 로그인 성공
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-//    print("DEBUG 네이버 로그인 성공")
     
     self.getNaverUID()
-    
-//    AuthNotificationManager.shared.postNotificationSignInSuccess()
-//    AuthNotificationManager.shared.postNotificationSnsSignInNeed()
     
   }
   

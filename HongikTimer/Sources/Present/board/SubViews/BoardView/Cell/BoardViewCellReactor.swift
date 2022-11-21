@@ -9,12 +9,25 @@ import ReactorKit
 import RxCocoa
 import RxSwift
 
-final class BoardViewCellReactor: Reactor {
+final class BoardViewCellReactor: Reactor, BaseReactorType {
+  
+  
   typealias Action = NoAction
   
-  var initialState: BoardPost
+  struct State {
+    let club: Club
+  }
   
-  init(boardPost: BoardPost) {
-    self.initialState = boardPost
+  lazy var userInfo: UserInfo? = {
+    let userInfo = self.provider.userDefaultService.getUser()?.userInfo
+    return userInfo
+  }()
+  
+  var provider: ServiceProviderType
+  var initialState: State
+  
+  init(club: Club, provider: ServiceProviderType) {
+    self.initialState = State(club: club)
+    self.provider = provider
   }
 }

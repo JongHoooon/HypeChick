@@ -66,13 +66,27 @@ final class BoardViewReactor: Reactor, BaseReactorType {
 extension BoardViewReactor {
   private func getRefreshMutation() -> Observable<Mutation> {
     
-    let boardPosts = self.provider.boardService.fetchBoardPosts()
+//    let boardPosts = self.provider.boardService.fetchBoardPosts()
+//
+//    return boardPosts.map { boardPosts in
+//      let sectionItems = boardPosts.map(BoardViewCellReactor.init)
+//      let section = BoardListSection(model: Void(), items: sectionItems)
+//      return .setSetcions([section])
+//    }
     
-    return boardPosts.map { boardPosts in
-      let sectionItems = boardPosts.map(BoardViewCellReactor.init)
-      let section = BoardListSection(model: Void(), items: sectionItems)
-      return .setSetcions([section])
-    }
+    return self.provider.apiService.getClubs()
+      .map { result in
+        
+        switch result {
+        case .success(let clubs):
+          let sectionItems = clubs.map { BoardViewCellReactor.init(club: $0,
+                                                                   provider: self.provider) }
+          let section = BoardListSection(model: Void(), items: sectionItems)
+          return .setSetcions([section])
+        case .failure:
+          return .setSetcions([])
+        }
+      }
   }
   
   func reactorForWriteView() -> WriteViewReactor {
