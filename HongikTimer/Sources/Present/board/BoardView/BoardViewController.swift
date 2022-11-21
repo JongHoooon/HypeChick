@@ -113,7 +113,7 @@ class BoardViewController: BaseViewController, View {
   
   func bind(reactor: BoardViewReactor) {
         
-    // MARK: Action
+    // Action
     self.rx.viewDidAppear
       .map { _ in Reactor.Action.refresh }
       .bind(to: reactor.action )
@@ -121,12 +121,18 @@ class BoardViewController: BaseViewController, View {
     
     self.writeButton.rx.tap
       .map(reactor.reactorForWriteView)
-      .subscribe(onNext: { [weak self] reactor in
-        guard let self = self else { return }
-        let viewController = WriteViewController(reactor)
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        navigationViewController.modalPresentationStyle = .fullScreen
-        self.present(navigationViewController, animated: true)
+      .subscribe(onNext: { [weak self] writeViewReactor in
+        
+        if self?.reactor?.currentState.writeButtonEnable == true {
+          
+          guard let self = self else { return }
+          let viewController = WriteViewController(writeViewReactor)
+          let navigationViewController = UINavigationController(rootViewController: viewController)
+          navigationViewController.modalPresentationStyle = .fullScreen
+          self.present(navigationViewController, animated: true)
+        } else {
+          print("비활성화")
+        }
       })
       .disposed(by: self.disposeBag)
     
@@ -143,14 +149,26 @@ class BoardViewController: BaseViewController, View {
       })
       .disposed(by: disposeBag)
     
-    // MARK: State
+    // State
     reactor.state.asObservable().map { $0.sections }
       .bind(to: self.boardCollectionView.rx.items(dataSource: self.dataSource))
       .disposed(by: disposeBag)
     
+    reactor.state.asObservable().map { $0.writeButtonEnable }
+      .subscribe(onNext: { [weak self] enable in
+        
+        if enable == true {
+          self?.writeButton.backgroundColor = .defaultTintColor
+        } else {
+          self?.writeButton.backgroundColor = .systemGray2
+        }
+        
+      })
+      .disposed(by: self.disposeBag)
+    
+    // delegate
     self.boardCollectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
-    
   }
 }
 

@@ -182,7 +182,11 @@ class APIService {
         switch dataResponse.result {
         case .success(let data):
           print("DEBUG 그룹 생성 성공!")
-          print(data)
+          guard let data = data as? [String: Any] else { return }
+          guard let id = data["clubId"] as? Int else { return }
+          guard var user: User = UserDefaultService.shared.getUser() else { return }
+          user.userInfo.clubID = id
+          UserDefaultService.shared.setUser(user)
         case .failure(let error):
           APIClient.handleError(.unknown(error))
         }

@@ -57,10 +57,6 @@ final class HomeViewController: BaseViewController {
     bind(reactor: self.reactor)
     
 //    UserDefaultService.shared.logoutUser()
-//    KakaoAuthService.shared.kakaoLogout()
-//    self.naverAuthService.shared?.requestDeleteToken()
-//    try? Auth.auth().signOut()
-
   }
   
   override func viewWillAppear(_ animated: Bool) {

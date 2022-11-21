@@ -20,7 +20,7 @@ final class EnterViewReactor: Reactor {
   }
   
   struct State {
-    var club: Club? = nil
+    var club: Club?
   }
   
   let provider: ServiceProviderType

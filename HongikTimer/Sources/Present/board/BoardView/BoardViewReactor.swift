@@ -24,6 +24,7 @@ final class BoardViewReactor: Reactor, BaseReactorType {
   
   struct State {
     var sections: [BoardListSection]
+    var writeButtonEnable: Bool = true
   }
   
   // MARK: - Property
@@ -66,11 +67,14 @@ final class BoardViewReactor: Reactor, BaseReactorType {
     
     switch mutation {
     case let .setSetcions(sections):
-      
-      print("set section")
       state.sections = sections
-      
       print(state.sections)
+      
+      if provider.userDefaultService.getUser()?.userInfo.clubID != nil {
+        state.writeButtonEnable = false
+      } else {
+        state.writeButtonEnable = true
+      }
       
       return state
     }
@@ -80,28 +84,7 @@ final class BoardViewReactor: Reactor, BaseReactorType {
 // MARK: - Method
 
 extension BoardViewReactor {
-  
-  //  private func getRefreshMutation() -> Observable<Mutation> {
-  //
-  //    return self.provider.apiService.getClubs()
-  //      .map { result in
-  //
-  //        switch result {
-  //        case .success(let clubs):
-  //          let sectionItems = clubs.map {
-  //
-  //            print($0)
-  //
-  //            return BoardViewCellReactor.init(club: $0, provider: self.provider) }
-  //
-  //          let section = BoardListSection(model: Void(), items: sectionItems)
-  //          return .setSetcions([section])
-  //        case .failure:
-  //          return .setSetcions([])
-  //        }
-  //      }
-  //  }
-  
+
   func reactorForWriteView() -> WriteViewReactor {
     return WriteViewReactor(self.provider, userInfo: self.userInfo)
   }
@@ -110,4 +93,3 @@ extension BoardViewReactor {
     return EnterViewReactor(self.provider, userInfo: self.userInfo)
   }
 }
-

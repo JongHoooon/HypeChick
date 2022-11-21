@@ -77,11 +77,12 @@ final class EnterViewController: BaseViewController, View {
   // MARK: - Binding
   func bind(reactor: EnterViewReactor) {
     
+    // state
+    
     reactor.state.asObservable().map { $0.club }
       .subscribe(onNext: { [weak self] club in
         guard let self = self,
               let club = club else { return }
-        
         
         self.titleLabel.text = club.clubName ?? "club name"
         
@@ -93,13 +94,9 @@ final class EnterViewController: BaseViewController, View {
         self.totalTimeLabel.attributedText = makeLabel("총 시간", content: secToString(sec: club.totalStudyTime))
         self.contentLabel.text = club.clubInfo ?? ""
         
-        
       })
       .disposed(by: self.disposeBag)
   }
-  
-  
-  
 }
 
 // MARK: - Method
@@ -116,6 +113,15 @@ private extension EnterViewController {
   }
   
   func configureLayout() {
+    
+    let userClubId = UserDefaultService.shared.getUser()?.userInfo.clubID
+    if userClubId == reactor?.currentState.club?.id {
+      self.enterButton.isEnabled = false
+      self.enterButton.backgroundColor = .systemGray2
+    } else {
+      self.enterButton.isEnabled = true
+      self.enterButton.backgroundColor = .label
+    }
     
     let firstLineStackView = UIStackView(arrangedSubviews: [
       memberLabel,
