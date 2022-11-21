@@ -79,7 +79,7 @@ class BoardViewController: BaseViewController, View {
   private lazy var writeButton = UIButton().then {
     let plusImage = UIImage(systemName: "plus")?.withTintColor(.systemBackground, renderingMode: .alwaysOriginal)
     $0.setImage(plusImage, for: .normal)
-    $0.backgroundColor = .defaultTintColor
+//    $0.backgroundColor = .defaultTintColor
     $0.layer.cornerRadius = 28.0
     
     $0.layer.shadowColor = UIColor.black.cgColor

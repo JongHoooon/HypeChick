@@ -115,7 +115,7 @@ private extension EnterViewController {
   func configureLayout() {
     
     let userClubId = UserDefaultService.shared.getUser()?.userInfo.clubID
-    if userClubId == reactor?.currentState.club?.id {
+    if userClubId != nil {
       self.enterButton.isEnabled = false
       self.enterButton.backgroundColor = .systemGray2
     } else {
