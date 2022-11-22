@@ -133,6 +133,8 @@
 		EDF3A8B42912517B00A7C980 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B32912517B00A7C980 /* UIFont+Extension.swift */; };
 		EDF3A8B6291259FF00A7C980 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B5291259FF00A7C980 /* GroupDetailViewController.swift */; };
 		EDF3A8B829125E9300A7C980 /* GroupDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B729125E9300A7C980 /* GroupDetailCell.swift */; };
+		EDFB2A09292CE3A300B50DDC /* NilGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A08292CE3A300B50DDC /* NilGroupViewController.swift */; };
+		EDFB2A0B292CE46000B50DDC /* GroupViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A0A292CE46000B50DDC /* GroupViewReactor.swift */; };
 		FAE335FC088F6FD303C9209E /* Pods_HongikTimer_HongikTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B527A7CFE09CB372827D5BC7 /* Pods_HongikTimer_HongikTimerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -288,6 +290,8 @@
 		EDF3A8B32912517B00A7C980 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		EDF3A8B5291259FF00A7C980 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
 		EDF3A8B729125E9300A7C980 /* GroupDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailCell.swift; sourceTree = "<group>"; };
+		EDFB2A08292CE3A300B50DDC /* NilGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NilGroupViewController.swift; sourceTree = "<group>"; };
+		EDFB2A0A292CE46000B50DDC /* GroupViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewReactor.swift; sourceTree = "<group>"; };
 		F76E547649D65B5F515B8DE4 /* Pods_HongikTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HongikTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -754,6 +758,8 @@
 			isa = PBXGroup;
 			children = (
 				EDF3A89F2912454300A7C980 /* GroupViewController.swift */,
+				EDFB2A0A292CE46000B50DDC /* GroupViewReactor.swift */,
+				EDFB2A08292CE3A300B50DDC /* NilGroupViewController.swift */,
 				EDF3A8A12912488D00A7C980 /* GroupViewCell.swift */,
 				EDF3A8B5291259FF00A7C980 /* GroupDetailViewController.swift */,
 				EDF3A8B729125E9300A7C980 /* GroupDetailCell.swift */,
@@ -1071,6 +1077,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDFB2A09292CE3A300B50DDC /* NilGroupViewController.swift in Sources */,
 				2750A45628D051D3000EE24D /* SetPurposeViewController.swift in Sources */,
 				ED5F344229276C73002EB5D2 /* Task2.swift in Sources */,
 				EDF2F1FA2926ACE700A59FA2 /* APIService.swift in Sources */,
@@ -1155,6 +1162,7 @@
 				2793C12428F499DC00FC7D13 /* TaskEditPresentaionController.swift in Sources */,
 				27B471CB28D2070700805F79 /* TextFieldView.swift in Sources */,
 				EDF3A89629120F7C00A7C980 /* CategoryView.swift in Sources */,
+				EDFB2A0B292CE46000B50DDC /* GroupViewReactor.swift in Sources */,
 				27B471B828D0ABAA00805F79 /* ItemViewController.swift in Sources */,
 				27B471C228D19ADA00805F79 /* EmailLoginViewController.swift in Sources */,
 				EDED357D291B5611003F3DEC /* EmailSignInReactor.swift in Sources */,

@@ -45,7 +45,7 @@ final class HomeViewReactor: Reactor, BaseReactorType {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad:
-      guard let purpose = self.userInfo.goal else { return .empty() }
+      guard let purpose = self.provider.userDefaultService.getUser()?.userInfo.goal else { return .empty() }
       return .just(.viewDidLoad(purpose: purpose))
     }
   }

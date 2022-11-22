@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import SnapKit
+import ReactorKit
+import RxCocoa
 
-final class GroupViewController: UIViewController {
+final class GroupViewController: BaseViewController, View {
   
   // MARK: - Property
-
+  
+  // MARK: - UI
   private lazy var groupCollectionView = UICollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewFlowLayout()
@@ -41,6 +45,21 @@ final class GroupViewController: UIViewController {
   }
   
   // MARK: - init
+  init(reactor: GroupViewReactor) {
+    super.init()
+    
+    self.reactor = reactor
+  }
+  
+  required convenience init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: - bind
+  
+  func bind(reactor: GroupViewReactor) {
+    
+  }
 
 }
 

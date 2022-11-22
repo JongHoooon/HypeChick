@@ -48,8 +48,7 @@ final class BoardViewReactor: Reactor, BaseReactorType {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidAppear:
-      print("refresh")
-      
+
       return self.provider.apiService.getClubs()
         .map { result in
           switch result {
@@ -87,21 +86,16 @@ final class BoardViewReactor: Reactor, BaseReactorType {
     switch mutation {
     case let .setSetcions(sections):
       state.sections = sections
-      print(state.sections)
       
       if provider.userDefaultService.getUser()?.userInfo.clubID != nil {
         state.writeButtonEnable = false
       } else {
         state.writeButtonEnable = true
       }
-      print(state.writeButtonEnable)
-      print(provider.userDefaultService.getUser()?.userInfo.clubID)
       
     case let .refreshSections(sections):
       
       state.sections = sections
-      print(state.sections)
-      
       if provider.userDefaultService.getUser()?.userInfo.clubID != nil {
         state.writeButtonEnable = false
       } else {

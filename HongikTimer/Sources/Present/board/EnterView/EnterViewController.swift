@@ -137,6 +137,7 @@ private extension EnterViewController {
   func configureLayout() {
     
     let userClubId = UserDefaultService.shared.getUser()?.userInfo.clubID
+    
     if userClubId != nil ||
         self.reactor?.currentState.club?.joinedMemberNum ?? 0 >= self.reactor?.currentState.club?.numOfMember ?? 0 {
       self.enterButton.isEnabled = false

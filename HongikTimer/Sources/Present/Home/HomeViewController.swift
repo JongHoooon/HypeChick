@@ -97,7 +97,7 @@ extension HomeViewController: View {
         guard let self = self else { return }
         
         if text?.isEmpty == true {
-          self.purposeView.purposeLabel.text = "탭하여 목표를 입려하세요!"
+          self.purposeView.purposeLabel.text = "탭하여 목표를 입력하세요!"
         } else {
           self.purposeView.purposeLabel.text = text
         }
