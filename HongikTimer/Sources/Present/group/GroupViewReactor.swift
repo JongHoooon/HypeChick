@@ -16,6 +16,8 @@ final class GroupViewReactor: Reactor, BaseReactorType {
   
   enum Action {
     case viewWillAppear
+    
+    case deleteGroup
   }
   
   enum Mutation {
@@ -72,7 +74,14 @@ final class GroupViewReactor: Reactor, BaseReactorType {
               return .noGroup
             }
           }
-        }
+        
+      case .deleteGroup:
+        guard var user = provider.userDefaultService.getUser() else { return .empty() }
+        user.userInfo.clubID = nil
+        provider.userDefaultService.setUser(user)
+        
+        return .just(.noGroup)
+      }
     }
   
     func reduce(state: State, mutation: Mutation) -> State {

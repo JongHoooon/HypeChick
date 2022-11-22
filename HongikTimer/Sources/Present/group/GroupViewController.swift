@@ -10,38 +10,46 @@ import UIKit
 import Then
 import SnapKit
 import RxCocoa
+import RxDataSources
 import CoreAudioTypes
 
 final class GroupViewController: BaseViewController, View {
   
   // MARK: - Property
   
-  var dummy: [TestGroup] = [
-    TestGroup(name: "김홍익", imageName: "chick1", time: "01:04:36"),
-    TestGroup(name: "박와우", imageName: "chick2", time: "00:01:01"),
-    TestGroup(name: "정마포", imageName: "chick0", time: "00:37:13"),
-    TestGroup(name: "이합정", imageName: "chick1", time: "00:53:28")
-  ]
+  let dataSource = RxCollectionViewSectionedReloadDataSource<GroupMembersSection> { _, collectionView, indexPath, reactor in
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupCell.identifier,
+                                                  for: indexPath) as? GroupCell
+    
+    cell?.reactor = reactor
+    return cell ?? UICollectionViewCell()
+  }
+  
+  let deleteGroupRelay = PublishRelay<Int>()
   
   // MARK: - UI
   
   private lazy var nilGroupView = NilGroupView()
   
+  private lazy var menuTabBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"),
+                                                      style: .plain,
+                                                      target: self,
+                                                      action: #selector(tapMenuButton))
+  
   private lazy var titleLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 20.0, weight: .bold)
     $0.textAlignment = .center
-    $0.text = "취업준비 스터디"
     $0.textColor = .label
     $0.numberOfLines = 1
   }
   
-  private lazy var purposePresentButton = UIButton().then {
-    $0.backgroundColor = UIColor.init(rgb: 0xDBF0FF)
-    $0.setTitleColor(.label, for: .normal)
-    $0.titleLabel?.numberOfLines = 1
+  private lazy var purposeView = PurposePresentView().then {
     
-#warning("더미")
-    $0.setTitle("🔥 열심히 하자!! 🔥", for: .normal)
+    let tap = UITapGestureRecognizer(target: self,
+                                     action: #selector(tapPresentView))
+    $0.addGestureRecognizer(tap)
+    $0.isUserInteractionEnabled = true
+    
   }
   
   private lazy var groupDetailCollectionView = UICollectionView(
@@ -55,10 +63,7 @@ final class GroupViewController: BaseViewController, View {
     
     $0.collectionViewLayout = layout
     $0.showsVerticalScrollIndicator = false
-    
-    $0.dataSource = self
-    $0.delegate = self
-    
+        
     $0.register(
       GroupCell.self,
       forCellWithReuseIdentifier: GroupCell.identifier
@@ -86,9 +91,6 @@ final class GroupViewController: BaseViewController, View {
     
     configureNavigationBar()
     configureLayout()
-    
-    totalTimeLabel.text = "00:01:33"
-    
   }
   
   // MARK: - init
@@ -111,7 +113,16 @@ final class GroupViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
+    self.deleteGroupRelay
+      .map { _ in Reactor.Action.deleteGroup }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // state
+    
+    reactor.state.asObservable().map { $0.sections }
+      .bind(to: self.groupDetailCollectionView.rx.items(dataSource: self.dataSource))
+      .disposed(by: disposeBag)
     
     reactor.state.asObservable().map { $0.isGroup }
       .distinctUntilChanged()
@@ -125,39 +136,39 @@ final class GroupViewController: BaseViewController, View {
       })
       .disposed(by: self.disposeBag)
     
-    reactor.state.asObservable().map { $0.clubResponse }
-      .subscribe(onNext: { [weak self] clubResponse in
-        guard let self = self else { return }
-        
-        
-      })
+    reactor.state.asObservable().map {
+      guard let clubResponse = $0.clubResponse else { return GetClubResponse() }
+      return clubResponse
+    }
+    .subscribe(onNext: { [weak self] clubResponse in
+      guard let self = self else { return }
+      
+      self.titleLabel.text = clubResponse.clubName ?? ""
+      self.purposeView.purposeLabel.text = clubResponse.clubInfo ?? ""
+      
+      let sec = clubResponse.totalStudyTime ?? 0
+      let time = sec
+      let hour = time / 3600
+      let miniute = (time % 3600) / 60
+      let second = (time % 3600) % 60
+      
+      self.totalTimeLabel.text = String(
+        format: "%02d:%02d:%02d",
+        hour,
+        miniute,
+        second
+      )
+    })
+    .disposed(by: self.disposeBag)
+    
+    // delegate
+    
+    groupDetailCollectionView.rx.setDelegate(self)
+      .disposed(by: self.disposeBag)
   }
 }
 
 // MARK: - CollectionView
-
-extension GroupViewController: UICollectionViewDataSource {
-  func collectionView(
-    _ collectionView: UICollectionView,
-    numberOfItemsInSection section: Int
-  ) -> Int {
-    return dummy.count
-  }
-  
-  func collectionView(
-    _ collectionView: UICollectionView,
-    cellForItemAt indexPath: IndexPath
-  ) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: GroupCell.identifier, for: indexPath
-    ) as? GroupCell
-    
-    let dummy = dummy[indexPath.item]
-    cell?.configureCell(dummy)
-    
-    return cell ?? UICollectionViewCell()
-  }
-}
 
 extension GroupViewController: UICollectionViewDelegateFlowLayout {
   
@@ -184,9 +195,11 @@ extension GroupViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Metod
 
-private extension GroupViewController {
+extension GroupViewController {
   func configureNavigationBar() {
     navigationItem.title = "Group"
+    
+    navigationItem.rightBarButtonItem = menuTabBarButton
   }
   
   func configureLayout() {
@@ -195,7 +208,7 @@ private extension GroupViewController {
     
     [
       titleLabel,
-      purposePresentButton,
+      purposeView,
       groupDetailCollectionView,
       todayLabel,
       totalTimeLabel,
@@ -214,7 +227,7 @@ private extension GroupViewController {
       $0.top.equalTo(view.safeAreaLayoutGuide).offset(16.0)
     }
     
-    purposePresentButton.snp.makeConstraints {
+    purposeView.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(16.0)
       $0.height.equalTo(32.0)
       $0.leading.trailing.equalToSuperview()
@@ -227,13 +240,72 @@ private extension GroupViewController {
     }
     
     todayLabel.snp.makeConstraints {
-      $0.top.equalTo(purposePresentButton.snp.bottom).offset(32.0)
+      $0.top.equalTo(purposeView.snp.bottom).offset(32.0)
       $0.centerX.equalToSuperview()
     }
     
     totalTimeLabel.snp.makeConstraints {
       $0.top.equalTo(todayLabel.snp.bottom)
       $0.centerX.equalToSuperview()
+    }
+  }
+  
+  // MARK: - Selector
+  
+  @objc func tapPresentView() {
+    
+    let vc = GroupDetailViewController(clubResponse: reactor!.currentState.clubResponse! )
+    
+    self.present(vc, animated: true)
+  }
+  
+  @objc func tapMenuButton() {
+    
+    let confirmAlertController = UIAlertController(title: "그룹 삭제",
+                                                   message: "정말로 그룹을 삭제하시겠습니까?",
+                                                   preferredStyle: .alert)
+    let cancelAction = UIAlertAction(title: "취소",
+                                     style: .cancel)
+    let confirmAction = UIAlertAction(title: "확인",
+                                      style: .destructive) { [weak self] _ in
+      guard let self = self else { return }
+      self.reactor?.provider.apiService.deleteClub(clubID: self.reactor?.currentState.clubResponse?.id ?? 0)
+        .subscribe(onNext: { result in
+          switch result {
+          case let .success(id):
+            self.deleteGroupRelay.accept(id)
+          case .failure:
+            self.view.makeToast("그룹 삭제에 실패했습니다", position: .top)
+          }
+        })
+        .disposed(by: self.disposeBag)
+    }
+    [
+      confirmAction,
+      cancelAction
+    ].forEach { confirmAlertController.addAction($0) }
+    
+    if reactor?.provider.userDefaultService.getUser()?.userInfo.id == reactor?.currentState.clubResponse?.leaderId {
+      let menuAlertController = UIAlertController(title: "그룹 수정 / 삭제",
+                                                  message: nil,
+                                                  preferredStyle: .actionSheet)
+      let editAction = UIAlertAction(title: "수정",
+                                     style: .default)
+      let deleteAction = UIAlertAction(title: "삭제",
+                                       style: .destructive) { _ in
+        self.present(confirmAlertController,
+                     animated: true)
+      }
+      let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+      [
+        editAction,
+        deleteAction,
+        cancelAction
+      ].forEach { menuAlertController.addAction($0) }
+      self.present(menuAlertController, animated: true)
+      
+    } else {
+      self.view.makeToast("그룹장만 수정 / 삭제가 가능합니다!", position: .top)
     }
   }
 }

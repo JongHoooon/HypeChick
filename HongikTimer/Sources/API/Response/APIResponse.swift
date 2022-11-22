@@ -60,6 +60,19 @@ struct GetClubResponse: Codable {
   let numOfMember, joinedMemberNum, totalStudyTime: Int?
   let createDate: String?
   let members: Members?
+  
+  init() {
+    self.id = nil
+    self.leaderId = nil
+    self.leaderName = nil
+    self.clubName = nil
+    self.clubInfo = nil
+    self.numOfMember = nil
+    self.joinedMemberNum = nil
+    self.totalStudyTime = nil
+    self.createDate = nil
+    self.members = nil
+  }
 }
 
 struct Members: Codable {
@@ -70,10 +83,11 @@ struct Member: Codable {
   let memberID: Int?
   let username: String?
   let studyTime: Int?
+  let level: String?
   
   enum CodingKeys: String, CodingKey {
     case memberID = "memberId"
-    case username, studyTime
+    case username, studyTime, level
   }
 }
 

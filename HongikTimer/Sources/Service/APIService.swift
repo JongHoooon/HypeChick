@@ -266,4 +266,60 @@ class APIService {
       return Disposables.create()
     }
   }
+  
+  func editClub(clubName: String, clubInfo: String, clubID: Int) -> Observable<Result<Void, ApiError>> {
+    
+    return Observable.create { observer in
+      let editClubInfoRequest = EditClubInfoRequest(clubName: clubName,
+                                                    clubInfo: clubInfo,
+                                                    clubID: clubID)
+      let urlRequest = GroupRouter.editClub(editClubInfoRequest)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            print("DEBUG 그룹 정보 수정 완료")
+            observer.onNext(.success(Void()))
+            
+          case let .failure(error):
+            APIClient.handleError(.unknown(error))
+            observer.onNext(.failure(ApiError.unknown(error)))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
+  
+  func deleteClub(clubID: Int) -> Observable<Result<Int, ApiError>> {
+    
+    return Observable.create { observer in
+      let deleteClubRequest = DeleteClubRequest(clubID: clubID)
+      let urlRequest = GroupRouter.deleteClub(deleteClubRequest)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            print("DEBBUG 그룹 삭제 성공")
+            observer.onNext(.success(clubID))
+          case let .failure(error):
+            print("DEBUG 그룹 삭제 실패")
+            APIClient.handleError(.unknown(error))
+            observer.onNext(.failure(ApiError.unknown(error)))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
 }

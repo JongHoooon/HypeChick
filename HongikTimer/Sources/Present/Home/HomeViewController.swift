@@ -187,7 +187,7 @@ private extension HomeViewController {
     
     let urlRequest = TimerRouter.getTodayTime
     request(urlRequest)
-      .validate(statusCode: 200..<500)
+      .validate(statusCode: 200..<300)
       .responseJSON()
       .map { dataResponse -> Int in
 

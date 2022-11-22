@@ -10,29 +10,29 @@ import Foundation
 // MARK: - Auth
 
 struct EmailLoginRequest {
-    let email: String
-    let password: String
-    
-    var parameters: [String: Any] {
-        return [
-            "email": email,
-            "password": password
-        ]
-    }
+  let email: String
+  let password: String
+  
+  var parameters: [String: Any] {
+    return [
+      "email": email,
+      "password": password
+    ]
+  }
 }
 
 struct RegisterRequest {
-    let email: String
-    let username: String
-    let password: String
-    
-    var parameters: [String: Any] {
-        return [
-            "email": email,
-            "username": username,
-            "password": password
-        ]
-    }
+  let email: String
+  let username: String
+  let password: String
+  
+  var parameters: [String: Any] {
+    return [
+      "email": email,
+      "username": username,
+      "password": password
+    ]
+  }
 }
 
 struct SNSLoginRequest {
