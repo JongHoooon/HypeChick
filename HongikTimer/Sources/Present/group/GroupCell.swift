@@ -1,13 +1,19 @@
 //
-//  GroupDetailCell.swift
+//  GroupCell.swift
 //  HongikTimer
 //
 //  Created by JongHoon on 2022/11/02.
 //
 
 import UIKit
+import SnapKit
+import Then
+import ReactorKit
+import RxCocoa
 
-final class GroupDetailCell: UICollectionViewCell {
+final class GroupCell: UICollectionViewCell, View {
+  
+  var disposeBag = DisposeBag()
   
   lazy var memberImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
@@ -38,11 +44,15 @@ final class GroupDetailCell: UICollectionViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  func bind(reactor: GroupCellReactor) {
+    
+  }
 }
 
 // MARK: - Method
 
-extension GroupDetailCell {
+extension GroupCell {
   
   func configureCell(_ testGroup: TestGroup) {
     self.memberImageView.image = UIImage(named: testGroup.imageName)
@@ -77,4 +87,3 @@ extension GroupDetailCell {
     }
   }
 }
-

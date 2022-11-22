@@ -12,19 +12,19 @@ import RxAlamofire
 import Alamofire
 
 class APIService {
-
+  
   let disposebag = DisposeBag()
   
   // MARK: - Timer
   
-//  func getTime() -> Observable<Result<Int,ApiError>> {
-//
-//    let urlRequest = TimerRouter.getTodayTime
-//    request(urlRequest)
-//      .responseJSON()
-//      .map { dataResponse ->}
-//
-//  }
+  //  func getTime() -> Observable<Result<Int,ApiError>> {
+  //
+  //    let urlRequest = TimerRouter.getTodayTime
+  //    request(urlRequest)
+  //      .responseJSON()
+  //      .map { dataResponse ->}
+  //
+  //  }
   
   // MARK: - Todo
   
@@ -64,7 +64,7 @@ class APIService {
     return Observable<Task>.create { observer in
       let todoPostRequest = TodoPostRequest(contents: contents, date: date)
       let urlRequest = TodoRouter.postTask(todoPostRequest)
-
+      
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
@@ -89,43 +89,43 @@ class APIService {
   }
   
   func editTodo(contents: String, taskId: Int) {
-      let todoContentsEditRequest = TodoContentsEditRequest(contents: contents, taskId: taskId)
-      let urlRequest = TodoRouter.updateTodo(todoContentsEditRequest)
-
-      request(urlRequest)
-        .validate(statusCode: 200..<300)
-        .responseJSON()
-        .subscribe(onNext: { dataResponse in
-          switch dataResponse.result {
-          case .success:
-            print("DEBUG todo contents 수정 완료")
-
-          case .failure(let error):
-            APIClient.handleError(.unknown(error))
-            
-          }
-        })
-        .disposed(by: self.disposebag)
+    let todoContentsEditRequest = TodoContentsEditRequest(contents: contents, taskId: taskId)
+    let urlRequest = TodoRouter.updateTodo(todoContentsEditRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG todo contents 수정 완료")
+          
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+          
+        }
+      })
+      .disposed(by: self.disposebag)
   }
   
   func deleteTodo(taskId: Int) {
-      let todoDeleteRequest = TodoDeleteRequest(taskId: taskId)
-      let urlRequest = TodoRouter.deleteTodo(todoDeleteRequest)
-
-      request(urlRequest)
-        .validate(statusCode: 200..<300)
-        .responseJSON()
-        .subscribe(onNext: { dataResponse in
-          switch dataResponse.result {
-          case .success:
-            print("DEBUG todo contents 삭제 완료")
-
-          case .failure(let error):
-            APIClient.handleError(.unknown(error))
-            
-          }
-        })
-        .disposed(by: self.disposebag)
+    let todoDeleteRequest = TodoDeleteRequest(taskId: taskId)
+    let urlRequest = TodoRouter.deleteTodo(todoDeleteRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG todo contents 삭제 완료")
+          
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+          
+        }
+      })
+      .disposed(by: self.disposebag)
   }
   
   func checkTodo(taskId: Int) {
@@ -139,7 +139,7 @@ class APIService {
         switch dataResponse.result {
         case .success:
           print("DEBUG todo check toggle 완료")
-
+          
         case .failure(let error):
           APIClient.handleError(.unknown(error))
         }
@@ -147,19 +147,19 @@ class APIService {
       .disposed(by: self.disposebag)
   }
   
-  // MARK: - Group
+  // MARK: - Board 화면
   
   /// 전체 그룹 조회 - 게시판에 표시
   func getClubs() -> Observable<Result<[Club], ApiError>> {
-
+    
     return Observable<Result<[Club], ApiError>>.create { observer in
       let urlRequest = GroupRouter.getClubs
-
+      
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
         .subscribe(onNext: { dataResponse in
-
+          
           switch dataResponse.result {
           case .success:
             guard let data = dataResponse.data else { return }
@@ -179,13 +179,13 @@ class APIService {
   }
   
   func createClub(id: Int, clubName: String, numOfMember: Int, clubInfo: String) {
-
+    
     let createClubRequest = CreateClubRequest(memberID: id,
                                               clubName: clubName,
                                               numOfMember: numOfMember,
                                               clubInfo: clubInfo)
     let urlRequest = GroupRouter.createClub(createClubRequest)
-
+    
     request(urlRequest)
       .validate(statusCode: 200..<300)
       .responseJSON()
@@ -234,6 +234,36 @@ class APIService {
       return Disposables.create()
     }
   }
+  
+  // MARK: - Group 화면
+  
+  func getClub(clubID: Int) -> Observable<Result<GetClubResponse, ApiError>> {
+    
+    return Observable<Result<GetClubResponse, ApiError>>.create { observer in
+      let clubGetReqeust = ClubGetRequest(clubID: clubID)
+      let urlRequest = GroupRouter.getClub(clubGetReqeust)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            print("DEBUG 그룹 \(clubID) 호출 성공!")
+            guard let data = dataResponse.data else { return }
+            guard let getClubResponse = try? JSONDecoder().decode(GetClubResponse.self,
+                                                                  from: data) else { return }
+            print(getClubResponse)
+            observer.onNext(.success(getClubResponse))
+            
+          case let .failure(error):
+            print("DEBUG 그룹 \(clubID) 호출 실패")
+            observer.onNext(.failure(.unknown(error)))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      return Disposables.create()
+    }
+  }
 }
-
-// 가입후에 클럽아이디 저장

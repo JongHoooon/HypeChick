@@ -121,8 +121,6 @@
 		EDF3A89A29120F7C00A7C980 /* AutoSlideCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A89229120F7C00A7C980 /* AutoSlideCollectionViewCell.swift */; };
 		EDF3A89B29120F7C00A7C980 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A89329120F7C00A7C980 /* BoardViewController.swift */; };
 		EDF3A89D291220D100A7C980 /* EnterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A89C291220D100A7C980 /* EnterViewController.swift */; };
-		EDF3A8A02912454300A7C980 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A89F2912454300A7C980 /* GroupViewController.swift */; };
-		EDF3A8A22912488D00A7C980 /* GroupViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8A12912488D00A7C980 /* GroupViewCell.swift */; };
 		EDF3A8AB29124F6300A7C980 /* NotoSansCJKkr-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EDF3A8A429124F6100A7C980 /* NotoSansCJKkr-Bold.otf */; };
 		EDF3A8AC29124F6300A7C980 /* AbrilFatface-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDF3A8A529124F6200A7C980 /* AbrilFatface-Regular.ttf */; };
 		EDF3A8AD29124F6300A7C980 /* NanumMyeongjo-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDF3A8A629124F6200A7C980 /* NanumMyeongjo-ExtraBold.ttf */; };
@@ -131,10 +129,11 @@
 		EDF3A8B029124F6300A7C980 /* NotoSansCJKkr-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = EDF3A8A929124F6300A7C980 /* NotoSansCJKkr-Medium.otf */; };
 		EDF3A8B129124F6300A7C980 /* NanumMyeongjo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EDF3A8AA29124F6300A7C980 /* NanumMyeongjo-Regular.ttf */; };
 		EDF3A8B42912517B00A7C980 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B32912517B00A7C980 /* UIFont+Extension.swift */; };
-		EDF3A8B6291259FF00A7C980 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B5291259FF00A7C980 /* GroupDetailViewController.swift */; };
-		EDF3A8B829125E9300A7C980 /* GroupDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B729125E9300A7C980 /* GroupDetailCell.swift */; };
-		EDFB2A09292CE3A300B50DDC /* NilGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A08292CE3A300B50DDC /* NilGroupViewController.swift */; };
+		EDF3A8B6291259FF00A7C980 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B5291259FF00A7C980 /* GroupViewController.swift */; };
+		EDF3A8B829125E9300A7C980 /* GroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF3A8B729125E9300A7C980 /* GroupCell.swift */; };
+		EDFB2A09292CE3A300B50DDC /* NilGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A08292CE3A300B50DDC /* NilGroupView.swift */; };
 		EDFB2A0B292CE46000B50DDC /* GroupViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A0A292CE46000B50DDC /* GroupViewReactor.swift */; };
+		EDFB2A0D292CFD7F00B50DDC /* GroupCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A0C292CFD7F00B50DDC /* GroupCellReactor.swift */; };
 		FAE335FC088F6FD303C9209E /* Pods_HongikTimer_HongikTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B527A7CFE09CB372827D5BC7 /* Pods_HongikTimer_HongikTimerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -278,8 +277,6 @@
 		EDF3A89229120F7C00A7C980 /* AutoSlideCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoSlideCollectionViewCell.swift; sourceTree = "<group>"; };
 		EDF3A89329120F7C00A7C980 /* BoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		EDF3A89C291220D100A7C980 /* EnterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterViewController.swift; sourceTree = "<group>"; };
-		EDF3A89F2912454300A7C980 /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
-		EDF3A8A12912488D00A7C980 /* GroupViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewCell.swift; sourceTree = "<group>"; };
 		EDF3A8A429124F6100A7C980 /* NotoSansCJKkr-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Bold.otf"; sourceTree = "<group>"; };
 		EDF3A8A529124F6200A7C980 /* AbrilFatface-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AbrilFatface-Regular.ttf"; sourceTree = "<group>"; };
 		EDF3A8A629124F6200A7C980 /* NanumMyeongjo-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumMyeongjo-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -288,10 +285,11 @@
 		EDF3A8A929124F6300A7C980 /* NotoSansCJKkr-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Medium.otf"; sourceTree = "<group>"; };
 		EDF3A8AA29124F6300A7C980 /* NanumMyeongjo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumMyeongjo-Regular.ttf"; sourceTree = "<group>"; };
 		EDF3A8B32912517B00A7C980 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
-		EDF3A8B5291259FF00A7C980 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
-		EDF3A8B729125E9300A7C980 /* GroupDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailCell.swift; sourceTree = "<group>"; };
-		EDFB2A08292CE3A300B50DDC /* NilGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NilGroupViewController.swift; sourceTree = "<group>"; };
+		EDF3A8B5291259FF00A7C980 /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
+		EDF3A8B729125E9300A7C980 /* GroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCell.swift; sourceTree = "<group>"; };
+		EDFB2A08292CE3A300B50DDC /* NilGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NilGroupView.swift; sourceTree = "<group>"; };
 		EDFB2A0A292CE46000B50DDC /* GroupViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewReactor.swift; sourceTree = "<group>"; };
+		EDFB2A0C292CFD7F00B50DDC /* GroupCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCellReactor.swift; sourceTree = "<group>"; };
 		F76E547649D65B5F515B8DE4 /* Pods_HongikTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HongikTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -757,12 +755,11 @@
 		EDF3A89E2912452A00A7C980 /* group */ = {
 			isa = PBXGroup;
 			children = (
-				EDF3A89F2912454300A7C980 /* GroupViewController.swift */,
+				EDF3A8B5291259FF00A7C980 /* GroupViewController.swift */,
 				EDFB2A0A292CE46000B50DDC /* GroupViewReactor.swift */,
-				EDFB2A08292CE3A300B50DDC /* NilGroupViewController.swift */,
-				EDF3A8A12912488D00A7C980 /* GroupViewCell.swift */,
-				EDF3A8B5291259FF00A7C980 /* GroupDetailViewController.swift */,
-				EDF3A8B729125E9300A7C980 /* GroupDetailCell.swift */,
+				EDFB2A08292CE3A300B50DDC /* NilGroupView.swift */,
+				EDF3A8B729125E9300A7C980 /* GroupCell.swift */,
+				EDFB2A0C292CFD7F00B50DDC /* GroupCellReactor.swift */,
 			);
 			path = group;
 			sourceTree = "<group>";
@@ -1077,16 +1074,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDFB2A09292CE3A300B50DDC /* NilGroupViewController.swift in Sources */,
+				EDFB2A09292CE3A300B50DDC /* NilGroupView.swift in Sources */,
 				2750A45628D051D3000EE24D /* SetPurposeViewController.swift in Sources */,
 				ED5F344229276C73002EB5D2 /* Task2.swift in Sources */,
 				EDF2F1FA2926ACE700A59FA2 /* APIService.swift in Sources */,
-				EDF3A8A22912488D00A7C980 /* GroupViewCell.swift in Sources */,
 				ED7391492927D5A700A0024E /* MemberRequest.swift in Sources */,
 				ED13F2F5290E46CA00883D19 /* SettingViewController.swift in Sources */,
 				ED037A7129117E2F00D30F7A /* ItemCell.swift in Sources */,
 				ED037A612910F75000D30F7A /* TabBarViewReactor.swift in Sources */,
 				27B471BA28D0ACC700805F79 /* NotificationCell.swift in Sources */,
+				EDFB2A0D292CFD7F00B50DDC /* GroupCellReactor.swift in Sources */,
 				27615A8728D4D9E80099DB00 /* GoogleAuthService.swift in Sources */,
 				ED2402E82920DEE3000DF54C /* TaskHeaderCell.swift in Sources */,
 				EDF3A89D291220D100A7C980 /* EnterViewController.swift in Sources */,
@@ -1104,7 +1101,7 @@
 				2750A40928D02BE9000EE24D /* TabBarViewController.swift in Sources */,
 				ED46F682292A586000CD5D19 /* GroupRouter.swift in Sources */,
 				ED46F684292A815400CD5D19 /* SetPurposeViewReactor.swift in Sources */,
-				EDF3A8B829125E9300A7C980 /* GroupDetailCell.swift in Sources */,
+				EDF3A8B829125E9300A7C980 /* GroupCell.swift in Sources */,
 				2793C12628F49F9100FC7D13 /* UIView+Extension.swift in Sources */,
 				2793C12828F4A2B000FC7D13 /* TaskEditViewController.swift in Sources */,
 				EDF3A89529120F7C00A7C980 /* BoardViewCell.swift in Sources */,
@@ -1122,7 +1119,6 @@
 				ED2402EE29215FBC000DF54C /* Array+SectionModel.swift in Sources */,
 				27615A8528D4B86A0099DB00 /* AppleAuthService.swift in Sources */,
 				2793C13028F58DB300FC7D13 /* TimerViewController.swift in Sources */,
-				EDF3A8A02912454300A7C980 /* GroupViewController.swift in Sources */,
 				ED7391472927D46800A0024E /* MembersRouter.swift in Sources */,
 				ED037A7B2911995C00D30F7A /* ChickViewReactor.swift in Sources */,
 				27A977A328E208020076FF80 /* NotToDoViewController.swift in Sources */,
@@ -1182,7 +1178,7 @@
 				ED2402EA2920ED03000DF54C /* TestGroup.swift in Sources */,
 				27B471CF28D20DAF00805F79 /* ButtonConfig.swift in Sources */,
 				27615A8928D4DB7D0099DB00 /* AuthNotificationService.swift in Sources */,
-				EDF3A8B6291259FF00A7C980 /* GroupDetailViewController.swift in Sources */,
+				EDF3A8B6291259FF00A7C980 /* GroupViewController.swift in Sources */,
 				ED7391462927D46800A0024E /* UserResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
