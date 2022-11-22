@@ -29,7 +29,7 @@ final class GroupViewController: BaseViewController, View {
   
   // MARK: - UI
   
-  private lazy var nilGroupView = NilGroupView()
+  private lazy var nilGroupView = NilGroupView(width: self.view.frame.width)
   
   private lazy var menuTabBarButton = UIBarButtonItem(image: UIImage(systemName: "ellipsis"),
                                                       style: .plain,
@@ -130,8 +130,11 @@ final class GroupViewController: BaseViewController, View {
         guard let self = self else { return }
         if !isGroup {
           self.nilGroupView.isHidden = false
+          self.menuTabBarButton.isEnabled = false
+          
         } else {
           self.nilGroupView.isHidden = true
+          self.menuTabBarButton.isEnabled = true
         }
       })
       .disposed(by: self.disposeBag)
