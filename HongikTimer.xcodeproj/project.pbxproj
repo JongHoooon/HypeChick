@@ -106,7 +106,6 @@
 		ED7391462927D46800A0024E /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391442927D46700A0024E /* UserResponse.swift */; };
 		ED7391472927D46800A0024E /* MembersRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391452927D46800A0024E /* MembersRouter.swift */; };
 		ED7391492927D5A700A0024E /* MemberRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7391482927D5A700A0024E /* MemberRequest.swift */; };
-		ED73914B29285D7500A0024E /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED73914A29285D7500A0024E /* APIRouter.swift */; };
 		ED73914D29285DAB00A0024E /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED73914C29285DAB00A0024E /* AlertService.swift */; };
 		ED7D72B8291E07CF006A3887 /* EnterViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */; };
 		EDED357D291B5611003F3DEC /* EmailSignInReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED357C291B5611003F3DEC /* EmailSignInReactor.swift */; };
@@ -262,7 +261,6 @@
 		ED7391442927D46700A0024E /* UserResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
 		ED7391452927D46800A0024E /* MembersRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MembersRouter.swift; sourceTree = "<group>"; };
 		ED7391482927D5A700A0024E /* MemberRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberRequest.swift; sourceTree = "<group>"; };
-		ED73914A29285D7500A0024E /* APIRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		ED73914C29285DAB00A0024E /* AlertService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
 		ED7D72B7291E07CF006A3887 /* EnterViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterViewReactor.swift; sourceTree = "<group>"; };
 		EDED357C291B5611003F3DEC /* EmailSignInReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignInReactor.swift; sourceTree = "<group>"; };
@@ -676,7 +674,6 @@
 		EDF2F1F22926772100A59FA2 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				ED73914A29285D7500A0024E /* APIRouter.swift */,
 				ED46F681292A586000CD5D19 /* GroupRouter.swift */,
 				ED11917B292A267200E589D5 /* TodoRouter.swift */,
 				ED7391452927D46800A0024E /* MembersRouter.swift */,
@@ -1142,7 +1139,6 @@
 				ED037A75291189DD00D30F7A /* WallpaperViewController.swift in Sources */,
 				27B471B628D0A9D900805F79 /* NotificationViewController.swift in Sources */,
 				ED037A5F291027C400D30F7A /* ObservableType+Extension.swift in Sources */,
-				ED73914B29285D7500A0024E /* APIRouter.swift in Sources */,
 				27B471D328D22E6900805F79 /* Constant.swift in Sources */,
 				ED2402E72920DEE3000DF54C /* TaskHeaderCellReactor.swift in Sources */,
 				2793C12B28F52F4300FC7D13 /* UIButton+Extension.swift in Sources */,

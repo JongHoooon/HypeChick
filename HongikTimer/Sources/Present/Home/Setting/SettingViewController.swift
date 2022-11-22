@@ -161,6 +161,7 @@ private extension SettingViewController {
           try? Auth.auth().signOut()
           print("DEBUG apple or google 로그아웃")
         }
+        
         UserDefaultService.shared.logoutUser()
         
         let vc = RegisterViewController(with: RegisterViewReactor(ServiceProvider()))

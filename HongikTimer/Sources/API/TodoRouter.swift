@@ -15,11 +15,6 @@ enum TodoRouter: URLRequestConvertible {
     return URL(string: APIClient.BASE_URL)!
   }
   
-  var userId: Int {
-    guard let userId = APIClient.userId else { return 0 }
-    return userId
-  }
-  
   // MARK: - Cases
   
   /// 사용자가 쓴 투두 전체 조회
@@ -41,9 +36,9 @@ enum TodoRouter: URLRequestConvertible {
   
   var path: String {
     switch self {
-    case .getTasks, .postTask:        return "tasks/\(userId)"
-    case .updateTodo(let request):    return "tasks/\(userId)/\(request.taskId)"
-    case .deleteTodo(let request):    return "tasks/\(userId)/\(request.taskId)"
+    case .getTasks, .postTask:        return "tasks/\(APIClient.getid())"
+    case .updateTodo(let request):    return "tasks/\(APIClient.getid())/\(request.taskId)"
+    case .deleteTodo(let request):    return "tasks/\(APIClient.getid())/\(request.taskId)"
     case .checkTodo(let request):     return "tasks/check/\(request.taskId)"
     }
   }
@@ -79,7 +74,7 @@ enum TodoRouter: URLRequestConvertible {
     
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-    urlRequest.setValue("\(APIClient.token ?? "")", forHTTPHeaderField: "X-AUTH")
+    urlRequest.setValue("\(APIClient.getToekn())", forHTTPHeaderField: "X-AUTH")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
     
     return urlRequest

@@ -10,8 +10,20 @@ import Foundation
 
 class APIClient {
   
-  static let userId = UserDefaultService.shared.getUser()?.userInfo.id
-  static let token = UserDefaultService.shared.getUser()?.token
+//  static var userId: Int? = {
+//    print("user id 호출")
+//    return UserDefaultService.shared.getUser()?.userInfo.id }()
+//  static var token: String? = { UserDefaultService.shared.getUser()?.token }()
+  
+  static func getid() -> Int {
+    guard let id = UserDefaultService.shared.getUser()?.userInfo.id else { return 0 }
+    return id
+  }
+  
+  static func getToekn() -> String {
+    guard let token = UserDefaultService.shared.getUser()?.token else { return "" }
+    return token
+  }
   
 //  static let BASE_URL: String = "http://localhost:8080/api"
   static let BASE_URL: String = "http://ec2-15-164-9-1.ap-northeast-2.compute.amazonaws.com:8080/api"

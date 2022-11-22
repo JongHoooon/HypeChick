@@ -16,6 +16,7 @@ final class BoardViewReactor: Reactor, BaseReactorType {
   
   enum Action {
     case refresh
+    case refreshController
   }
   
   enum Mutation {
@@ -59,6 +60,9 @@ final class BoardViewReactor: Reactor, BaseReactorType {
             return .setSetcions([])
           }
         }
+      
+    case .refreshController:
+      <#code#>
     }
   }
   

@@ -126,7 +126,7 @@ extension AuthService {
           print("DEBUG Email User 로그인: \(user.userInfo)")
           UserDefaultService.shared.setUser(user)
           UserDefaultService.shared.setLoginKind(.email)
-          
+                    
           completion(.success(user))
         case .failure(let error):
           completion(.failure(ApiError.unknown(error)))

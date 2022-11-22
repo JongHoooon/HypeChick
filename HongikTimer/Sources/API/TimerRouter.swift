@@ -24,7 +24,7 @@ enum TimerRouter: URLRequestConvertible {
   var path: String {
     switch self {
     case .postTime, .getTodayTime:
-      return "timer/\(APIClient.userId!)"
+      return "timer/\(APIClient.getid())"
     }
   }
   
@@ -59,11 +59,11 @@ enum TimerRouter: URLRequestConvertible {
     
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-    urlRequest.setValue("\(APIClient.token ?? "")", forHTTPHeaderField: "X-AUTH")
+    urlRequest.setValue("\(APIClient.getToekn())", forHTTPHeaderField: "X-AUTH")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
     
-    print(APIClient.token)
-    print(APIClient.userId)
+    print(APIClient.getToekn())
+    print(APIClient.getid())
     
     return urlRequest
   }

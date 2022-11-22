@@ -12,6 +12,7 @@ import RxDataSources
 import RxViewController
 import Then
 import SnapKit
+import Toast_Swift
 
 class BoardViewController: BaseViewController, View {
   
@@ -43,11 +44,6 @@ class BoardViewController: BaseViewController, View {
     $0.attributedTitle = NSAttributedString(
       string: "🐥당겨서 새로 고침!🐣",
       attributes: [.foregroundColor: UIColor.label]
-    )
-    $0.addTarget(
-      self,
-      action: #selector(refresh),
-      for: .valueChanged
     )
   }
   
@@ -119,19 +115,25 @@ class BoardViewController: BaseViewController, View {
       .bind(to: reactor.action )
       .disposed(by: self.disposeBag)
     
+//    boardCollectionView.refreshControl.rx.
+    refreshControl.rx.controlEvent(.valueChanged)
+      .map { _ in Reactor.Action.refresh }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     self.writeButton.rx.tap
       .map(reactor.reactorForWriteView)
       .subscribe(onNext: { [weak self] writeViewReactor in
+        guard let self = self else { return }
         
-        if self?.reactor?.currentState.writeButtonEnable == true {
+        if self.reactor?.currentState.writeButtonEnable == true {
           
-          guard let self = self else { return }
           let viewController = WriteViewController(writeViewReactor)
           let navigationViewController = UINavigationController(rootViewController: viewController)
           navigationViewController.modalPresentationStyle = .fullScreen
           self.present(navigationViewController, animated: true)
         } else {
-          print("비활성화")
+          self.view.makeToast("이미 가입한 그룹이 있습니다.", position: .top)
         }
       })
       .disposed(by: self.disposeBag)

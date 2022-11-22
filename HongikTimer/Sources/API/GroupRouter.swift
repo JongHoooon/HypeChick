@@ -15,11 +15,6 @@ enum GroupRouter: URLRequestConvertible {
     return URL(string: APIClient.BASE_URL)!
   }
   
-  var userId: Int {
-    guard let userId = APIClient.userId else { return 0 }
-    return userId
-  }
-  
   // MARK: - Cases
   
   /// 전체 그룹 조회 - 게시판에 표시
@@ -86,6 +81,7 @@ enum GroupRouter: URLRequestConvertible {
     
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    urlRequest.setValue("\(APIClient.getToekn())", forHTTPHeaderField: "X-AUTH")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
     
     return urlRequest

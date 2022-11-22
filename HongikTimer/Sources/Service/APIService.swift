@@ -15,6 +15,17 @@ class APIService {
 
   let disposebag = DisposeBag()
   
+  // MARK: - Timer
+  
+//  func getTime() -> Observable<Result<Int,ApiError>> {
+//
+//    let urlRequest = TimerRouter.getTodayTime
+//    request(urlRequest)
+//      .responseJSON()
+//      .map { dataResponse ->}
+//
+//  }
+  
   // MARK: - Todo
   
   func getTasks() -> Observable<[Todo]> {

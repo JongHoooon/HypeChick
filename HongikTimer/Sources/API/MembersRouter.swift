@@ -68,6 +68,7 @@ enum MembersRouter: URLRequestConvertible {
     
     urlRequest.method = self.method
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    urlRequest.setValue("\(APIClient.getToekn())", forHTTPHeaderField: "X-AUTH")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
         
     return urlRequest

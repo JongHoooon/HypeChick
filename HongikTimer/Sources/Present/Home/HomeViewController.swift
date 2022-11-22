@@ -57,6 +57,11 @@ final class HomeViewController: BaseViewController {
     bind(reactor: self.reactor)
     
 //    UserDefaultService.shared.logoutUser()
+    
+    print("home 화면")
+    print(UserDefaultService.shared.getUser()?.userInfo.id )
+    print(UserDefaultService.shared.getUser()?.token)
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +115,7 @@ extension HomeViewController: View {
 //    reactor.state.asObservable().map { $0.studyTime }
 //      .bind(to: timeLabel.rx.text)
 //      .disposed(by: self.disposeBag)
+    
   }
 }
 
@@ -185,7 +191,7 @@ private extension HomeViewController {
     
     let urlRequest = TimerRouter.getTodayTime
     request(urlRequest)
-      .validate(statusCode: 200..<300)
+      .validate(statusCode: 200..<500)
       .responseJSON()
       .map { dataResponse -> Int in
 
@@ -199,6 +205,7 @@ private extension HomeViewController {
       }
       .bind(to: self.timeLabel.rx.intToTimerFormat)
       .disposed(by: self.disposeBag)
+    
   }
   
   // MARK: - Selector
