@@ -204,4 +204,36 @@ class APIService {
       })
       .disposed(by: self.disposebag)
   }
+  
+  func signInClub(clubID: Int, memberID: Int) -> Observable<Result<Int, ApiError>> {
+    
+    return Observable<Result<Int, ApiError>>.create { observer in
+      let signInClubRequest = SignInClubRequest(clubID: clubID, memberID: memberID)
+      let urlRequest = GroupRouter.signInClub(signInClubRequest)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case let .success(data):
+            guard let data = data as? [String: Any] else { return }
+            guard let clubId = data["clubId"] as? Int else { return }
+            observer.onNext(.success(clubId))
+            print("DEBUG 클럽ID: \(clubId) 가입 성공")
+            
+          case let .failure(error):
+            APIClient.handleError(.unknown(error))
+            observer.onNext(.failure(ApiError.unknown(error)))
+            print("DEBUG 클럽 가입 실패")
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
 }
+
+// 가입후에 클럽아이디 저장

@@ -15,17 +15,20 @@ typealias BoardListSection = SectionModel<Void, BoardViewCellReactor>
 final class BoardViewReactor: Reactor, BaseReactorType {
   
   enum Action {
+    case viewDidAppear
     case refresh
-    case refreshController
+    
   }
   
   enum Mutation {
     case setSetcions([BoardListSection])
+    case refreshSections([BoardListSection])
   }
   
   struct State {
     var sections: [BoardListSection]
     var writeButtonEnable: Bool = true
+    @Pulse var endRefreshing: Bool?
   }
   
   // MARK: - Property
@@ -44,7 +47,7 @@ final class BoardViewReactor: Reactor, BaseReactorType {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .refresh:
+    case .viewDidAppear:
       print("refresh")
       
       return self.provider.apiService.getClubs()
@@ -61,8 +64,20 @@ final class BoardViewReactor: Reactor, BaseReactorType {
           }
         }
       
-    case .refreshController:
-      <#code#>
+    case .refresh:
+      return self.provider.apiService.getClubs()
+        .map { result in
+          switch result {
+          case .success(let clubs):
+            let sectionItems = clubs.map { BoardViewCellReactor.init(club: $0, provider: self.provider) }
+            let section = BoardListSection(model: Void(), items: sectionItems)
+            return .refreshSections([section])
+            
+          case .failure:
+            print("실패")
+            return .refreshSections([])
+          }
+        }
     }
   }
   
@@ -79,16 +94,31 @@ final class BoardViewReactor: Reactor, BaseReactorType {
       } else {
         state.writeButtonEnable = true
       }
+      print(state.writeButtonEnable)
+      print(provider.userDefaultService.getUser()?.userInfo.clubID)
       
-      return state
+    case let .refreshSections(sections):
+      
+      state.sections = sections
+      print(state.sections)
+      
+      if provider.userDefaultService.getUser()?.userInfo.clubID != nil {
+        state.writeButtonEnable = false
+      } else {
+        state.writeButtonEnable = true
+      }
+      
+      state.endRefreshing = true
     }
+    
+    return state
   }
 }
 
 // MARK: - Method
 
 extension BoardViewReactor {
-
+  
   func reactorForWriteView() -> WriteViewReactor {
     return WriteViewReactor(self.provider, userInfo: self.userInfo)
   }

@@ -58,10 +58,6 @@ final class HomeViewController: BaseViewController {
     
 //    UserDefaultService.shared.logoutUser()
     
-    print("home 화면")
-    print(UserDefaultService.shared.getUser()?.userInfo.id )
-    print(UserDefaultService.shared.getUser()?.token)
-    
   }
   
   override func viewWillAppear(_ animated: Bool) {

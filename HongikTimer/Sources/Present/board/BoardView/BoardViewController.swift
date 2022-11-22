@@ -111,12 +111,11 @@ class BoardViewController: BaseViewController, View {
         
     // Action
     self.rx.viewDidAppear
-      .map { _ in Reactor.Action.refresh }
+      .map { _ in Reactor.Action.viewDidAppear }
       .bind(to: reactor.action )
       .disposed(by: self.disposeBag)
     
-//    boardCollectionView.refreshControl.rx.
-    refreshControl.rx.controlEvent(.valueChanged)
+    boardCollectionView.refreshControl?.rx.controlEvent(.valueChanged)
       .map { _ in Reactor.Action.refresh }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
@@ -164,7 +163,12 @@ class BoardViewController: BaseViewController, View {
         } else {
           self?.writeButton.backgroundColor = .systemGray2
         }
-        
+      })
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$endRefreshing)
+      .subscribe(onNext: { [weak self] _ in
+        self?.refreshControl.endRefreshing()
       })
       .disposed(by: self.disposeBag)
     
@@ -236,7 +240,6 @@ extension BoardViewController: UICollectionViewDelegateFlowLayout {
       bottom: 4.0, right: 8.0
     )
   }
-  
 }
 
 // MARK: - Private

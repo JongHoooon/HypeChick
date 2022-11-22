@@ -33,7 +33,7 @@ enum GroupRouter: URLRequestConvertible {
   case editClub(_ request: EditClubInfoRequest)
   
   /// 그룹 가입
-  case singInClub(_ request: SignInClubRequest)
+  case signInClub(_ request: SignInClubRequest)
   
   // MARK: - End Point
   
@@ -44,7 +44,7 @@ enum GroupRouter: URLRequestConvertible {
     case .createClub:             return "clubs"
     case .deleteClub(let req):    return "clubs/\(req.clubID)"
     case .editClub(let req):      return "clubs/\(req.clubID)"
-    case .singInClub(let req):    return "clubs/\(req.clubID)/\(req.memberID)"
+    case .signInClub(let req):    return "clubs/\(req.clubID)/\(req.memberID)"
     }
   }
   
@@ -57,7 +57,7 @@ enum GroupRouter: URLRequestConvertible {
     case .createClub:              return .post
     case .deleteClub:              return .delete
     case .editClub:                return .put
-    case .singInClub:              return .get
+    case .signInClub:              return .get
     }
   }
   
@@ -70,7 +70,7 @@ enum GroupRouter: URLRequestConvertible {
     case .createClub(let req):      return req.parameters
     case .deleteClub:               return nil
     case .editClub(let req):        return req.parameters
-    case .singInClub:               return nil
+    case .signInClub:               return nil
     }
   }
   

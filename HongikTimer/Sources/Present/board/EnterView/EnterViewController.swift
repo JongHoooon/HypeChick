@@ -51,7 +51,6 @@ final class EnterViewController: BaseViewController, View {
     $0.backgroundColor = .label
     $0.setTitleColor(.systemBackground, for: .normal)
     $0.layer.cornerRadius = 8.0
-    $0.addTarget(self, action: #selector(tapEnterButton), for: .touchUpInside)
   }
   
   // MARK: - Lifecycle
@@ -77,6 +76,12 @@ final class EnterViewController: BaseViewController, View {
   // MARK: - Binding
   func bind(reactor: EnterViewReactor) {
     
+    // action
+    enterButton.rx.tap
+      .map { Reactor.Action.tapEnterButton }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // state
     
     reactor.state.asObservable().map { $0.club }
@@ -94,6 +99,23 @@ final class EnterViewController: BaseViewController, View {
         self.totalTimeLabel.attributedText = makeLabel("총 시간", content: secToString(sec: club.totalStudyTime))
         self.contentLabel.text = club.clubInfo ?? ""
         
+      })
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$isCompleted)
+      .subscribe(onNext: { [weak self] success in
+        guard let self = self else { return }
+        if success == true {
+          let alertController = UIAlertController(title: "", message: "가입이 완료됐습니다.", preferredStyle: .alert)
+          let action = UIAlertAction(title: "확인", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+          }
+        
+          alertController.addAction(action)
+          self.present(alertController, animated: true)
+        } else if success == false {
+          self.view.makeToast("그룹 가입에 실패했습니다", position: .top)
+        }
       })
       .disposed(by: self.disposeBag)
   }
@@ -115,7 +137,8 @@ private extension EnterViewController {
   func configureLayout() {
     
     let userClubId = UserDefaultService.shared.getUser()?.userInfo.clubID
-    if userClubId != nil {
+    if userClubId != nil ||
+        self.reactor?.currentState.club?.joinedMemberNum ?? 0 >= self.reactor?.currentState.club?.numOfMember ?? 0 {
       self.enterButton.isEnabled = false
       self.enterButton.backgroundColor = .systemGray2
     } else {
