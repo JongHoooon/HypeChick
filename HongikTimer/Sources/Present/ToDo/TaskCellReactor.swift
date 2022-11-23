@@ -11,6 +11,7 @@ import RxSwift
 
 final class TaskCellReactor: Reactor, BaseReactorType {
   
+  
   enum Action {
     case tapBox
   }

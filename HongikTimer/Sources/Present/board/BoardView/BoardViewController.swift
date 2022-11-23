@@ -12,6 +12,7 @@ import RxDataSources
 import RxViewController
 import Then
 import SnapKit
+import Toast_Swift
 
 class BoardViewController: BaseViewController, View {
   
@@ -44,11 +45,6 @@ class BoardViewController: BaseViewController, View {
       string: "🐥당겨서 새로 고침!🐣",
       attributes: [.foregroundColor: UIColor.label]
     )
-    $0.addTarget(
-      self,
-      action: #selector(refresh),
-      for: .valueChanged
-    )
   }
   
   private lazy var boardCollectionView = UICollectionView(
@@ -79,7 +75,7 @@ class BoardViewController: BaseViewController, View {
   private lazy var writeButton = UIButton().then {
     let plusImage = UIImage(systemName: "plus")?.withTintColor(.systemBackground, renderingMode: .alwaysOriginal)
     $0.setImage(plusImage, for: .normal)
-    $0.backgroundColor = .defaultTintColor
+//    $0.backgroundColor = .defaultTintColor
     $0.layer.cornerRadius = 28.0
     
     $0.layer.shadowColor = UIColor.black.cgColor
@@ -113,44 +109,72 @@ class BoardViewController: BaseViewController, View {
   
   func bind(reactor: BoardViewReactor) {
         
-    // MARK: Action
+    // Action
     self.rx.viewDidAppear
-      .map { _ in Reactor.Action.refresh }
+      .map { _ in Reactor.Action.viewDidAppear }
       .bind(to: reactor.action )
+      .disposed(by: self.disposeBag)
+    
+    boardCollectionView.refreshControl?.rx.controlEvent(.valueChanged)
+      .map { _ in Reactor.Action.refresh }
+      .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
     self.writeButton.rx.tap
       .map(reactor.reactorForWriteView)
-      .subscribe(onNext: { [weak self] reactor in
+      .subscribe(onNext: { [weak self] writeViewReactor in
         guard let self = self else { return }
-        let viewController = WriteViewController(reactor)
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        navigationViewController.modalPresentationStyle = .fullScreen
-        self.present(navigationViewController, animated: true)
+        
+        if self.reactor?.currentState.writeButtonEnable == true {
+          
+          let viewController = WriteViewController(writeViewReactor)
+          let navigationViewController = UINavigationController(rootViewController: viewController)
+          navigationViewController.modalPresentationStyle = .fullScreen
+          self.present(navigationViewController, animated: true)
+        } else {
+          self.view.makeToast("이미 가입한 그룹이 있습니다.", position: .top)
+        }
       })
       .disposed(by: self.disposeBag)
     
     self.boardCollectionView.rx.modelSelected(BoardListSection.Item.self)
       .subscribe(onNext: { [weak self] boardPostReactor in
-        let boardPost = boardPostReactor.currentState
+        let club = boardPostReactor.currentState.club
         
         guard let self = self else { return }
         guard let reactor = self.reactor?.reactorForEnterView() else { return }
-        reactor.initialState.boardPost = boardPost
+        reactor.initialState.club = club
         let viewcontroller = EnterViewController(reactor: reactor)
         
         self.navigationController?.pushViewController(viewcontroller, animated: true)
       })
       .disposed(by: disposeBag)
     
-    // MARK: State
+    // State
     reactor.state.asObservable().map { $0.sections }
       .bind(to: self.boardCollectionView.rx.items(dataSource: self.dataSource))
       .disposed(by: disposeBag)
     
+    reactor.state.asObservable().map { $0.writeButtonEnable }
+      .subscribe(onNext: { [weak self] enable in
+        
+        if enable == true {
+          self?.writeButton.backgroundColor = .defaultTintColor
+        } else {
+          self?.writeButton.backgroundColor = .systemGray2
+        }
+      })
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$endRefreshing)
+      .subscribe(onNext: { [weak self] _ in
+        self?.refreshControl.endRefreshing()
+      })
+      .disposed(by: self.disposeBag)
+    
+    // delegate
     self.boardCollectionView.rx.setDelegate(self)
       .disposed(by: disposeBag)
-    
   }
 }
 
@@ -216,7 +240,6 @@ extension BoardViewController: UICollectionViewDelegateFlowLayout {
       bottom: 4.0, right: 8.0
     )
   }
-  
 }
 
 // MARK: - Private

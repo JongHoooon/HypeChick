@@ -231,8 +231,7 @@ private extension EmailSignInViewController {
           switch result {
           case .success(let user):
             print("registerAndLoginWithEmail 성공: \(user.userInfo)")
-            self.reactor.provider.userDefaultService.setUser(user)
-            self.view.hideToast()
+            self.view.hideToastActivity()
             
             let userInfo = user.userInfo
             let provider = self.reactor.provider
@@ -243,8 +242,8 @@ private extension EmailSignInViewController {
           case .failure(let error):
             print("registerAndLoginWithEmail 실패: \(error)")
             APIClient.handleError(error)
-            self.view.hideToast()
-            self.view.makeToast("회원 가입 실패", position: .top)
+            self.view.hideToastActivity()
+            self.view.makeToast("이미 가입한 이메일 입니다.", position: .top)
           }
         })
   }

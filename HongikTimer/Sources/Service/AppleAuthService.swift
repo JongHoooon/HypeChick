@@ -50,6 +50,7 @@ class AppleAuthService: NSObject {
       AuthNotificationManager.shared.postNotificationSignOutSuccess()
     } catch let error {
       AuthNotificationManager.shared.postNotificationSignOutError()
+      
     }
   }
 }
@@ -80,7 +81,17 @@ extension AppleAuthService: ASAuthorizationControllerDelegate {
           return
         }
         
-        print("DEBUG Apple 로그인 uid: \(authResult?.user.uid)")
+        guard let uid = authResult?.user.uid else { return }
+        
+        AuthService.shared.loginWithSNS(uid: uid, kind: .apple) { result in
+          switch result {
+          case .success(_):
+            print("DEBUG apple 로그인 성공")
+          case .failure(let error):
+            APIClient.handleError(error)
+            AuthNotificationManager.shared.postNotificationSnsSignInNeed(uid: uid, kind: .apple)
+          }
+        }
         
         AuthNotificationManager.shared.postNotificationSignInSuccess()
       }

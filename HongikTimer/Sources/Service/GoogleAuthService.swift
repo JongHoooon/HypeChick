@@ -33,8 +33,17 @@ struct GoogleAuthService {
         if error != nil {
           print("DEBUG google 로그인 error")
         } else {
-          print("DEBUG Google 로그인 uid: \(authDataResult?.user.uid ?? "")")
-          AuthNotificationManager.shared.postNotificationSignInSuccess()
+          
+          guard let uid = authDataResult?.user.uid else { return }
+          AuthService.shared.loginWithSNS(uid: uid, kind: .google) { result in
+            switch result {
+            case .success(_):
+              print("DEBUG Google 로그인 완료")
+            case .failure(let error):
+              APIClient.handleError(error)
+              AuthNotificationManager.shared.postNotificationSnsSignInNeed(uid: uid, kind: .google)
+            }
+          }
         }
       }
     }

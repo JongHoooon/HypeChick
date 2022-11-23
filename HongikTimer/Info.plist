@@ -54,6 +54,11 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>ec2-15-164-9-1.ap-northeast-2.compute.amazonaws.com</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>

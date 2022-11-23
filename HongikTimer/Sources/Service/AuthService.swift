@@ -10,23 +10,23 @@ import UIKit
 import Alamofire
 
 enum ApiError: Error {
-    case badStatus(_ code: Int)
-    case notAccept
-    case unknown(_ error: Error?)
-    
-    var info: String {
-        switch self {
-        case .badStatus(let code):  return "상태 코드 : \(code)"
-        case .notAccept: return "400 에러 입니다"
-        case .unknown(let err):     return "알 수 없는 에러입니다 \(String(describing: err?.localizedDescription))"
-        }
+  case badStatus(_ code: Int)
+  case notAccept
+  case unknown(_ error: Error?)
+  
+  var info: String {
+    switch self {
+    case .badStatus(let code):  return "상태 코드 : \(code)"
+    case .notAccept: return "400 에러 입니다"
+    case .unknown(let err):     return "알 수 없는 에러입니다 \(String(describing: err?.localizedDescription))"
     }
+  }
 }
 
 final class AuthService: NSObject {
   
   static let shared = AuthService()
-    
+  
   func logOutWithFirebase(completion: (Bool) -> Void) {
     do {
       try Auth.auth().signOut()
@@ -43,7 +43,7 @@ final class AuthService: NSObject {
 
 // MARK: - Email
 extension AuthService {
-
+  
   ///  이메일 회원 등록 후 로그인
   /// - Parameters:
   ///   - credentials: id, username, password 전달
@@ -74,14 +74,14 @@ extension AuthService {
   ///   - compltetion: completion handler
   func registerWithEmail(
     credentials: AuthCredentials,
-    completion: @escaping (Result<MyUser, ApiError>) -> Void
+    completion: @escaping (Result<UserInfo, ApiError>) -> Void
   ) {
     
     let registerRequest = credentials.getRegisterRequest()
     let urlRequest = MembersRouter.emailRegister(registerRequest)
     
     AF.request(urlRequest)
-      .responseDecodable(of: UserResponse.self) { dataResponse in
+      .responseDecodable(of: UserInfo.self) { dataResponse in
         guard let statusCode = dataResponse.response?.statusCode else { return }
         
         if !(200...299).contains(statusCode) {
@@ -89,10 +89,9 @@ extension AuthService {
         }
         
         switch dataResponse.result {
-        case .success(let user):
-          print("DEBUG Email: \(user)")
-          let myUser = MyUser(data: user)
-          completion(.success(myUser))
+        case .success(let userInfo):
+          print("DEBUG Email: \(userInfo)")
+          completion(.success(userInfo))
           
         case .failure(let error):
           print("DEBUG 회원가입 실패 error: \(error)")
@@ -124,10 +123,10 @@ extension AuthService {
         
         switch dataResponse.result {
         case .success(let user):
-          print("DEBUG Email: \(user.userInfo.email), UserName: \(user.userInfo.username) 으로 로그인 완료")
+          print("DEBUG Email User 로그인: \(user.userInfo)")
           UserDefaultService.shared.setUser(user)
           UserDefaultService.shared.setLoginKind(.email)
-          
+                    
           completion(.success(user))
         case .failure(let error):
           completion(.failure(ApiError.unknown(error)))
@@ -135,33 +134,31 @@ extension AuthService {
       }
   }
   
-//  func loginWithSNS(
-//    uid: String,
-//    kind: LoginKind,
-//    completion: @escaping (Result<User, ApiError>) -> Void
-//  ) {
-//    let snsLoginRequest = SNSLoginRequest(uid: uid, kind: kind)
-//    let urlRequest = MembersRouter.snsLogin(snsLoginRequest)
-//
-//    AF.request(urlRequest)
-//      .responseDecodable(of: User.self) { dataResponse in
-//        guard let statusCode = dataResponse.response?.statusCode else { return }
-//
-//        if !(200...299).contains(statusCode) {
-//          return completion(.failure(ApiError.badStatus(statusCode)))
-//        }
-//
-//        switch dataResponse.result {
-//
-//        }
-//      }
-//  }
-  
-  
-//  func snsRegister(
-//    uid: String,
-//    username: String,
-//    kind:
-//  )
-  
+  func loginWithSNS(
+    uid: String,
+    kind: LoginKind,
+    completion: @escaping (Result<User, ApiError>) -> Void
+  ) {
+    let snsLoginReqeust = SNSLoginRequest(uid: uid, kind: kind)
+    let urlRequest = MembersRouter.snsLogin(snsLoginReqeust)
+    
+    AF.request(urlRequest)
+      .responseDecodable(of: User.self) { dataResponse in
+        
+        switch dataResponse.result {
+        case .success(let user):
+          print("DEBUG \(kind) ID: \(user.userInfo.id!) 로그인 완료")
+          UserDefaultService.shared.setUser(user)
+          UserDefaultService.shared.setLoginKind(kind)
+          
+          AuthNotificationManager
+            .shared
+            .postNotificationSignInSuccess()
+          
+        case .failure(let err):
+          completion(.failure(ApiError.unknown(err)))
+          
+        }
+      }
+  }
 }

@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import UIKit
 import ReactorKit
+import RxAlamofire
 import RxCocoa
 import RxSwift
 
@@ -208,10 +209,17 @@ private extension TimerViewController {
         
         if self.currnetSeconds <= 0 {
           
-          self.reactor.provider.userDefaultService.setStudyTime(Int(self.duration))
-          print("DEBUG \(self.duration) 만큼 시간 저장")
+          let postTimeRequest = TimerRouter.postTime(second: self.duration)
+          request(postTimeRequest)
+            .responseJSON()
+            .subscribe(onNext: { dataResponse in
+              guard let result = dataResponse.value as? [String: Any] else { return }
+              guard let time = result["time"] as? Int else { return }
+              
+              print("DEBUG \(time) 초 만큼 저장")
+            })
+            .disposed(by: self.disposeBag)
           
-          self.reactor.provider.apiService.saveTime(second: self.duration)
           self.stopTimer()
         }
         

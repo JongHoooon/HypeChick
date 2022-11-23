@@ -13,10 +13,13 @@ import CloudKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import NaverThirdPartyLogin
 
 final class SNSSignInViewController: BaseViewController, View {
   
   // MARK: - Property
+  
+  private lazy var naverAuthService = NaverAuthService(delegate: self)
   
   private lazy var nicknameTextField = TextFieldView(with: "별명").then {
     $0.becomeFirstResponder()
@@ -92,17 +95,46 @@ extension SNSSignInViewController {
   }
 }
 
+// MARK: - NaverThirdPartyLoginConnectionDelegate
+
+extension SNSSignInViewController: NaverThirdPartyLoginConnectionDelegate {
+  func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+    
+  }
+  
+  func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+    
+  }
+  
+  func oauth20ConnectionDidFinishDeleteToken() {
+    
+  }
+  
+  func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+    
+  }
+  
+  
+}
+
 // MARK: - Private
 
 private extension SNSSignInViewController {
   func setupNavigationBar() {
-    navigationController?.navigationBar.topItem?.title = ""
+
+    let backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"),
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(tapBackButton))
+    self.navigationItem.leftBarButtonItem = backBarButtonItem
+
+//    navigationController?.navigationBar.topItem?.title = ""
     navigationItem.title = "회원가입"
   }
   
   func configureLayout() {
     view.backgroundColor = .systemBackground
-    
+     
     let stackView = UIStackView(arrangedSubviews: [
       nicknameTextField,
       signInButton
@@ -153,7 +185,7 @@ private extension SNSSignInViewController {
             switch result {
               
             case .success(let user):
-              print("DEBUG \(self.reactor?.kind) \(user.userInfo.id) 로그인 완료")
+              print("DEBUG \(self.reactor?.kind) User 로그인 \(user.userInfo)")
               self.reactor?.provider.userDefaultService.setUser(user)
               self.reactor?.provider.userDefaultService.setLoginKind(self.reactor?.kind ?? .email)
               
@@ -175,33 +207,20 @@ private extension SNSSignInViewController {
       }
     }
   }
-}
-
-extension Reactive where Base: UILabel {
-  var inputValidate: Binder<ValidationResult> {
-    return Binder(self.base) { label, validate in
-      switch validate {
-      case .ok(let message):
-        label.text = message
-        label.textColor = .systemGray
-      case .wrongForm(let message):
-        label.text = message
-        label.textColor = .systemRed
-      case .short(let message):
-        label.text = message
-        label.textColor = .systemRed
-      }
+  
+  /// back button 클릭시 sns인증 상태 초기화
+  @objc func tapBackButton() {
+    switch reactor?.kind {
+    case .kakao:
+      KakaoAuthService.shared.kakaoLogout()
+      print("DEBUG kakao 인증 초기화")
+    case .naver:
+      self.naverAuthService.shared?.requestDeleteToken()
+      print("DEBUG naver 인증 초기화")
+    default:
+      try? Auth.auth().signOut()
+      print("DEBUG apple or google 인증 초기화")
     }
-  }
-}
-
-extension Reactive where Base: UIButton {
-  var buttonValidate: Binder<ValidationResult> {
-    return Binder(self.base) { button, validate in
-      switch validate {
-      case .ok:   button.isEnabled = true
-      default:    button.isEnabled = false
-      }
-    }
+    self.navigationController?.popViewController(animated: true)
   }
 }

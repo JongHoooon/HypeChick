@@ -6,70 +6,352 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
+import RxAlamofire
 import Alamofire
 
 class APIService {
-
-  // MARK: - Todo
   
-  func createTask(contents: String, date: Date) {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    dateFormatter.locale = Locale(identifier: "ko_kr")
-    dateFormatter.timeZone = TimeZone(identifier: "KST")
-    
-    AF.request(APIRouter.postTask(
-      contents: contents,
-      date: dateFormatter.string(from: date))
-    ).responseData { dataResponse in
-      switch dataResponse.result {
-      case .success:
-        print("DEBUG TODO POST 성공")
-        
-//        dataResponse.value.
-      case .failure:
-        print("DEBUG TODO POST 실패")
-      }
-    }
-  }
-  
-//  func getTasks -> Observable<[Task]> {
-//    AF.request(APIRouter.getTasks).responseData { dataResponse in
-//
-//      switch dataResponse.result {
-//
-//      case .success
-//        guard let value = dataResponse.value else { return }
-//        value["data"]
-//      }
-//    }
-//  }
+  let disposebag = DisposeBag()
   
   // MARK: - Timer
   
-  func saveTime(second: Int) {
-    AF.request(APIRouter.postTime(second: second)).responseJSON { response in
+  func saveGoal(goal: String) {
+    let saveGoalRequest = SaveGoalRequest(goal: goal)
+    let urlRequest = TimerRouter.saveGoal(saveGoalRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG goal 저장 완료")
+        case let .failure(error):
+          APIClient.handleError(.unknown(error))
+        }
+      })
+      .disposed(by: self.disposebag)
+  }
+  
+  // MARK: - Todo
+  
+  func getTasks() -> Observable<[Todo]> {
+    
+    return Observable<[Todo]>.create { observer in
+      let urlRequest = TodoRouter.getTasks
       
-      guard let result = response.value as? [String: Int] else {
-        print("DEBUG timer 저장 실패")
-        return }
-      guard let time = result["time"] else { return }
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          
+          switch dataResponse.result {
+          case .success:
+            guard let data = dataResponse.data else { return }
+            guard let todosResponse = try? JSONDecoder().decode(TodosResponse.self, from: data) else { return }
+            guard let todos = todosResponse.data else { return }
+            
+            print("DEBUG \(todos) get 완료")
+            
+            observer.onNext(todos)
+            
+          case .failure(let error):
+            observer.onError(error)
+            APIClient.handleError(.unknown(error))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
       
-      print("DEBUG \(time)초 만큼 저장")
+      return Disposables.create()
     }
   }
   
-  func getTodayTime(completion: @escaping (Int) -> Void) {
+  func createTodo(contents: String, date: Date) -> Observable<Task> {
+    return Observable<Task>.create { observer in
+      let todoPostRequest = TodoPostRequest(contents: contents, date: date)
+      let urlRequest = TodoRouter.postTask(todoPostRequest)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            guard let data = dataResponse.data else { return }
+            guard let todo = try? JSONDecoder().decode(Todo.self, from: data) else { return }
+            let task = Task(todo: todo)
+            observer.onNext(task)
+            
+          case .failure(let error):
+            APIClient.handleError(.unknown(error))
+            observer.onError(error)
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
+  
+  func editTodo(contents: String, taskId: Int) {
+    let todoContentsEditRequest = TodoContentsEditRequest(contents: contents, taskId: taskId)
+    let urlRequest = TodoRouter.updateTodo(todoContentsEditRequest)
     
-    AF.request(APIRouter.getTodayTime)
-      .responseJSON { response in
-        guard let result = response.value as? [String: Int] else {
-          print("DEBUG 시간 불러오기 실패!!!!!!!!!")
-          return }
-        guard let time = result["time"] else { return }
-        print("DEBUG \(time) 만큼 출력")
-        
-        completion(time)
-      }
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG todo contents 수정 완료")
+          
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+          
+        }
+      })
+      .disposed(by: self.disposebag)
+  }
+  
+  func deleteTodo(taskId: Int) {
+    let todoDeleteRequest = TodoDeleteRequest(taskId: taskId)
+    let urlRequest = TodoRouter.deleteTodo(todoDeleteRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG todo contents 삭제 완료")
+          
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+          
+        }
+      })
+      .disposed(by: self.disposebag)
+  }
+  
+  func checkTodo(taskId: Int) {
+    let todoCheckRequest = TodoCheckRequest(taskId: taskId)
+    let urlRequest = TodoRouter.checkTodo(todoCheckRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG todo check toggle 완료")
+          
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+        }
+      })
+      .disposed(by: self.disposebag)
+  }
+  
+  // MARK: - Board 화면
+  
+  /// 전체 그룹 조회 - 게시판에 표시
+  func getClubs() -> Observable<Result<[Club], ApiError>> {
+    
+    return Observable<Result<[Club], ApiError>>.create { observer in
+      let urlRequest = GroupRouter.getClubs
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          
+          switch dataResponse.result {
+          case .success:
+            guard let data = dataResponse.data else { return }
+            guard let clubsResponse = try? JSONDecoder().decode(ClubsResponse.self, from: data) else { return }
+            guard let clubs = clubsResponse.data else { return }
+            observer.onNext(.success(clubs))
+            
+          case .failure(let error):
+            observer.onNext(.failure(ApiError.unknown(error)))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
+  
+  func createClub(id: Int, clubName: String, numOfMember: Int, clubInfo: String) {
+    
+    let createClubRequest = CreateClubRequest(memberID: id,
+                                              clubName: clubName,
+                                              numOfMember: numOfMember,
+                                              clubInfo: clubInfo)
+    let urlRequest = GroupRouter.createClub(createClubRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success(let data):
+          print("DEBUG 그룹 생성 성공!")
+          guard let data = data as? [String: Any] else { return }
+          guard let id = data["clubId"] as? Int else { return }
+          guard var user: User = UserDefaultService.shared.getUser() else { return }
+          user.userInfo.clubID = id
+          UserDefaultService.shared.setUser(user)
+        case .failure(let error):
+          APIClient.handleError(.unknown(error))
+        }
+      })
+      .disposed(by: self.disposebag)
+  }
+  
+  func signInClub(clubID: Int, memberID: Int) -> Observable<Result<Int, ApiError>> {
+    
+    return Observable<Result<Int, ApiError>>.create { observer in
+      let signInClubRequest = SignInClubRequest(clubID: clubID, memberID: memberID)
+      let urlRequest = GroupRouter.signInClub(signInClubRequest)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case let .success(data):
+            guard let data = data as? [String: Any] else { return }
+            guard let clubId = data["clubId"] as? Int else { return }
+            observer.onNext(.success(clubId))
+            print("DEBUG 클럽ID: \(clubId) 가입 성공")
+            
+          case let .failure(error):
+            APIClient.handleError(.unknown(error))
+            observer.onNext(.failure(ApiError.unknown(error)))
+            print("DEBUG 클럽 가입 실패")
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
+  
+  // MARK: - Group 화면
+  
+  func getClub(clubID: Int) -> Observable<Result<GetClubResponse, ApiError>> {
+    
+    return Observable<Result<GetClubResponse, ApiError>>.create { observer in
+      let clubGetReqeust = ClubGetRequest(clubID: clubID)
+      let urlRequest = GroupRouter.getClub(clubGetReqeust)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            print("DEBUG 그룹 \(clubID) 호출 성공!")
+            guard let data = dataResponse.data else { return }
+            guard let getClubResponse = try? JSONDecoder().decode(GetClubResponse.self,
+                                                                  from: data) else { return }
+            print(getClubResponse)
+            observer.onNext(.success(getClubResponse))
+            
+          case let .failure(error):
+            print("DEBUG 그룹 \(clubID) 호출 실패")
+            observer.onNext(.failure(.unknown(error)))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      return Disposables.create()
+    }
+  }
+  
+  func editClub(clubName: String, clubInfo: String, clubID: Int) -> Observable<Result<Void, ApiError>> {
+    
+    return Observable.create { observer in
+      let editClubInfoRequest = EditClubInfoRequest(clubName: clubName,
+                                                    clubInfo: clubInfo,
+                                                    clubID: clubID)
+      let urlRequest = GroupRouter.editClub(editClubInfoRequest)
+      
+      print(urlRequest.urlRequest?.url)
+      print(urlRequest.urlRequest?.httpBody)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            print("DEBUG 그룹 정보 수정 완료")
+            observer.onNext(.success(Void()))
+            
+          case let .failure(error):
+            APIClient.handleError(.unknown(error))
+            observer.onNext(.failure(ApiError.unknown(error)))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
+  
+  func deleteClub(clubID: Int) -> Observable<Result<Int, ApiError>> {
+    
+    return Observable.create { observer in
+      let deleteClubRequest = DeleteClubRequest(clubID: clubID)
+      let urlRequest = GroupRouter.deleteClub(deleteClubRequest)
+      
+      request(urlRequest)
+        .validate(statusCode: 200..<300)
+        .responseJSON()
+        .subscribe(onNext: { dataResponse in
+          switch dataResponse.result {
+          case .success:
+            print("DEBBUG 그룹 삭제 성공")
+            observer.onNext(.success(clubID))
+          case let .failure(error):
+            print("DEBUG 그룹 삭제 실패")
+            APIClient.handleError(.unknown(error))
+            observer.onNext(.failure(ApiError.unknown(error)))
+          }
+          observer.onCompleted()
+        })
+        .disposed(by: self.disposebag)
+      
+      return Disposables.create()
+    }
+  }
+  
+  func leaveClub(clubID: Int, memberID: Int) {
+    let leaveClubRequest = LeaveClubRequest(clubID: clubID,
+                                            memberID: memberID)
+    let urlRequest = GroupRouter.leaveClub(leaveClubRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG 그룹 탈퇴 성공")
+        case let .failure(error):
+          APIClient.handleError(.unknown(error))
+          print("DEBUG 그룹 탈퇴 실패")
+        }
+      })
+      .disposed(by: self.disposebag)
   }
 }

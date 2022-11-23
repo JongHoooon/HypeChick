@@ -95,15 +95,14 @@ final class WriteViewReactor: Reactor {
       
       guard self.currentState.canSubmit else { return .empty() }
       
-      newMutation = self.provider.boardService
-        .create(
-          currentState.title,
-          maxMemberCount: currentState.selectNumber,
-          chief: self.userInfo.username ?? "",
-          startDay: Date(),
-          content: currentState.content ?? ""
-        )
-        .map { _ in .dismiss }
+      #warning("User Info 흐름 처리 어떻게 하는게 좋을까???")
+      guard let id = self.provider.userDefaultService.getUser()?.userInfo.id else { return .empty() }
+      self.provider.apiService.createClub(id: id,
+                                          clubName: currentState.title,
+                                          numOfMember: currentState.selectNumber,
+                                          clubInfo: currentState.content ?? "")
+      return .just(.dismiss)
+      
     }
     
     return newMutation

@@ -25,6 +25,7 @@ final class TodoService {
   let headerEvent = PublishSubject<HeaderEvent>()
   let editEvent = PublishSubject<EditEvent>()
   
+  /*
   func fetchTask() -> Observable<[Task]> {
     if let savedTasks = userDefaultservice.getTasks() {
       return .just(savedTasks)
@@ -51,6 +52,7 @@ final class TodoService {
         return self.saveTasks(tasks + [newTask]).map { newTask }
       }
   }
+  */
   
   // MARK: - Header Event
   func tapCreateButton() -> Observable<Void> {

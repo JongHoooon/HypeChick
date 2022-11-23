@@ -10,30 +10,31 @@ import RxCocoa
 import RxSwift
 
 final class HomeViewReactor: Reactor, BaseReactorType {
-
-  let userInfo: UserInfo
-  let provider: ServiceProviderType
   
   enum Action {
-    case refresh
+//    case refresh
+    case viewDidLoad
   }
   
   enum Mutation {
-    
+    case viewDidLoad(purpose: String)
   }
   
   struct State {
-//    var purposeLabel: String
+    var purposeText: String?
     var chickImage: UIImage?
     var studyTime: String
   }
   
   let initialState: State
   = State(
-//    purposeLabel: "탭하여 목표를 입력하세요!",
+    purposeText: "",
     chickImage: UIImage(named: "chick1"),
     studyTime: "00:00:00"
   )
+  
+  let userInfo: UserInfo
+  let provider: ServiceProviderType
   
   init(_ provider: ServiceProviderType, with userInfo: UserInfo) {
     self.userInfo = userInfo
@@ -42,10 +43,24 @@ final class HomeViewReactor: Reactor, BaseReactorType {
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
-    return .empty()
+    switch action {
+    case .viewDidLoad:
+      
+      print("view did load did load vdid loaddid loaddid loaddid loaddid load")
+      
+      return .just(.viewDidLoad(purpose: provider.userDefaultService.getUser()?.userInfo.goal ?? ""))
+    }
   }
   
-  func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
-    return .empty()
+  func reduce(state: State, mutation: Mutation) -> State {
+    var state = state
+    
+    switch mutation {
+    case.viewDidLoad(let purpose):
+      state.purposeText = purpose
+      print(state.purposeText)
+    }
+    
+    return state
   }
 }

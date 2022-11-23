@@ -11,6 +11,8 @@ import Then
 import NaverThirdPartyLogin
 import KakaoSDKAuth
 import UIKit
+import FirebaseAuth
+import Toast_Swift
 
 final class SettingViewController: UIViewController {
   
@@ -21,8 +23,6 @@ final class SettingViewController: UIViewController {
   }
   
   private lazy var settings = [[SettingCellModel]]()
-  
-  // MARK: - Lifecycle
   
   private lazy var naverAuthService = NaverAuthService(delegate: self)
   
@@ -139,6 +139,8 @@ private extension SettingViewController {
       $0.addAction(UIAlertAction(title: "로그아웃", style: .destructive, handler: { [weak self] _ in
         guard let self = self else { return }
         
+        self.view.makeToastActivity(.center)
+        
         let kind = UserDefaultService.shared.getLoginKind()
         
         print(kind)
@@ -146,19 +148,20 @@ private extension SettingViewController {
         print(kind)
         print(kind)
         
-        //        try? Auth.auth().signOut()
-        //        naverAuthService.shared?.requestDeleteToken()
-        
         switch kind {
         case .email:
           print("DEBUG email 회원 로그아웃")
         case .kakao:
           KakaoAuthService.shared.kakaoLogout()
           print("DEBUG kakao 회원 로그아웃")
-          
+        case .naver:
+          self.naverAuthService.shared?.requestDeleteToken()
+          print("DEBUG naver 회원 로그아웃")
         default:
-          print("로그아웃")
+          try? Auth.auth().signOut()
+          print("DEBUG apple or google 로그아웃")
         }
+        
         UserDefaultService.shared.logoutUser()
         
         let vc = RegisterViewController(with: RegisterViewReactor(ServiceProvider()))
@@ -174,8 +177,9 @@ private extension SettingViewController {
     
     actionSheet.popoverPresentationController?.sourceView = tableView
     actionSheet.popoverPresentationController?.sourceRect = tableView.bounds
-    present(actionSheet, animated: true)
+    present(actionSheet, animated: true) {
+      self.view.hideToastActivity()
+    }
     
-//    naverAuthService.shared?.requestDeleteToken()
   }
 }

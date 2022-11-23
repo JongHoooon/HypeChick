@@ -22,3 +22,14 @@ func makeLabel(
   )
   return result
 }
+
+
+func secToString(sec: Int?) -> String {
+  guard let sec = sec else { return "" }
+  
+  if sec < 3600 {
+    return "\(sec % 60)분"
+  } else {
+    return "\(sec % 3600)시간"
+  }
+}

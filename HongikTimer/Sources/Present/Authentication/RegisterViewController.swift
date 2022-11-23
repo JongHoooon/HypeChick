@@ -116,6 +116,8 @@ final class RegisterViewController: BaseViewController {
     super.viewDidLoad()
     setupLayout()
     
+    naverAuthService.shared?.requestDeleteToken()
+    
     AuthNotificationManager
       .shared
       .addObserverSignInSuccess(
@@ -129,7 +131,12 @@ final class RegisterViewController: BaseViewController {
         with: self,
         completion: #selector(snsSignInHandler)
       )
-
+    
+    UserDefaultService.shared.logoutUser()
+    KakaoAuthService.shared.kakaoLogout()
+    self.naverAuthService.shared?.requestDeleteToken()
+    try? Auth.auth().signOut()
+    
   }
   
   // MARK: - Init
@@ -150,10 +157,8 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
   
   // 로그인 성공
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-    print("DEBUG 네이버 로그인 성공")
     
-//    AuthNotificationManager.shared.postNotificationSignInSuccess()
-//    AuthNotificationManager.shared.postNotificationSnsSignInNeed()
+    self.getNaverUID()
     
   }
   
@@ -174,9 +179,7 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
   }
   
   func getNaverUID() {
-    
-    var uid: String
-    
+      
     let loginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
     guard let isValidAccessToken = loginInstance?.isValidAccessTokenExpireTimeNow() else { return }
@@ -202,20 +205,31 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
     
     let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": authorization])
     
-    req.responseJSON { response in
+    req.responseJSON { [weak self] response in
+      guard let self = self else { return }
+      
       guard let result = response.value as? [String: Any] else { return }
       guard let object = result["response"] as? [String: Any] else { return }
       guard let id = object["id"] as? String else { return }
+      
+      self.reactor.provider.authService.loginWithSNS(uid: id, kind: .naver) { result in
+        switch result {
+        case .success(_):
+          print("DEBUG naver login 성공")
+        case .failure(let error):
+          APIClient.handleError(error)
+          AuthNotificationManager.shared.postNotificationSnsSignInNeed(uid: id, kind: .naver)
+        }
+      }
     }
   }
-  
-  
 }
 
 // MARK: - Method
 
 extension RegisterViewController {
   private func setupLayout() {
+
     view.backgroundColor = .systemBackground
     let snsStackView = UIStackView().then { sv in
       sv.axis = .vertical
@@ -306,7 +320,7 @@ extension RegisterViewController {
   
   @objc func tapMoveToLoginButton() {
     let vc = UINavigationController(
-      rootViewController: EmailLoginViewController()
+      rootViewController: EmailLoginViewController(EamilLoginViewReactor(provider: self.reactor.provider))
     )
     vc.modalPresentationStyle = .fullScreen
     present(vc, animated: true)
@@ -331,8 +345,9 @@ extension RegisterViewController {
     }
     
     let vc = SNSSignInViewController(
-      with: SNSSignInViewReactor(provider: self.reactor.provider, uid: uid, kind: kind)
-    )
+      with: SNSSignInViewReactor(provider: self.reactor.provider,
+                                 uid: uid,
+                                 kind: kind))
     navigationController?.pushViewController(vc, animated: true)
   }
 }
