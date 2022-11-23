@@ -18,16 +18,16 @@ final class NilGroupView: UIView {
     $0.image = UIImage(named: "noGroup")
   }
   
-  private lazy var bubbleImageView = UIImageView().then {
+  lazy var bubbleImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFill
     $0.image = UIImage(named: "noGroupBubble")
   }
   
-  private lazy var nilLabel = UILabel().then {
+  lazy var nilLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 36.0)
     $0.textColor = .label
     $0.numberOfLines = 0
-//    $0.text = "가입한 그룹이 없습니다!"
+    //    $0.text = "가입한 그룹이 없습니다!"
     $0.textAlignment = .center
   }
   

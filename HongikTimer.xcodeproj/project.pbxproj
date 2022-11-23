@@ -136,6 +136,9 @@
 		EDFB2A0D292CFD7F00B50DDC /* GroupCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A0C292CFD7F00B50DDC /* GroupCellReactor.swift */; };
 		EDFB2A0F292D2F3C00B50DDC /* PurposePresentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A0E292D2F3C00B50DDC /* PurposePresentView.swift */; };
 		EDFB2A11292D33DF00B50DDC /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A10292D33DF00B50DDC /* GroupDetailViewController.swift */; };
+		EDFB2A15292DAEF900B50DDC /* NilGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A14292DAEF900B50DDC /* NilGroupViewController.swift */; };
+		EDFB2A17292DBC7400B50DDC /* GroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A16292DBC7400B50DDC /* GroupEditViewController.swift */; };
+		EDFB2A19292DBC8700B50DDC /* GroupEditViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB2A18292DBC8700B50DDC /* GroupEditViewReactor.swift */; };
 		FAE335FC088F6FD303C9209E /* Pods_HongikTimer_HongikTimerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B527A7CFE09CB372827D5BC7 /* Pods_HongikTimer_HongikTimerUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -294,6 +297,9 @@
 		EDFB2A0C292CFD7F00B50DDC /* GroupCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCellReactor.swift; sourceTree = "<group>"; };
 		EDFB2A0E292D2F3C00B50DDC /* PurposePresentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurposePresentView.swift; sourceTree = "<group>"; };
 		EDFB2A10292D33DF00B50DDC /* GroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
+		EDFB2A14292DAEF900B50DDC /* NilGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NilGroupViewController.swift; sourceTree = "<group>"; };
+		EDFB2A16292DBC7400B50DDC /* GroupEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditViewController.swift; sourceTree = "<group>"; };
+		EDFB2A18292DBC8700B50DDC /* GroupEditViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupEditViewReactor.swift; sourceTree = "<group>"; };
 		F76E547649D65B5F515B8DE4 /* Pods_HongikTimerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HongikTimerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -632,8 +638,8 @@
 			isa = PBXGroup;
 			children = (
 				ED3297CB291BDF660081F606 /* WriteViewController.swift */,
-				ED3297D1291BF93C0081F606 /* NumberSelectView.swift */,
 				ED3297CE291BE0220081F606 /* WriteViewReactor.swift */,
+				ED3297D1291BF93C0081F606 /* NumberSelectView.swift */,
 			);
 			path = WriteView;
 			sourceTree = "<group>";
@@ -760,12 +766,15 @@
 			isa = PBXGroup;
 			children = (
 				EDF3A8B5291259FF00A7C980 /* GroupViewController.swift */,
-				EDFB2A0E292D2F3C00B50DDC /* PurposePresentView.swift */,
 				EDFB2A0A292CE46000B50DDC /* GroupViewReactor.swift */,
+				EDFB2A0E292D2F3C00B50DDC /* PurposePresentView.swift */,
 				EDFB2A10292D33DF00B50DDC /* GroupDetailViewController.swift */,
-				EDFB2A08292CE3A300B50DDC /* NilGroupView.swift */,
+				EDFB2A14292DAEF900B50DDC /* NilGroupViewController.swift */,
+				EDFB2A16292DBC7400B50DDC /* GroupEditViewController.swift */,
+				EDFB2A18292DBC8700B50DDC /* GroupEditViewReactor.swift */,
 				EDF3A8B729125E9300A7C980 /* GroupCell.swift */,
 				EDFB2A0C292CFD7F00B50DDC /* GroupCellReactor.swift */,
+				EDFB2A08292CE3A300B50DDC /* NilGroupView.swift */,
 			);
 			path = group;
 			sourceTree = "<group>";
@@ -1086,6 +1095,7 @@
 				EDF2F1FA2926ACE700A59FA2 /* APIService.swift in Sources */,
 				ED7391492927D5A700A0024E /* APIRequest.swift in Sources */,
 				ED13F2F5290E46CA00883D19 /* SettingViewController.swift in Sources */,
+				EDFB2A15292DAEF900B50DDC /* NilGroupViewController.swift in Sources */,
 				ED037A7129117E2F00D30F7A /* ItemCell.swift in Sources */,
 				ED037A612910F75000D30F7A /* TabBarViewReactor.swift in Sources */,
 				27B471BA28D0ACC700805F79 /* NotificationCell.swift in Sources */,
@@ -1127,6 +1137,7 @@
 				2793C13028F58DB300FC7D13 /* TimerViewController.swift in Sources */,
 				ED7391472927D46800A0024E /* MembersRouter.swift in Sources */,
 				ED037A7B2911995C00D30F7A /* ChickViewReactor.swift in Sources */,
+				EDFB2A17292DBC7400B50DDC /* GroupEditViewController.swift in Sources */,
 				27A977A328E208020076FF80 /* NotToDoViewController.swift in Sources */,
 				27A977B328E3501A0076FF80 /* Task.swift in Sources */,
 				EDF3A89B29120F7C00A7C980 /* BoardViewController.swift in Sources */,
@@ -1162,6 +1173,7 @@
 				ED73914D29285DAB00A0024E /* AlertService.swift in Sources */,
 				EDF2F1FE29273CA800A59FA2 /* SNSSignInViewReactor.swift in Sources */,
 				27B471BD28D0ACF100805F79 /* Notifi.swift in Sources */,
+				EDFB2A19292DBC8700B50DDC /* GroupEditViewReactor.swift in Sources */,
 				2793C12428F499DC00FC7D13 /* TaskEditPresentaionController.swift in Sources */,
 				27B471CB28D2070700805F79 /* TextFieldView.swift in Sources */,
 				EDF3A89629120F7C00A7C980 /* CategoryView.swift in Sources */,

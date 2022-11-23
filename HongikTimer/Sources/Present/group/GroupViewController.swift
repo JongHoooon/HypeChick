@@ -125,15 +125,16 @@ final class GroupViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     reactor.state.asObservable().map { $0.isGroup }
-      .distinctUntilChanged()
       .subscribe(onNext: { [weak self] isGroup in
         guard let self = self else { return }
         if !isGroup {
-          self.nilGroupView.isHidden = false
+                    
+          let vc = NilGroupViewController()
+          self.navigationController?.pushViewController(vc, animated: true)
+          
           self.menuTabBarButton.isEnabled = false
           
         } else {
-          self.nilGroupView.isHidden = true
           self.menuTabBarButton.isEnabled = true
         }
       })
@@ -192,7 +193,10 @@ extension GroupViewController: UICollectionViewDelegateFlowLayout {
   //  }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 4.0, left: 32.0, bottom: 4.0, right: 32.0)
+    return UIEdgeInsets(top: 4.0,
+                        left: 32.0,
+                        bottom: 4.0,
+                        right: 32.0)
   }
 }
 
@@ -214,15 +218,8 @@ extension GroupViewController {
       purposeView,
       groupDetailCollectionView,
       todayLabel,
-      totalTimeLabel,
-      nilGroupView
+      totalTimeLabel
     ].forEach { view.addSubview($0) }
-    
-    nilGroupView.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide)
-      $0.leading.trailing.equalToSuperview()
-      $0.bottom.equalTo(view.safeAreaLayoutGuide)
-    }
     
     titleLabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
@@ -292,8 +289,22 @@ extension GroupViewController {
       let menuAlertController = UIAlertController(title: "그룹 수정 / 삭제",
                                                   message: nil,
                                                   preferredStyle: .actionSheet)
+      
       let editAction = UIAlertAction(title: "수정",
-                                     style: .default)
+                                     style: .default) { [weak self] _ in
+        guard let self = self else { return }
+        
+        guard let provider = self.reactor?.provider else { return }
+        guard let clubResponse = self.reactor?.currentState.clubResponse else { return }
+        
+        let vc = GroupEditViewController(
+          GroupEditViewReactor(provider,
+                               clubResponse: clubResponse))
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true)
+      }
+      
       let deleteAction = UIAlertAction(title: "삭제",
                                        style: .destructive) { _ in
         self.present(confirmAlertController,

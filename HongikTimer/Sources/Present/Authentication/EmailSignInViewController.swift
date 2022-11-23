@@ -243,7 +243,7 @@ private extension EmailSignInViewController {
             print("registerAndLoginWithEmail 실패: \(error)")
             APIClient.handleError(error)
             self.view.hideToastActivity()
-            self.view.makeToast("회원 가입 실패", position: .top)
+            self.view.makeToast("이미 가입한 이메일 입니다.", position: .top)
           }
         })
   }

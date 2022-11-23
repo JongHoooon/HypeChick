@@ -21,7 +21,6 @@ final class GroupViewReactor: Reactor, BaseReactorType {
   }
   
   enum Mutation {
-    case viewWillAppear
     case noGroup
     
     case setSections(groupID: Int?,
@@ -70,7 +69,12 @@ final class GroupViewReactor: Reactor, BaseReactorType {
               return .setSections(groupID: self.provider.userDefaultService.getUser()?.userInfo.clubID ?? 0,
                                   clubResponse: getClubResponse,
                                   sections: [section])
+              // 유저한테 아이디는 있는데 방장이 삭제해서 없는 경우
             case .failure:
+              var user = self.provider.userDefaultService.getUser()
+              user?.userInfo.clubID = nil
+              self.provider.userDefaultService.setUser(user!)
+              
               return .noGroup
             }
           }
@@ -94,15 +98,9 @@ final class GroupViewReactor: Reactor, BaseReactorType {
         state.isGroup = false
         state.clubResponse = nil
         state.sections = []
-        
+    
         print(state.isGroup)
       
-      // 유저 그룹 ID 있는 경우
-      case .viewWillAppear:
-        state.groupID = provider.userDefaultService.getUser()?.userInfo.clubID
-        state.isGroup = true
-        print("그룹이 있습니다")
-        
       // members section
       case let .setSections(groupID, clubResponse, sections):
         state.groupID = groupID
