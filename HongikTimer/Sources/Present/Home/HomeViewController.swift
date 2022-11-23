@@ -92,17 +92,17 @@ extension HomeViewController: View {
 
     // MARK: State
     
-    reactor.state.asObservable().map { $0.purposeText }
-      .subscribe(onNext: { [weak self] text in
-        guard let self = self else { return }
-        
-        if text?.isEmpty == true {
-          self.purposeView.purposeLabel.text = "탭하여 목표를 입력하세요!"
-        } else {
-          self.purposeView.purposeLabel.text = text
-        }
-      })
-      .disposed(by: self.disposeBag)
+//    reactor.state.asObservable().map { $0.purposeText }
+//      .subscribe(onNext: { [weak self] text in
+//        guard let self = self else { return }
+//
+//        if text?.isEmpty == true {
+//          self.purposeView.purposeLabel.text = "탭하여 목표를 입력하세요!"
+//        } else {
+//          self.purposeView.purposeLabel.text = text
+//        }
+//      })
+//      .disposed(by: self.disposeBag)
     
 //    reactor.state.asObservable().map { $0.chickImage }
 //      .bind(to: chickImageView.rx.image)
@@ -201,6 +201,8 @@ private extension HomeViewController {
       }
       .bind(to: self.timeLabel.rx.intToTimerFormat)
       .disposed(by: self.disposeBag)
+    
+    purposeView.purposeLabel.text = reactor.provider.userDefaultService.getUser()?.userInfo.goal ?? "탭하여 목표를 입력하세요!"
     
   }
   

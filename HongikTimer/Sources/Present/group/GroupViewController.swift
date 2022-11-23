@@ -319,7 +319,42 @@ extension GroupViewController {
       self.present(menuAlertController, animated: true)
       
     } else {
-      self.view.makeToast("그룹장만 수정 / 삭제가 가능합니다!", position: .top)
+      
+      let confirmAlertController = UIAlertController(title: "그룹 탈퇴",
+                                                     message: "정말로 그룹을 탈퇴하시겠습니까?",
+                                                     preferredStyle: .alert)
+      let cancelAction = UIAlertAction(title: "취소",
+                                       style: .cancel)
+      let confirmAction = UIAlertAction(title: "확인",
+                                        style: .destructive) { [weak self] _ in
+        guard let self = self else { return }
+        guard let clubID = self.reactor?.currentState.clubResponse?.id else { return }
+        
+        self.reactor?.provider.apiService.leaveClub(clubID: clubID,
+                                                    memberID: self.reactor?.provider.userDefaultService.getUser()?.userInfo.id ?? 0)
+        
+        self.deleteGroupRelay.accept(0)
+      }
+      [
+        cancelAction,
+        confirmAction
+      ].forEach { confirmAlertController.addAction($0) }
+      
+      let leaveAlertController = UIAlertController(title: nil,
+                                                   message: "그룹 탈퇴",
+                                                   preferredStyle: .actionSheet)
+      let leaveAction = UIAlertAction(title: "탈퇴", style: .destructive) { [weak self] _ in
+        guard let self = self else { return }
+        
+        self.present(confirmAlertController, animated: true)
+      }
+      
+      [
+        cancelAction,
+        leaveAction
+      ].forEach { leaveAlertController.addAction($0) }
+      self.present(leaveAlertController, animated: true)
+
     }
   }
 }

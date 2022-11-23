@@ -23,6 +23,7 @@ final class GroupEditViewController: BaseViewController, View {
   
   private lazy var titleTextField = UITextField().then {
     $0.placeholder = "글 제목"
+    $0.becomeFirstResponder()
   }
   
   private lazy var numberSelectView = NumberSelectView()
@@ -81,7 +82,6 @@ final class GroupEditViewController: BaseViewController, View {
     let contentText = contentTextView.rx.text.orEmpty
     
     Observable.combineLatest(titleText, contentText)
-      .skip(1)
       .map { Reactor.Action.updateText(title: $0, content: $1)}
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)

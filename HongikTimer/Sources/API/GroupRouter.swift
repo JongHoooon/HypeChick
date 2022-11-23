@@ -35,6 +35,9 @@ enum GroupRouter: URLRequestConvertible {
   /// 그룹 가입
   case signInClub(_ request: SignInClubRequest)
   
+  /// 그룹 탈퇴
+  case leaveClub(_ request: LeaveClubRequest)
+  
   // MARK: - End Point
   
   var path: String {
@@ -45,6 +48,7 @@ enum GroupRouter: URLRequestConvertible {
     case .deleteClub(let req):    return "clubs/\(req.clubID)"
     case .editClub(let req):      return "clubs/\(req.clubID)"
     case .signInClub(let req):    return "clubs/\(req.clubID)/\(req.memberID)"
+    case .leaveClub(let req):     return "clubs/\(req.clubID)/\(req.memberID)"
     }
   }
   
@@ -58,6 +62,7 @@ enum GroupRouter: URLRequestConvertible {
     case .deleteClub:              return .delete
     case .editClub:                return .put
     case .signInClub:              return .get
+    case .leaveClub:               return .get
     }
   }
   
@@ -71,6 +76,7 @@ enum GroupRouter: URLRequestConvertible {
     case .deleteClub:               return nil
     case .editClub(let req):        return req.parameters
     case .signInClub:               return nil
+    case .leaveClub:                return nil
     }
   }
   
@@ -83,7 +89,7 @@ enum GroupRouter: URLRequestConvertible {
     urlRequest.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
     urlRequest.setValue("\(APIClient.getToekn())", forHTTPHeaderField: "X-AUTH")
     urlRequest.httpBody = try JSONEncoding.default.encode(urlRequest, with: parameters).httpBody
-    
+        
     return urlRequest
   }
 }

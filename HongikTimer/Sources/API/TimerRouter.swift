@@ -16,6 +16,9 @@ enum TimerRouter: URLRequestConvertible {
   }
   
   // MARK: - Cases
+  ///  홈 화면에서 목표 작성시 저장
+  case saveGoal(_ request: SaveGoalRequest)
+  
   case postTime(second: Int)
   case getTodayTime
   
@@ -23,6 +26,7 @@ enum TimerRouter: URLRequestConvertible {
   
   var path: String {
     switch self {
+    case .saveGoal:                return "members/goal/\(APIClient.getid())"
     case .postTime, .getTodayTime:
       return "timer/\(APIClient.getid())"
     }
@@ -32,6 +36,7 @@ enum TimerRouter: URLRequestConvertible {
   
   var method: HTTPMethod {
     switch self {
+    case .saveGoal:                   return .post
     case .postTime:
       return .post
     case .getTodayTime:
@@ -44,6 +49,7 @@ enum TimerRouter: URLRequestConvertible {
   var parameters: Parameters? {
     var params = Parameters()
     switch self {
+    case let .saveGoal(req):      return req.parametrs
     case let .postTime(second):
       params["time"] = second
     case .getTodayTime:

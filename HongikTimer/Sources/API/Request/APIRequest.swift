@@ -59,7 +59,17 @@ struct SNSRegisterRequest {
   }
 }
 
-// MARK: - Todo
+// MARK: - Todo & Home
+
+struct SaveGoalRequest {
+  let goal: String
+  
+  var parametrs: [String: Any] {
+    return [
+      "goal": goal
+    ]
+  }
+}
 
 struct TodoPostRequest {
   let contents: String
@@ -142,6 +152,11 @@ struct EditClubInfoRequest {
 }
 
 struct SignInClubRequest {
+  let clubID: Int
+  let memberID: Int
+}
+
+struct LeaveClubRequest {
   let clubID: Int
   let memberID: Int
 }

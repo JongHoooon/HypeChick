@@ -17,14 +17,23 @@ class APIService {
   
   // MARK: - Timer
   
-  //  func getTime() -> Observable<Result<Int,ApiError>> {
-  //
-  //    let urlRequest = TimerRouter.getTodayTime
-  //    request(urlRequest)
-  //      .responseJSON()
-  //      .map { dataResponse ->}
-  //
-  //  }
+  func saveGoal(goal: String) {
+    let saveGoalRequest = SaveGoalRequest(goal: goal)
+    let urlRequest = TimerRouter.saveGoal(saveGoalRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG goal 저장 완료")
+        case let .failure(error):
+          APIClient.handleError(.unknown(error))
+        }
+      })
+      .disposed(by: self.disposebag)
+  }
   
   // MARK: - Todo
   
@@ -275,6 +284,9 @@ class APIService {
                                                     clubID: clubID)
       let urlRequest = GroupRouter.editClub(editClubInfoRequest)
       
+      print(urlRequest.urlRequest?.url)
+      print(urlRequest.urlRequest?.httpBody)
+      
       request(urlRequest)
         .validate(statusCode: 200..<300)
         .responseJSON()
@@ -321,5 +333,25 @@ class APIService {
       
       return Disposables.create()
     }
+  }
+  
+  func leaveClub(clubID: Int, memberID: Int) {
+    let leaveClubRequest = LeaveClubRequest(clubID: clubID,
+                                            memberID: memberID)
+    let urlRequest = GroupRouter.leaveClub(leaveClubRequest)
+    
+    request(urlRequest)
+      .validate(statusCode: 200..<300)
+      .responseJSON()
+      .subscribe(onNext: { dataResponse in
+        switch dataResponse.result {
+        case .success:
+          print("DEBUG 그룹 탈퇴 성공")
+        case let .failure(error):
+          APIClient.handleError(.unknown(error))
+          print("DEBUG 그룹 탈퇴 실패")
+        }
+      })
+      .disposed(by: self.disposebag)
   }
 }

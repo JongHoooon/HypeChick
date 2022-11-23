@@ -153,8 +153,12 @@ private extension SetPurposeViewController {
   @objc func tapRightBarButton() {
     guard let text = textField.text else { return }
     textCompletion?(text)
-    dismiss(animated: true)
+    guard var user = reactor?.provider.userDefaultService.getUser() else { return }
+    user.userInfo.goal = text
+    reactor?.provider.userDefaultService.setUser(user)
     
-    // TODO: api 연결
+    reactor?.provider.apiService.saveGoal(goal: text)
+    
+    dismiss(animated: true)
   }
 }
