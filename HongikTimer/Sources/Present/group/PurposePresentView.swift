@@ -25,7 +25,7 @@ class PurposePresentView: UIView {
   override init(frame: CGRect) {
     super.init(frame: .zero)
     
-    backgroundColor = UIColor.init(rgb: 0xDBF0FF)
+    backgroundColor = UIColor.defaultTintColor
     
     [
       imageView,

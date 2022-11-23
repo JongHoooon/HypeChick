@@ -36,6 +36,7 @@ final class HomeViewController: BaseViewController {
   private lazy var timeLabel = UILabel().then {
     $0.text = "00:00:00"
     $0.font = UIFont(name: "NotoSansCJKkr-Medium", size: 52.0)
+    $0.textColor = .black
   }
   
   private lazy var purposeView = PurposeView(purpose: purpose ?? "").then {
@@ -52,8 +53,8 @@ final class HomeViewController: BaseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    setNavigationbar()
     setupLayout()
+    setNavigationbar()
     bind(reactor: self.reactor)
     
 //    UserDefaultService.shared.logoutUser()
@@ -120,6 +121,7 @@ extension HomeViewController: View {
 private extension HomeViewController {
   func setNavigationbar() {
     navigationItem.title = "Home"
+    navigationItem.titleView?.tintColor = .label
     
     let settingBarButton = UIBarButtonItem(
       image: UIImage(systemName: "gearshape"),
@@ -148,6 +150,7 @@ private extension HomeViewController {
   }
   
   func setupLayout() {
+    
     [
       wallpaperImageView,
       purposeView,
@@ -156,7 +159,7 @@ private extension HomeViewController {
     ].forEach { view.addSubview($0) }
     
     wallpaperImageView.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaInsets)
+      $0.top.equalTo(view.safeAreaLayoutGuide)
       $0.leading.trailing.equalToSuperview()
       $0.bottom.equalTo(view.snp_bottomMargin)
     }
@@ -203,7 +206,6 @@ private extension HomeViewController {
       .disposed(by: self.disposeBag)
     
     purposeView.purposeLabel.text = reactor.provider.userDefaultService.getUser()?.userInfo.goal ?? "탭하여 목표를 입력하세요!"
-    
   }
   
   // MARK: - Selector
