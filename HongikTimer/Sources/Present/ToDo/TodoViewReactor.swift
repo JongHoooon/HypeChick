@@ -53,6 +53,10 @@ final class TodoViewReactor: Reactor, BaseReactorType {
     case deleteSectionItem(IndexPath)
     case updateSectionItem(IndexPath, TaskListSection.Item)
     case updateCheckedSectionItem(IndexPath, TaskListSection.Item)
+    
+    case doTomorrow(IndexPath, Task)
+    case doToday(IndexPath, Task)
+    
     case tapToggle
     
   }
@@ -229,6 +233,40 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       guard let taskID = task.taskID else { return .empty() }
       self.provider.apiService.checkTodo(taskId: taskID)
       return .just(.updateCheckedSectionItem(indexPath, reactor))
+      
+    case .changeTomorrow:
+      guard let indexPath = self.indexPath(
+        forTaskID: state.selectedId,
+        from: state
+      ) else { return .empty() }
+      
+      let task = currentState.sections[0].items[indexPath.item].currentState.task
+      
+      self.provider.apiService.deleteTodo(taskId: task.taskID ?? 0 )
+      
+      let today = Date()
+      let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)
+      
+      return self.provider.apiService.createTodo(contents: task.contents ?? "", date: tomorrow ?? Date())
+        .map { task in
+          
+          return .doTomorrow(indexPath, task)
+        }
+      
+    case .changeToday:
+      guard let indexPath = self.indexPath(
+        forTaskID: state.selectedId,
+        from: state
+      ) else { return .empty() }
+      
+      let task = currentState.sections[0].items[indexPath.item].currentState.task
+      
+      self.provider.apiService.deleteTodo(taskId: task.taskID ?? 0 )
+      return self.provider.apiService.createTodo(contents: task.contents ?? "" , date: Date())
+        .map { task in
+          
+          return .doToday(indexPath, task)
+        }
     }
   }
   
@@ -240,7 +278,7 @@ final class TodoViewReactor: Reactor, BaseReactorType {
     case let .insertSectionItem(indexPath, sectionItem, task):
       state.sections.insert(sectionItem, at: indexPath)
       state.tasks.insert(task, at: state.tasks.count)
-    
+      
     case let .setTasks(tasks):
       let currentTasks = tasks.filter { $0.date == dateFormatter.string(from: Date())}
       
@@ -269,10 +307,10 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       let sectionModel = TaskHeaderCellReactor(self.provider, userInfo: self.userInfo)
       let section = TaskListSection(model: sectionModel, items: sectionItems)
       state.sections = [section]
-    
+      
     case let .selectedId(id):
       state.selectedId = id
-    
+      
     case let .deleteSectionItem(indexPath):
       state.sections.remove(at: indexPath)
       state.tasks = state.tasks.filter { $0.id != state.selectedId }
@@ -283,7 +321,7 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       if let index = state.tasks.firstIndex(where: { $0.id == state.selectedId }) {
         state.tasks[index].contents = todoRelay.value
       }
-    
+      
     case let .updateCheckedSectionItem(indexPath, sectionItem):
       state.sections[indexPath] = sectionItem
       
@@ -292,7 +330,26 @@ final class TodoViewReactor: Reactor, BaseReactorType {
       }
     case .tapToggle:
       state.isWeekScope.toggle()
+    case let .doTomorrow(indexPath, task):
+      
+      // 추가
+      let count = self.currentState.sections[0].items.count
+      let insertIndexPath = IndexPath(item: count, section: 0)
+      state.tasks.insert(task, at: state.tasks.count)
+      
+      // 삭제
+      state.tasks = state.tasks.filter { $0.id != state.selectedId }
+      state.sections.remove(at: indexPath)
+      
+    case let .doToday(indexPath, task):
+      let count = self.currentState.sections[0].items.count
+      let insertIndexPath = IndexPath(item: count, section: 0)
+      state.tasks.insert(task, at: state.tasks.count)
+      
+      state.tasks = state.tasks.filter { $0.id != state.selectedId }
+      state.sections.remove(at: indexPath)
     }
+    
     return state
   }
 }
@@ -304,6 +361,7 @@ extension TodoViewReactor {
   private func indexPath(forTaskID taskID: String, from state: State) -> IndexPath? {
     let section = 0
     let item = state.sections[section].items.firstIndex { reactor in reactor.currentState.task.id == taskID }
+    
     if let item = item {
       return IndexPath(item: item, section: section)
     } else {

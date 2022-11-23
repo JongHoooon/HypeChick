@@ -92,6 +92,11 @@ final class TaskEditViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
+    changeDayButton.rx.tap
+      .map { Reactor.Action.tapChangeButton }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // state
     reactor.state.asObservable().map { $0.task }
       .subscribe(onNext: { [weak self] task in

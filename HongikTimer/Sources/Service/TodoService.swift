@@ -16,6 +16,8 @@ enum EditEvent {
   case delete
   case edit
   case check
+  case changeTomorrow
+  case changeToday
 }
 
 final class TodoService {
@@ -73,6 +75,16 @@ final class TodoService {
   
   func tapCheckButton() -> Observable<Bool> {
     self.editEvent.onNext(.check)
+    return .just(true)
+  }
+  
+  func tapChangeTomorrow() -> Observable<Bool> {
+    self.editEvent.onNext(.changeTomorrow)
+    return .just(true)
+  }
+  
+  func tapChangeToday() -> Observable<Bool> {
+    self.editEvent.onNext(.changeToday)
     return .just(true)
   }
 }

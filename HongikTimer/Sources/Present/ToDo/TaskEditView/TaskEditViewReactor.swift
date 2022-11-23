@@ -20,6 +20,7 @@ final class TaskEditViewReactor: Reactor, BaseReactorType {
   enum Action {
     case edit
     case delete
+    case tapChangeButton
   }
   
   enum Mutation {
@@ -42,7 +43,10 @@ final class TaskEditViewReactor: Reactor, BaseReactorType {
   
   // MARK: - Init
   
-  init(provider: ServiceProviderType, userInfo: UserInfo, task: Task, mode: TaskEditMode) {
+  init(provider: ServiceProviderType,
+       userInfo: UserInfo,
+       task: Task,
+       mode: TaskEditMode) {
     var changeButtonTitle: String {
       switch mode {
       case .today:
@@ -66,6 +70,7 @@ final class TaskEditViewReactor: Reactor, BaseReactorType {
     case .delete:
       return self.provider.todoService.tapDeleteButton()
         .map { _ in .dismiss }
+      
     case .edit:
       let observer = Observable.create { observer in
         let actions: [TaskEditAlertAction] = [.leave, .submit]
@@ -104,6 +109,16 @@ final class TaskEditViewReactor: Reactor, BaseReactorType {
               .map { _ in .dismiss }
           }
         }
+      
+    case .tapChangeButton:
+      switch taskEditMode {
+      case .today:
+        return self.provider.todoService.tapChangeTomorrow()
+          .map { _ in .dismiss }
+      case .notToday:
+        return self.provider.todoService.tapChangeToday()
+          .map { _ in .dismiss }
+      }
     }
   }
   
