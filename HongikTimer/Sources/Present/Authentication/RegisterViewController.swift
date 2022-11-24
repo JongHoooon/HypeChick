@@ -230,7 +230,7 @@ extension RegisterViewController: NaverThirdPartyLoginConnectionDelegate {
 extension RegisterViewController {
   private func setupLayout() {
 
-    view.backgroundColor = .systemBackground
+    view.backgroundColor = .defaultTintColor
     let snsStackView = UIStackView().then { sv in
       sv.axis = .vertical
       sv.distribution = .equalSpacing

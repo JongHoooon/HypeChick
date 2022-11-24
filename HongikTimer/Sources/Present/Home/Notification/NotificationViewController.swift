@@ -21,7 +21,7 @@ final class NotificationViewController: UICollectionViewController {
             Notifi(
                 icon: .pencil,
                 title: "Java 스터디",
-                description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~",
+                description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~",
                 date: "10/02 15:33"
             ),
             Notifi(
@@ -33,7 +33,7 @@ final class NotificationViewController: UICollectionViewController {
             Notifi(
                 icon: .pencil,
                 title: "Java 스터디",
-                description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~",
+                description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~",
                 date: "10/02 15:33"
             ),
             Notifi(
@@ -45,7 +45,7 @@ final class NotificationViewController: UICollectionViewController {
             Notifi(
                 icon: .pencil,
                 title: "Java 스터디",
-                description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~",
+                description: "인프런 인강을통해 자바스프링 공부하실 분들 모집합니다~~",
                 date: "10/02 15:33"
             ),
             Notifi(

@@ -11,21 +11,21 @@ import Then
 
 final class NilGroupViewController: UIViewController {
   
-  lazy var nilImageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFit
-    $0.image = UIImage(named: "noGroup")
-  }
+//  lazy var nilImageView = UIImageView().then {
+//    $0.contentMode = .scaleAspectFit
+//    $0.image = UIImage(named: "noGroup")
+//  }
   
-  private lazy var bubbleImageView = UIImageView().then {
-    $0.contentMode = .scaleAspectFill
-    $0.image = UIImage(named: "noGroupBubble")
-  }
+//  private lazy var bubbleImageView = UIImageView().then {
+//    $0.contentMode = .scaleAspectFill
+//    $0.image = UIImage(named: "noGroupBubble")
+//  }
   
   private lazy var nilLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 36.0)
+    $0.font = .systemFont(ofSize: 24.0)
     $0.textColor = .label
     $0.numberOfLines = 0
-//    $0.text = "가입한 그룹이 없습니다!"
+    $0.text = "가입한 그룹이 없습니다!"
     $0.textAlignment = .center
   }
   
@@ -49,28 +49,28 @@ final class NilGroupViewController: UIViewController {
     self.view.backgroundColor = .systemBackground
     
     [
-      nilImageView,
-      bubbleImageView,
+//      nilImageView,
+//      bubbleImageView,
       nilLabel
     ].forEach { view.addSubview($0) }
     
     let width = self.view.frame.width
     
-    nilImageView.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview()
-      $0.height.width.equalTo(width)
-      $0.bottom.equalToSuperview().inset(width / 4)
-    }
-    
-    bubbleImageView.snp.makeConstraints {
-      $0.bottom.equalTo(nilImageView.snp.top).offset(width / 3)
-      $0.leading.trailing.equalToSuperview().inset(32.0)
-      $0.height.equalTo(width / 3)
-    }
+//    nilImageView.snp.makeConstraints {
+//      $0.leading.trailing.equalToSuperview()
+//      $0.height.width.equalTo(width)
+//      $0.bottom.equalToSuperview().inset(width / 4)
+//    }
+//
+//    bubbleImageView.snp.makeConstraints {
+//      $0.bottom.equalTo(nilImageView.snp.top).offset(width / 3)
+//      $0.leading.trailing.equalToSuperview().inset(32.0)
+//      $0.height.equalTo(width / 3)
+//    }
     
     nilLabel.snp.makeConstraints {
-      $0.centerY.equalTo(bubbleImageView.snp.centerY)
-      $0.leading.trailing.equalTo(bubbleImageView).offset(16.0)
+      $0.centerY.centerX.equalToSuperview()
+//      $0.leading.trailing.equalTo(bu).offset(16.0)
     }
   }
 }
