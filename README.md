@@ -1,3 +1,5 @@
 # Hype Chick🐣
 
-[![Video Label](http://img.youtube.com/vi/59USvjy2toI/0.jpg)](https://youtu.be/TyvOo-STxko)
+
+## 소개 영상
+[![Video Label](http://img.youtube.com/vi/TyvOo-STxko/0.jpg)](https://youtu.be/TyvOo-STxko)
