@@ -13,9 +13,14 @@
 ## 스크린샷
 ![scenes](https://user-images.githubusercontent.com/98168685/218168308-5641e07f-6258-4b3c-9d2a-e03dc1f7c6f9.png)
 
+## 팀원 
+
+* Back-End: [김지은](https://github.com/jxixeun)
+* iOS: [유종훈](https://github.com/JongHoooon)
+
 <br> 
 
-## 사용 라이브러리
+## 주요 라이브러리
 
 ### Lint
 SwiftLint
